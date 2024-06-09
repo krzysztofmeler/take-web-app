@@ -47,6 +47,10 @@ module.exports = {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader'],
             },
+            {
+                test: /\.sass$/,
+                use: ['style-loader', 'css-loader', 'sass-loader'],
+            },
         ],
     },
     resolve: {
@@ -57,7 +61,7 @@ module.exports = {
         minimizer: [minimizer],
         concatenateModules: true,
     },
-    plugins: [htmlPlugin, eslintPlugin],
+    plugins: [htmlPlugin],
     output: {
         filename: 'scripts-bundled.js',
         path: path.resolve(__dirname, 'build'),

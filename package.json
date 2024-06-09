@@ -27,6 +27,7 @@
         "babel-loader": "8.2.5",
         "babel-preset-react": "6.24.1",
         "css-loader": "6.7.1",
+        "dart-sass": "1.25.0",
         "eslint": "8.23.1",
         "eslint-config-airbnb": "19.0.4",
         "eslint-config-prettier": "8.5.0",
@@ -38,6 +39,8 @@
         "eslint-plugin-react": "7.31.8",
         "eslint-webpack-plugin": "3.2.0",
         "html-webpack-plugin": "5.5.0",
+        "sass": "1.76.0",
+        "sass-loader": "10.5.2",
         "style-loader": "3.3.1",
         "terser-webpack-plugin": "5.3.6",
         "webpack": "5.91.0",
@@ -47,10 +50,16 @@
     "dependencies": {
         "react": "18.2.0",
         "react-dom": "18.2.0",
+        "react-router": "6.23.0",
+        "react-router-dom": "6.23.0",
         "ts-loader": "9.4.1",
         "typescript": "4.8.3"
     },
     "eslintConfig": {
+        "globals": {
+            "RequestInit": true,
+            "RequestInfo": true
+        },
         "extends": [
             "plugin:react/recommended",
             "plugin:@typescript-eslint/recommended",
