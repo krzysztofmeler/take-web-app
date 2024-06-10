@@ -1,5 +1,5 @@
 interface Student {
-    studentId: string;
+    studentId: number;
     firstName: string;
     lastName: string;
     email: string;

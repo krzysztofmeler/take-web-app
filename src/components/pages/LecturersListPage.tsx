@@ -40,15 +40,16 @@ const LecturersListPage: FC = () => {
                 <thead>
                     <tr>
                         <td>Lecturer name</td>
+                        <td>Lecturer e-mail address</td>
                     </tr>
                 </thead>
                 <tbody>
                     {lecturers.map((lecturer) => (
                         <tr key={lecturer.lecturerId}>
                             <td>
-                                {lecturer.firstName} {lecturer.lastName} (
-                                {lecturer.email})
+                                {lecturer.firstName} {lecturer.lastName}
                             </td>
+                            <td>{lecturer.email}</td>
                         </tr>
                     ))}
                 </tbody>
