@@ -10,6 +10,7 @@ import { AddNewSubjectPage } from './components/pages/AddNewSubjectPage';
 import { SubjectsListPage } from './components/pages/SubjectsListPage';
 import { LecturersListPage } from './components/pages/LecturersListPage';
 import { AddNewLecturerPage } from './components/pages/AddNewLecturerPage';
+import { AddNewStudentPage } from './components/pages/AddNewStudentPage';
 
 const root = ReactDOM.createRoot(
     document.getElementById('react-page-root') as HTMLElement,
@@ -33,6 +34,10 @@ root.render(
                 {
                     path: '/administration/add-new-subject',
                     element: <AddNewSubjectPage />,
+                },
+                {
+                  path: '/administration/add-new-student',
+                  element: <AddNewStudentPage />,
                 },
                 {
                     path: '/administration',
