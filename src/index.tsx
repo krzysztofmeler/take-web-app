@@ -8,6 +8,7 @@ import { PageNotFoundPage } from './components/pages/PageNotFoundPage';
 import { ContextSelectionPage } from './components/pages/ContextSelectionPage';
 import { AddNewSubjectPage } from './components/pages/AddNewSubjectPage';
 import { SubjectsListPage } from './components/pages/SubjectsListPage';
+import { LecturersListPage } from './components/pages/LecturersListPage';
 
 const root = ReactDOM.createRoot(
     document.getElementById('react-page-root') as HTMLElement,
@@ -17,8 +18,12 @@ root.render(
         <RouterProvider
           router={createBrowserRouter([
                 {
-                  path: '/administration/subjects-list',
-                  element: <SubjectsListPage />,
+                    path: '/administration/lecturers-list',
+                    element: <LecturersListPage />,
+                },
+                {
+                    path: '/administration/subjects-list',
+                    element: <SubjectsListPage />,
                 },
                 {
                     path: '/administration/add-new-subject',
