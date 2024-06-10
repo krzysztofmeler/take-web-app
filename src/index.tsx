@@ -7,6 +7,7 @@ import { MySurveysPage } from './components/pages/MySurveysPage';
 import { PageNotFoundPage } from './components/pages/PageNotFoundPage';
 import { ContextSelectionPage } from './components/pages/ContextSelectionPage';
 import { AddNewSubjectPage } from './components/pages/AddNewSubjectPage';
+import { SubjectsListPage } from './components/pages/SubjectsListPage';
 
 const root = ReactDOM.createRoot(
     document.getElementById('react-page-root') as HTMLElement,
@@ -15,6 +16,10 @@ root.render(
     <React.StrictMode>
         <RouterProvider
           router={createBrowserRouter([
+                {
+                  path: '/administration/subjects-list',
+                  element: <SubjectsListPage />,
+                },
                 {
                     path: '/administration/add-new-subject',
                     element: <AddNewSubjectPage />,
