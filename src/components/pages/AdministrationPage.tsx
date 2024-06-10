@@ -28,6 +28,14 @@ const AdministrationPage: FC = () => {
             link: 'surveys-list',
             text: 'All surveys list',
         },
+        {
+            link: 'students-list',
+            text: 'All students list',
+        },
+        {
+            link: 'add-new-student',
+            text: 'Add new student',
+        },
     ];
 
     return (
