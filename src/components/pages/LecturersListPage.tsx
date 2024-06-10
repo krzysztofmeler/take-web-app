@@ -15,11 +15,19 @@ const LecturersListPage: FC = () => {
         setLecturers([
             {
                 lecturerId: 11,
-                name: 'Robert Tutajewicz',
+                firstName: 'Robert',
+                lastName: 'Tutajewicz',
+                email: 'robercik@aei.polsl.pl',
+                subjects: [],
+                surveys: [],
             },
             {
-                lecturerId: 43,
-                name: 'Bolesław Pochopień',
+                lecturerId: 23,
+                firstName: 'asd',
+                lastName: 'fgfg',
+                email: 'robercik@aei.polsl.pl',
+                subjects: [],
+                surveys: [],
             },
         ]);
     }, []);
@@ -37,7 +45,10 @@ const LecturersListPage: FC = () => {
                 <tbody>
                     {lecturers.map((lecturer) => (
                         <tr key={lecturer.lecturerId}>
-                            <td>{lecturer.name}</td>
+                            <td>
+                                {lecturer.firstName} {lecturer.lastName} (
+                                {lecturer.email})
+                            </td>
                         </tr>
                     ))}
                 </tbody>

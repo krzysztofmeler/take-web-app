@@ -7,15 +7,30 @@ import { useGetLecturers } from '../../hooks/useGetLecturers.hook';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
 
 const AddNewLecturerPage: FC = () => {
-    const [name, setName] = useState<string>('');
+    const [firstName, setFirstName] = useState<string>('');
+    const [lastName, setLastName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [subjectIds, setSubjectIds] = useState<string[]>([]);
 
     const submit = () => {
         console.log('lecturer submit handler'); // todo: add real handling
     };
 
+    // todo: add multivalue selector for subjects
+
     return (
         <form>
-            <TextInput value={name} updateValue={setName} label="Name" />
+            <TextInput
+              value={firstName}
+              updateValue={setFirstName}
+              label="Name"
+            />
+            <TextInput
+              value={lastName}
+              updateValue={setLastName}
+              label="Surname"
+            />
+            <TextInput value={email} updateValue={setEmail} label="E-mail" />
 
             <input
               onClick={jsSubmit(submit)}

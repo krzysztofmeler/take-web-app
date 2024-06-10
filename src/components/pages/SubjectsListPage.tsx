@@ -15,12 +15,26 @@ const SubjectsListPage: FC = () => {
         setSubjects([
             {
                 subjectId: 234,
-                lecturer: { lecturerId: 11, name: 'Tutajewicz Robert' },
+                lecturer: {
+                    lecturerId: 11,
+                    firstName: 'Tutajewicz Robert',
+                    lastName: '',
+                    email: '',
+                    surveys: [],
+                    subjects: [],
+                },
                 name: 'Technika Układów Cyfrowych',
             },
             {
                 subjectId: 11,
-                lecturer: { lecturerId: 23, name: 'Bolesław Pochopień' },
+                lecturer: {
+                    lecturerId: 23,
+                    firstName: 'Bolesław Pochopień',
+                    lastName: 'asd',
+                    email: 'dsfsdf',
+                    subjects: [],
+                    surveys: [],
+                },
                 name: 'Arytmetyka systemów cyfrowych',
             },
         ]);
@@ -44,7 +58,10 @@ const SubjectsListPage: FC = () => {
                     {subjects.map((subject) => (
                         <tr key={subject.subjectId}>
                             <td>{subject.name}</td>
-                            <td>{subject.lecturer.name}</td>
+                            <td>
+                                {subject.lecturer.firstName}{' '}
+                                {subject.lecturer.lastName}
+                            </td>
                         </tr>
                     ))}
                 </tbody>

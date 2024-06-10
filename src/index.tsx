@@ -23,8 +23,8 @@ root.render(
                     element: <LecturersListPage />,
                 },
                 {
-                  path: '/administration/add-new-lecturer',
-                  element: <AddNewLecturerPage />,
+                    path: '/administration/add-new-lecturer',
+                    element: <AddNewLecturerPage />,
                 },
                 {
                     path: '/administration/subjects-list',
