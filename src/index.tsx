@@ -6,6 +6,7 @@ import { AdministrationPage } from './components/pages/AdministrationPage';
 import { MySurveysPage } from './components/pages/MySurveysPage';
 import { PageNotFoundPage } from './components/pages/PageNotFoundPage';
 import { ContextSelectionPage } from './components/pages/ContextSelectionPage';
+import { AddNewSubjectPage } from './components/pages/AddNewSubjectPage';
 
 const root = ReactDOM.createRoot(
     document.getElementById('react-page-root') as HTMLElement,
@@ -14,6 +15,10 @@ root.render(
     <React.StrictMode>
         <RouterProvider
           router={createBrowserRouter([
+                {
+                    path: '/administration/add-new-subject',
+                    element: <AddNewSubjectPage />,
+                },
                 {
                     path: '/administration',
                     element: <AdministrationPage />,
