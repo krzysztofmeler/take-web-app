@@ -12,6 +12,7 @@ import { LecturersListPage } from './components/pages/LecturersListPage';
 import { AddNewLecturerPage } from './components/pages/AddNewLecturerPage';
 import { AddNewStudentPage } from './components/pages/AddNewStudentPage';
 import { StudentsListPage } from './components/pages/StudentsListPage';
+import { CompleteSurveyPage } from './components/pages/CompleteSurveyPage';
 
 const root = ReactDOM.createRoot(
     document.getElementById('react-page-root') as HTMLElement,
@@ -20,6 +21,10 @@ root.render(
     <React.StrictMode>
         <RouterProvider
           router={createBrowserRouter([
+                {
+                  path: '/complete-survey/:id',
+                  element: <CompleteSurveyPage />,
+                },
                 {
                     path: '/administration/lecturers-list',
                     element: <LecturersListPage />,
@@ -37,8 +42,8 @@ root.render(
                     element: <AddNewSubjectPage />,
                 },
                 {
-                  path: '/administration/students-list',
-                  element: <StudentsListPage />,
+                    path: '/administration/students-list',
+                    element: <StudentsListPage />,
                 },
                 {
                     path: '/administration/add-new-student',
