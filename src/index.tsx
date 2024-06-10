@@ -9,6 +9,7 @@ import { ContextSelectionPage } from './components/pages/ContextSelectionPage';
 import { AddNewSubjectPage } from './components/pages/AddNewSubjectPage';
 import { SubjectsListPage } from './components/pages/SubjectsListPage';
 import { LecturersListPage } from './components/pages/LecturersListPage';
+import { AddNewLecturerPage } from './components/pages/AddNewLecturerPage';
 
 const root = ReactDOM.createRoot(
     document.getElementById('react-page-root') as HTMLElement,
@@ -20,6 +21,10 @@ root.render(
                 {
                     path: '/administration/lecturers-list',
                     element: <LecturersListPage />,
+                },
+                {
+                  path: '/administration/add-new-lecturer',
+                  element: <AddNewLecturerPage />,
                 },
                 {
                     path: '/administration/subjects-list',
