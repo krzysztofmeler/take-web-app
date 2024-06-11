@@ -1,70 +1,153 @@
 import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-// import { useRequest } from '../../hooks/useRequest.hook';
-
-interface Survey {
-    surveyId: number;
-    surveyName: string;
-}
+import { TextInput } from '../forms/TextInput';
+import { jsSubmit } from '../../utils/js-submit';
+import { useRequest } from '../../hooks/useRequest.hook';
+import { Student } from '../../model/existing-objects/Student';
+import { BasicSurvey } from '../../model/existing-objects/Survey';
+import { ResponseError } from '../../errors/types/ResponseError';
 
 const MySurveysPage: FC = () => {
-    const [surveys, setSurveys] = useState<Survey[]>([]);
-    const [processing, setProcessing] = useState<boolean>(true);
+    const [studentId, setStudentId] = useState<number | null>(null);
+    const [email, setEmail] = useState<string>('');
 
-    const studentId = 'dfsf';
+    const {
+        send: requestStudentByEmail,
+        data: studentResponse,
+        ...studentRequest
+    } = useRequest();
+    const {
+        send: requestAllSurveys,
+        data: allSurveysResponse,
+        ...allSurveysRequest
+    } = useRequest();
+    const {
+        send: requestFilledSurveys,
+        data: filledSurveysResponse,
+        ...filledSurveysRequest
+    } = useRequest();
 
-    // const { data, processing, error } = useRequest(`http://127.0.0.1/students/${studentId}/surveys`, { method: 'GET' });
-    //
-    //
-    // useEffect(() => {
-    //   if (!! data)
-    //     setSurveys(data as Survey[]);
-    // }, [data]);
+    const submitEmail = () => {
+        requestStudentByEmail(
+            `http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/students/by-email?email=${encodeURIComponent(
+                email,
+            )}`,
+            { method: 'GET', mode: 'cors' },
+        );
+    };
 
     useEffect(() => {
-        try {
-            setTimeout(() => {
-                setSurveys([
-                    {
-                        surveyId: 343,
-                        surveyName: 'survey name 343',
-                    },
-                    {
-                        surveyId: 1,
-                        surveyName: 'survey name 1',
-                    },
-                    { surveyId: 55, surveyName: 'survey name 55' },
-                ]);
-                setProcessing(false);
-            }, 1200);
-        } catch (err) {
-            console.error(err);
+        if (studentRequest.error) {
+            // todo: better error handling
+            if (studentRequest.error instanceof ResponseError) {
+                window.alert('Student not found by this email');
+            } else {
+                window.alert('An error occurred');
+            }
         }
-    }, []);
+    }, [studentRequest.error]);
 
-    return (
-        <div>
-            <h1>My surveys</h1>
+    useEffect(() => {
+        // Checking of student by email request result
+        if (studentResponse && Object.hasOwn(studentResponse, 'studentId')) {
+            setStudentId((studentResponse as Student).studentId);
+        }
+    }, [studentResponse]);
 
+    useEffect(() => {
+        if (studentId) {
+            // student id is set, so we can ask for all surveys and surveys filled by this student
+            requestFilledSurveys(
+                `http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/students/${studentId}/surveys`,
+                { method: 'GET', mode: 'cors' },
+            );
+
+            requestAllSurveys(
+                'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/surveys',
+                { method: 'GET', mode: 'cors' },
+            );
+        }
+    }, [studentId]);
+
+    const [surveys, setSurveys] = useState<BasicSurvey[]>([]);
+
+    useEffect(() => {
+        /*
+        There is no single endpoint we can ask for surveys so the list of
+        surveys to be filled need to be prepared from data about all surveys.
+        We need list of surveys filled by student and subtract them from
+        list of all surveys so the result contains only surveys without
+        answers from this student.
+         */
+
+        if (filledSurveysResponse !== null && allSurveysResponse !== null) {
+            const filteredSurveys = (
+                allSurveysResponse as BasicSurvey[]
+            ).filter(
+                (survey) =>
+                    !(filledSurveysResponse as BasicSurvey[]).find(
+                        (s) => s.surveyId === survey.surveyId,
+                    ),
+            );
+
+            setSurveys(filteredSurveys);
+        }
+    }, [filledSurveysResponse, allSurveysResponse]);
+
+    if (!studentId) {
+        return (
+            <>
+                <h1>Login</h1>
+                <p>
+                    You need to provide your e-mail address to start survey
+                    completion.
+                </p>
+                <form>
+                    <TextInput
+                      value={email}
+                      updateValue={setEmail}
+                      label="E-mail"
+                    />
+                    <input
+                      type="submit"
+                      value="Login"
+                      onClick={jsSubmit(submitEmail)}
+                    />
+                </form>
+            </>
+        );
+    } else {
+        return (
             <div>
-                {processing && <div>loading list of your surveys...</div>}
-                {!processing && (
-                    <ul>
-                        {surveys.map((survey) => (
-                            <li key={survey.surveyId}>
-                                {' '}
-                                <Link
-                                  to={`/complete-survey/${survey.surveyId}`}
-                                >
-                                    {survey.surveyName}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                )}
+                <h1>My surveys</h1>
+                <p>List contains all surveys you had not filled yet.</p>
+
+                <div>
+                    {(studentRequest.processing ||
+                        filledSurveysRequest.processing) && (
+                        <div>loading list of your surveys...</div>
+                    )}
+                    {!(
+                        studentRequest.processing ||
+                        filledSurveysRequest.processing
+                    ) && (
+                        <ul>
+                            {surveys.map((survey) => (
+                                <li key={survey.surveyId}>
+                                    {' '}
+                                    <Link
+                                      to={`/complete-survey/${survey.surveyId}`}
+                                    >
+                                        {survey.name}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
 };
 
 export { MySurveysPage };
