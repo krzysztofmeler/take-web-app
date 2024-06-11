@@ -6,39 +6,30 @@ import { jsSubmit } from '../../utils/js-submit';
 import { useGetLecturers } from '../../hooks/useGetLecturers.hook';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { Subject } from '../../model/existing-objects/Subject';
+import { useRequest } from '../../hooks/useRequest.hook';
 
 const SubjectsListPage: FC = () => {
     const [subjects, setSubjects] = useState<Subject[]>([]);
 
+    const { data, processing, error } = useRequest(
+        'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/subjects',
+        { method: 'GET' },
+    );
+
+    // todo: fix duplicated request to lecturers list via GET
+
     useEffect(() => {
-        // TODO: remove this mock after real request is ready
-        setSubjects([
-            {
-                subjectId: 234,
-                lecturer: {
-                    lecturerId: 11,
-                    firstName: 'Tutajewicz Robert',
-                    lastName: '',
-                    email: '',
-                    surveys: [],
-                    subjects: [],
-                },
-                name: 'Technika Układów Cyfrowych',
-            },
-            {
-                subjectId: 11,
-                lecturer: {
-                    lecturerId: 23,
-                    firstName: 'Bolesław Pochopień',
-                    lastName: 'asd',
-                    email: 'dsfsdf',
-                    subjects: [],
-                    surveys: [],
-                },
-                name: 'Arytmetyka systemów cyfrowych',
-            },
-        ]);
-    }, []);
+        if (error) {
+            alert('An error occurred.');
+            console.error(error);
+        }
+    }, [error]);
+
+    useEffect(() => {
+        if (data) {
+            setSubjects(data as Subject[]);
+        }
+    }, [data]);
 
     return (
         <>
@@ -47,25 +38,28 @@ const SubjectsListPage: FC = () => {
                 List contains data about all subjects - name and lecturer who
                 directs it.
             </p>
-            <table>
-                <thead>
-                    <tr>
-                        <td>Subject name</td>
-                        <td>Lecturer</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {subjects.map((subject) => (
-                        <tr key={subject.subjectId}>
-                            <td>{subject.name}</td>
-                            <td>
-                                {subject.lecturer.firstName}{' '}
-                                {subject.lecturer.lastName}
-                            </td>
+            {processing && <p>Loading</p>}
+            {!processing && (
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Subject name</td>
+                            <td>Lecturer</td>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {subjects.map((subject) => (
+                            <tr key={subject.subjectId}>
+                                <td>{subject.name}</td>
+                                <td>
+                                    {subject.lecturer.firstName}{' '}
+                                    {subject.lecturer.lastName}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
         </>
     );
 };
