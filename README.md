@@ -11,5 +11,5 @@ docker build -t take-web-app .
 
 2. Run container:
 ```shell
-docker run -d -p 8080:8081 take-web-app:latest
+docker run -d -p 8081:8080 take-web-app:latest
 ```
