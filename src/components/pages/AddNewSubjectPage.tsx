@@ -5,14 +5,33 @@ import { BasicSelector } from '../forms/BasicSelector';
 import { jsSubmit } from '../../utils/js-submit';
 import { useGetLecturers } from '../../hooks/useGetLecturers.hook';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
+import { useRequest } from '../../hooks/useRequest.hook';
 
 const AddNewSubjectPage: FC = () => {
     const [name, setName] = useState<string>('');
     const [lecturerId, setLecturerId] = useState<string | null>(null);
 
+    const { send: sendRequest, data: response, ...request } = useRequest();
+
+
     const submit = () => {
+        sendRequest(
+            'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/subjects',
+            {
+        method: 'POST',
+              mode: 'no-cors',
+        body: JSON.stringify({
+          name,
+            lecturerId: 22,
+          })
+      });
+
         console.log('sss');
     };
+
+    useEffect(() => {
+
+    }, [response]);
 
     // const getLecturersResult = useGetLecturers();
 

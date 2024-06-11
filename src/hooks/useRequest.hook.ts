@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { NetworkError } from '../errors/types/NetworkError';
 import { ResponseError } from '../errors/types/ResponseError';
 
-const useRequest = (input: RequestInfo | URL, init?: RequestInit) => {
+const useRequest = (input?: RequestInfo | URL, init?: RequestInit) => {
     const [data, _setData] = useState<unknown>(null);
     const [response, _setResponse] = useState<Response | null>(null);
     const [error, _setError] = useState<NetworkError | ResponseError | null>(
@@ -11,14 +11,16 @@ const useRequest = (input: RequestInfo | URL, init?: RequestInit) => {
     const [processing, _setProcessing] = useState<boolean>(false);
 
     useEffect(() => {
-        _setProcessing(true);
-        fetch(input, init).then(_setResponse).catch(_setError);
+        if (input) {
+            _setProcessing(true);
+            fetch(input, init).then(_setResponse).catch(_setError);
+        }
     }, [input, init]);
 
     useEffect(() => {
         if (response) {
-            if (response.status !== 200) {
-                _setError(new ResponseError('Response status is not 200.'));
+            if (response.status > 299) {
+                _setError(new ResponseError('Response status is not from 2xx range.'));
             } else if (
                 response.headers.get('Content-type') !== 'application/json'
             ) {
@@ -44,7 +46,12 @@ const useRequest = (input: RequestInfo | URL, init?: RequestInit) => {
         }
     }, [error, response]);
 
-    return { data, error, processing };
+    const send = (input: RequestInfo | URL, init?: RequestInit) => {
+        _setProcessing(true);
+        fetch(input, init).then(_setResponse).catch(_setError);
+    }
+
+    return { data, error, processing, send };
 };
 
 export { useRequest };

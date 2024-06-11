@@ -6,6 +6,8 @@ import { jsSubmit } from '../../utils/js-submit';
 import { useGetLecturers } from '../../hooks/useGetLecturers.hook';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { CheckboxSelector } from '../forms/CheckboxSelector';
+import { useRequest } from '../../hooks/useRequest.hook';
+import { useNavigate } from "react-router-dom";
 
 const AddNewLecturerPage: FC = () => {
     const [firstName, setFirstName] = useState<string>('');
@@ -13,9 +15,47 @@ const AddNewLecturerPage: FC = () => {
     const [email, setEmail] = useState<string>('');
     const [subjectIds, setSubjectIds] = useState<string[]>([]);
 
+    const [formEnabled, setFormEnabled] = useState(true);
+
+
+    const { send: sendRequest, data: response, ...request } = useRequest();
+
+
     const submit = () => {
-        console.log('lecturer submit handler'); // todo: add real handling
+        setFormEnabled(false);
+        sendRequest(
+          'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/lecturers',
+          {
+              method: 'POST',
+              mode: 'cors',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                  firstName,
+                  lastName,
+                  email,
+                  subjects: subjectIds,
+                  surveys: [],
+              })
+          });
     };
+
+    useEffect(() => {
+        if (request.error) {
+            window.alert('An error occurred!'); // TODO: add proper handling
+            console.error(request.error);
+            setFormEnabled(true);
+        }
+    }, [request.error])
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if ( typeof response === 'object' && response !== null && Object.hasOwn(response, 'lecturerId')) {
+            navigate(`/administration/lecturers-list`);
+        }
+    }, [response])
 
     const subjects = [
         {
@@ -77,7 +117,10 @@ const AddNewLecturerPage: FC = () => {
                   label="Subjects"
                 />
 
+                { !formEnabled && <p>Processing</p> }
+
                 <input
+                  disabled={!formEnabled}
                   onClick={jsSubmit(submit)}
                   type="submit"
                   value="Proceed and close"
