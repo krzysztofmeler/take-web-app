@@ -36,14 +36,16 @@ const CompleteSurveyPage: FC = () => {
 
     const updateAnswer = (questionId: number, answerValue: number) => {
         let answerAlreadyInAnswers = false;
-        const newList: [number, number][] = answers.map((answer): [number, number] => {
+        const newList: [number, number][] = answers.map(
+            (answer): [number, number] => {
                 if (answer[0] === questionId) {
                     answerAlreadyInAnswers = true;
                     return [answer[0], answerValue];
                 } else {
                     return [answer[0], answer[1]];
                 }
-            });
+            },
+        );
         if (!answerAlreadyInAnswers) {
             newList.push([questionId, answerValue]);
         }
@@ -60,8 +62,14 @@ const CompleteSurveyPage: FC = () => {
                     <p>{question.content}</p>
                     <StarRatio
                       groupName={question.questionId.toString()}
-                      value={answers.find(a => a[0] === question.questionId)?.[1]}
-                      updateValue={(value) => updateAnswer(question.questionId, value)}
+                      value={
+                            answers.find(
+                                (a) => a[0] === question.questionId,
+                            )?.[1]
+                        }
+                      updateValue={(value) =>
+                            updateAnswer(question.questionId, value)
+                        }
                     />
                 </div>
             ))}
