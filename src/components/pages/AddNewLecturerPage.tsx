@@ -7,6 +7,7 @@ import { useGetLecturers } from '../../hooks/useGetLecturers.hook';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { CheckboxSelector } from '../forms/CheckboxSelector';
 import { useRequest } from '../../hooks/useRequest.hook';
+import { Subject } from '../../model/existing-objects/Subject';
 
 const AddNewLecturerPage: FC = () => {
     const [firstName, setFirstName] = useState<string>('');
@@ -14,9 +15,29 @@ const AddNewLecturerPage: FC = () => {
     const [email, setEmail] = useState<string>('');
     const [subjectIds, setSubjectIds] = useState<string[]>([]);
 
-    const [formEnabled, setFormEnabled] = useState(true);
+    const [formEnabled, setFormEnabled] = useState(false); // false because list of subjects needs to be loaded
 
     const { send: sendRequest, data: response, ...request } = useRequest();
+
+    const {
+        data: subjects,
+        processing,
+        error,
+    } = useRequest(
+        'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/subjects',
+        { method: 'GET' },
+    );
+
+    // todo: fix duplicated request to lecturers list via GET
+
+    useEffect(() => {
+        if (error) {
+            alert(
+                'An error occurred while loading list of subjects. Subject selection function unavailable and form is disabled. Reload if needed.',
+            );
+            console.error(error);
+        }
+    }, [error]);
 
     const submit = () => {
         setFormEnabled(false);
@@ -59,33 +80,21 @@ const AddNewLecturerPage: FC = () => {
         }
     }, [response]);
 
-    const subjects = [
-        {
-            subjectId: 234,
-            name: 'Technika Układów Cyfrowych',
-        },
-        {
-            subjectId: 11,
-            name: 'Arytmetyka systemów cyfrowych',
-        },
-        {
-            subjectId: 21,
-            name: 'jhgjghj werwer sdfdsf',
-        },
-        {
-            subjectId: 1111,
-            name: 'dghgmg werwer sdfdsf',
-        },
-        {
-            subjectId: 34234,
-            name: 'fdgfdg werwer sdfdsf',
-        },
-    ];
+    const [subjectsCheckboxData, setSubjectsCheckboxData] = useState<
+        [string, string][]
+    >([]);
 
-    const subjectsCheckboxData: [string, string][] = subjects.map((subject) => [
-        subject.subjectId.toString(),
-        subject.name,
-    ]);
+    useEffect(() => {
+        if (subjects) {
+            setSubjectsCheckboxData(
+                (subjects as Subject[]).map((subject) => [
+                    subject.subjectId.toString(),
+                    subject.name,
+                ]),
+            );
+            setFormEnabled(true);
+        }
+    }, [subjects]);
 
     return (
         <>

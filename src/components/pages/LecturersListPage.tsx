@@ -3,7 +3,6 @@ import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { useRequest } from '../../hooks/useRequest.hook';
 
 const LecturersListPage: FC = () => {
-
     const {
         data: lecturers,
         processing,
