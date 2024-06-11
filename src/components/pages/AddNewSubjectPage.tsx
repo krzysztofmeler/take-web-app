@@ -13,24 +13,24 @@ const AddNewSubjectPage: FC = () => {
 
     const { send: sendRequest, data: response, ...request } = useRequest();
 
-
     const submit = () => {
         sendRequest(
             'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/subjects',
             {
-        method: 'POST',
-              mode: 'no-cors',
-        body: JSON.stringify({
-          name,
-            lecturerId: 22,
-          })
-      });
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify({
+                    name,
+                    lecturerId: 22,
+                }),
+            },
+        );
 
         console.log('sss');
     };
 
     useEffect(() => {
-
+        console.log('response changed');
     }, [response]);
 
     // const getLecturersResult = useGetLecturers();

@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { TextInput } from '../forms/TextInput';
 import { BasicSelector } from '../forms/BasicSelector';
 import { jsSubmit } from '../../utils/js-submit';
@@ -7,7 +7,6 @@ import { useGetLecturers } from '../../hooks/useGetLecturers.hook';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { CheckboxSelector } from '../forms/CheckboxSelector';
 import { useRequest } from '../../hooks/useRequest.hook';
-import { useNavigate } from "react-router-dom";
 
 const AddNewLecturerPage: FC = () => {
     const [firstName, setFirstName] = useState<string>('');
@@ -17,28 +16,27 @@ const AddNewLecturerPage: FC = () => {
 
     const [formEnabled, setFormEnabled] = useState(true);
 
-
     const { send: sendRequest, data: response, ...request } = useRequest();
-
 
     const submit = () => {
         setFormEnabled(false);
         sendRequest(
-          'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/lecturers',
-          {
-              method: 'POST',
-              mode: 'cors',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                  firstName,
-                  lastName,
-                  email,
-                  subjects: subjectIds,
-                  surveys: [],
-              })
-          });
+            'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/lecturers',
+            {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    firstName,
+                    lastName,
+                    email,
+                    subjects: subjectIds,
+                    surveys: [],
+                }),
+            },
+        );
     };
 
     useEffect(() => {
@@ -47,15 +45,19 @@ const AddNewLecturerPage: FC = () => {
             console.error(request.error);
             setFormEnabled(true);
         }
-    }, [request.error])
+    }, [request.error]);
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        if ( typeof response === 'object' && response !== null && Object.hasOwn(response, 'lecturerId')) {
-            navigate(`/administration/lecturers-list`);
+        if (
+            typeof response === 'object' &&
+            response !== null &&
+            Object.hasOwn(response, 'lecturerId')
+        ) {
+            navigate('/administration/lecturers-list');
         }
-    }, [response])
+    }, [response]);
 
     const subjects = [
         {
@@ -117,7 +119,7 @@ const AddNewLecturerPage: FC = () => {
                   label="Subjects"
                 />
 
-                { !formEnabled && <p>Processing</p> }
+                {!formEnabled && <p>Processing</p>}
 
                 <input
                   disabled={!formEnabled}

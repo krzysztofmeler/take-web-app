@@ -15,12 +15,14 @@ const useRequest = (input?: RequestInfo | URL, init?: RequestInit) => {
             _setProcessing(true);
             fetch(input, init).then(_setResponse).catch(_setError);
         }
-    }, [input, init]);
+    }, []);
 
     useEffect(() => {
         if (response) {
             if (response.status > 299) {
-                _setError(new ResponseError('Response status is not from 2xx range.'));
+                _setError(
+                    new ResponseError('Response status is not from 2xx range.'),
+                );
             } else if (
                 response.headers.get('Content-type') !== 'application/json'
             ) {
@@ -49,7 +51,7 @@ const useRequest = (input?: RequestInfo | URL, init?: RequestInit) => {
     const send = (input: RequestInfo | URL, init?: RequestInit) => {
         _setProcessing(true);
         fetch(input, init).then(_setResponse).catch(_setError);
-    }
+    };
 
     return { data, error, processing, send };
 };
