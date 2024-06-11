@@ -1,13 +1,21 @@
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Student } from '../../model/existing-objects/Student';
-import { Survey } from '../../model/existing-objects/survey';
+import { Survey } from '../../model/existing-objects/Survey';
 import { StarRatio } from '../forms/StarRatio';
 
 const CompleteSurveyPage: FC = () => {
     const { id } = useParams();
 
-    const survey: Survey = {
+    const survey: { // todo: use Survey type here
+        surveyId: number;
+        dateCreated: string;
+        name: string;
+        questions: ({ questionId: number; content: string } | { questionId: number; content: string } | { questionId: number; content: string } | {
+            questionId: number;
+            content: string
+        })[]
+    } = {
         surveyId: 34,
         dateCreated: new Date(Date.now()).toISOString(),
         name: 'Robert Tutajewicz - ocena semestru III',

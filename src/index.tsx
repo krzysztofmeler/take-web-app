@@ -13,6 +13,7 @@ import { AddNewLecturerPage } from './components/pages/AddNewLecturerPage';
 import { AddNewStudentPage } from './components/pages/AddNewStudentPage';
 import { StudentsListPage } from './components/pages/StudentsListPage';
 import { CompleteSurveyPage } from './components/pages/CompleteSurveyPage';
+import { SurveysListPage } from './components/pages/SurveysListPage';
 
 const root = ReactDOM.createRoot(
     document.getElementById('react-page-root') as HTMLElement,
@@ -24,6 +25,10 @@ root.render(
                 {
                     path: '/complete-survey/:id',
                     element: <CompleteSurveyPage />,
+                },
+                {
+                  path: '/administration/surveys-list',
+                  element: <SurveysListPage />,
                 },
                 {
                     path: '/administration/lecturers-list',
