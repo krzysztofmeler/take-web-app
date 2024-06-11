@@ -7,14 +7,20 @@ import { StarRatio } from '../forms/StarRatio';
 const CompleteSurveyPage: FC = () => {
     const { id } = useParams();
 
-    const survey: { // todo: use Survey type here
+    const survey: {
+        // todo: use Survey type here
         surveyId: number;
         dateCreated: string;
         name: string;
-        questions: ({ questionId: number; content: string } | { questionId: number; content: string } | { questionId: number; content: string } | {
-            questionId: number;
-            content: string
-        })[]
+        questions: (
+            | { questionId: number; content: string }
+            | { questionId: number; content: string }
+            | { questionId: number; content: string }
+            | {
+                  questionId: number;
+                  content: string;
+              }
+        )[];
     } = {
         surveyId: 34,
         dateCreated: new Date(Date.now()).toISOString(),

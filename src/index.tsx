@@ -14,6 +14,7 @@ import { AddNewStudentPage } from './components/pages/AddNewStudentPage';
 import { StudentsListPage } from './components/pages/StudentsListPage';
 import { CompleteSurveyPage } from './components/pages/CompleteSurveyPage';
 import { SurveysListPage } from './components/pages/SurveysListPage';
+import { SurveyDataPage } from './components/pages/SurveyDataPage';
 
 const root = ReactDOM.createRoot(
     document.getElementById('react-page-root') as HTMLElement,
@@ -27,8 +28,12 @@ root.render(
                     element: <CompleteSurveyPage />,
                 },
                 {
-                  path: '/administration/surveys-list',
-                  element: <SurveysListPage />,
+                    path: '/administration/surveys-list',
+                    element: <SurveysListPage />,
+                },
+                {
+                    path: '/administration/survey-data/:id',
+                    element: <SurveyDataPage />,
                 },
                 {
                     path: '/administration/lecturers-list',

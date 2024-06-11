@@ -6,7 +6,7 @@ interface Survey {
     name: string;
     dateCreated: string;
     questions: Question[];
-    lecturer: Lecturer;
+    // lecturer: Lecturer;
 }
 
 interface BasicSurvey {
