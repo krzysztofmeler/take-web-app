@@ -62,8 +62,6 @@ const AddNewSubjectPage: FC = () => {
                 }),
             },
         );
-
-        console.log('sss');
     };
 
     useEffect(() => {

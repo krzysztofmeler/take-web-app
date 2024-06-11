@@ -32,20 +32,25 @@ const SurveyDataPage: FC = () => {
         <>
             <h1>Survey data</h1>
             {processing && <p>Loading</p>}
-            {!processing && survey !== null && ( <>
-                <p>Name: {survey.name}</p>
-                <p>Created at: {survey.dateCreated}</p>
-                <table>
-                  <thead>
-                  <tr>
-                    <td>Question</td>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  {survey.questions.map(question => (<tr key={question.questionId}><td>{question.content}</td></tr>))}
-                  </tbody>
-                </table>
-              </>
+            {!processing && survey !== null && (
+                <>
+                    <p>Name: {survey.name}</p>
+                    <p>Created at: {survey.dateCreated}</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Question</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {survey.questions.map((question) => (
+                                <tr key={question.questionId}>
+                                    <td>{question.content}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </>
             )}
         </>
     );

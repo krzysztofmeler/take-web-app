@@ -1,30 +1,56 @@
 import { FC, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { TextInput } from '../forms/TextInput';
-import { BasicSelector } from '../forms/BasicSelector';
 import { jsSubmit } from '../../utils/js-submit';
-import { useGetLecturers } from '../../hooks/useGetLecturers.hook';
-import { Lecturer } from '../../model/existing-objects/Lecturer';
+import { useRequest } from '../../hooks/useRequest.hook';
 
 const AddNewStudentPage: FC = () => {
     const [firstName, setFirstName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
 
+    const { send: sendRequest, data: response, ...request } = useRequest();
+
     const submit = () => {
-        console.log('student submit handler'); // todo: add real handling
+        sendRequest(
+            'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/students',
+            {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    firstName,
+                    lastName,
+                    email,
+                }),
+            },
+        );
     };
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (
+            typeof response === 'object' &&
+            response !== null &&
+            Object.hasOwn(response, 'studentId')
+        ) {
+            navigate('/administration/students-list');
+        }
+    }, [response]);
 
     return (
         <form>
             <TextInput
               value={firstName}
-              updateValue={setEmail}
+              updateValue={setFirstName}
               label="First name"
             />
             <TextInput
               value={lastName}
-              updateValue={setEmail}
+              updateValue={setLastName}
               label="Last name"
             />
             <TextInput value={email} updateValue={setEmail} label="E-mail" />
