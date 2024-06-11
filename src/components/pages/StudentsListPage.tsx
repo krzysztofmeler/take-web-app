@@ -1,26 +1,30 @@
 import { FC, useEffect, useState } from 'react';
 import { Student } from '../../model/existing-objects/Student';
+import { useRequest } from '../../hooks/useRequest.hook';
+import { Subject } from '../../model/existing-objects/Subject';
 
 const StudentsListPage: FC = () => {
     const [students, setStudents] = useState<Student[]>([]);
 
+    const { data, processing, error } = useRequest(
+        'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/students',
+        { method: 'GET' },
+    );
+
+    // todo: fix duplicated request to students list via GET
+
     useEffect(() => {
-        // TODO: remove this mock after real request is ready
-        setStudents([
-            {
-                studentId: 54,
-                firstName: 'werewrewrewrewr',
-                lastName: 'dfgdfg',
-                email: 'asdvv@aei.polsl.pl',
-            },
-            {
-                studentId: 23,
-                firstName: 'asd',
-                lastName: 'fgfg',
-                email: 'bb@aei.polsl.pl',
-            },
-        ]);
-    }, []);
+        if (error) {
+            alert('An error occurred.');
+            console.error(error);
+        }
+    }, [error]);
+
+    useEffect(() => {
+        if (data) {
+            setStudents(data as Student[]);
+        }
+    }, [data]);
 
     return (
         <>
