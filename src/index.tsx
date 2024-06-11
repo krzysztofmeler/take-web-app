@@ -22,8 +22,8 @@ root.render(
         <RouterProvider
           router={createBrowserRouter([
                 {
-                  path: '/complete-survey/:id',
-                  element: <CompleteSurveyPage />,
+                    path: '/complete-survey/:id',
+                    element: <CompleteSurveyPage />,
                 },
                 {
                     path: '/administration/lecturers-list',
