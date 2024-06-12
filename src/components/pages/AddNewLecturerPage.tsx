@@ -1,10 +1,7 @@
 import { FC, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { TextInput } from '../forms/TextInput';
-import { BasicSelector } from '../forms/BasicSelector';
 import { jsSubmit } from '../../utils/js-submit';
-import { useGetLecturers } from '../../hooks/useGetLecturers.hook';
-import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { CheckboxSelector } from '../forms/CheckboxSelector';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { Subject } from '../../model/existing-objects/Subject';
@@ -22,7 +19,6 @@ const AddNewLecturerPage: FC = () => {
 
     const {
         data: subjects,
-        processing,
         error,
     } = useRequest(`${settings.backendAPIUrl}subjects`, { method: 'GET' });
 

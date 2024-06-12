@@ -1,5 +1,4 @@
 import { Question } from './Question';
-import { Lecturer } from './Lecturer';
 
 interface Survey {
     surveyId: number;

@@ -1,13 +1,12 @@
 import { FC, useEffect, useState } from 'react';
 import { Student } from '../../model/existing-objects/Student';
 import { useRequest } from '../../hooks/useRequest.hook';
-import { Subject } from '../../model/existing-objects/Subject';
 import { settings } from '../../settings';
 
 const StudentsListPage: FC = () => {
     const [students, setStudents] = useState<Student[]>([]);
 
-    const { data, processing, error } = useRequest(
+    const { data, error } = useRequest(
         `${settings.backendAPIUrl}students`,
         { method: 'GET' },
     );

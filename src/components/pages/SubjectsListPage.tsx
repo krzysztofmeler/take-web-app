@@ -1,10 +1,4 @@
 import { FC, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { TextInput } from '../forms/TextInput';
-import { BasicSelector } from '../forms/BasicSelector';
-import { jsSubmit } from '../../utils/js-submit';
-import { useGetLecturers } from '../../hooks/useGetLecturers.hook';
-import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { Subject } from '../../model/existing-objects/Subject';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';

@@ -1,9 +1,7 @@
 import { FC, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { TextInput } from '../forms/TextInput';
 import { BasicSelector } from '../forms/BasicSelector';
 import { jsSubmit } from '../../utils/js-submit';
-import { useGetLecturers } from '../../hooks/useGetLecturers.hook';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
@@ -12,11 +10,10 @@ const AddNewSubjectPage: FC = () => {
     const [name, setName] = useState<string>('');
     const [lecturerId, setLecturerId] = useState<string | null>(null);
 
-    const { send: sendRequest, data: response, ...request } = useRequest();
+    const { send: sendRequest, data: response } = useRequest();
 
     const {
         data: lecturers,
-        processing,
         error,
     } = useRequest(`${settings.backendAPIUrl}lecturers`, { method: 'GET' });
 
