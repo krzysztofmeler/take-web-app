@@ -6,6 +6,7 @@ import { jsSubmit } from '../../utils/js-submit';
 import { useGetLecturers } from '../../hooks/useGetLecturers.hook';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { useRequest } from '../../hooks/useRequest.hook';
+import { settings } from '../../settings';
 
 const AddNewSubjectPage: FC = () => {
     const [name, setName] = useState<string>('');
@@ -18,7 +19,7 @@ const AddNewSubjectPage: FC = () => {
         processing,
         error,
     } = useRequest(
-        'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/lecturers',
+        settings.backendAPIUrl + 'lecturers',
         { method: 'GET' },
     );
 
@@ -49,7 +50,7 @@ const AddNewSubjectPage: FC = () => {
 
     const submit = () => {
         sendRequest(
-            'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/subjects',
+            settings.backendAPIUrl + 'subjects',
             {
                 method: 'POST',
                 mode: 'cors',

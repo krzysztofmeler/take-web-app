@@ -2,12 +2,13 @@ import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BasicSurvey } from '../../model/existing-objects/Survey';
 import { useRequest } from '../../hooks/useRequest.hook';
+import { settings } from '../../settings';
 
 const SurveysListPage: FC = () => {
     const [surveys, setSurveys] = useState<BasicSurvey[]>([]);
 
     const { data, processing, error } = useRequest(
-        'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/surveys',
+        settings.backendAPIUrl + 'surveys',
         { method: 'GET' },
     );
 

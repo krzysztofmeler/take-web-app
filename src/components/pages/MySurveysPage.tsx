@@ -6,6 +6,7 @@ import { useRequest } from '../../hooks/useRequest.hook';
 import { Student } from '../../model/existing-objects/Student';
 import { BasicSurvey } from '../../model/existing-objects/Survey';
 import { ResponseError } from '../../errors/types/ResponseError';
+import { settings } from '../../settings';
 
 const MySurveysPage: FC = () => {
     const [studentId, setStudentId] = useState<number | null>(null);
@@ -29,7 +30,7 @@ const MySurveysPage: FC = () => {
 
     const submitEmail = () => {
         requestStudentByEmail(
-            `http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/students/by-email?email=${encodeURIComponent(
+            settings.backendAPIUrl + `students/by-email?email=${encodeURIComponent(
                 email,
             )}`,
             { method: 'GET', mode: 'cors' },
@@ -58,12 +59,12 @@ const MySurveysPage: FC = () => {
         if (studentId) {
             // student id is set, so we can ask for all surveys and surveys filled by this student
             requestFilledSurveys(
-                `http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/students/${studentId}/surveys`,
+                settings.backendAPIUrl + `students/${studentId}/surveys`,
                 { method: 'GET', mode: 'cors' },
             );
 
             requestAllSurveys(
-                'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/surveys',
+                settings.backendAPIUrl + 'surveys',
                 { method: 'GET', mode: 'cors' },
             );
         }

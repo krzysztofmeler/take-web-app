@@ -8,6 +8,7 @@ import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { CheckboxSelector } from '../forms/CheckboxSelector';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { Subject } from '../../model/existing-objects/Subject';
+import { settings } from '../../settings';
 
 const AddNewLecturerPage: FC = () => {
     const [firstName, setFirstName] = useState<string>('');
@@ -24,7 +25,7 @@ const AddNewLecturerPage: FC = () => {
         processing,
         error,
     } = useRequest(
-        'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/subjects',
+        settings.backendAPIUrl + 'subjects',
         { method: 'GET' },
     );
 
@@ -42,7 +43,7 @@ const AddNewLecturerPage: FC = () => {
     const submit = () => {
         setFormEnabled(false);
         sendRequest(
-            'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/lecturers',
+            settings.backendAPIUrl + 'lecturers',
             {
                 method: 'POST',
                 mode: 'cors',

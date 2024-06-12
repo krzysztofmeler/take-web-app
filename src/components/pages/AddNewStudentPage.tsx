@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { TextInput } from '../forms/TextInput';
 import { jsSubmit } from '../../utils/js-submit';
 import { useRequest } from '../../hooks/useRequest.hook';
+import { settings } from '../../settings';
 
 const AddNewStudentPage: FC = () => {
     const [firstName, setFirstName] = useState<string>('');
@@ -13,7 +14,7 @@ const AddNewStudentPage: FC = () => {
 
     const submit = () => {
         sendRequest(
-            'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/students',
+            settings.backendAPIUrl + 'students',
             {
                 method: 'POST',
                 mode: 'cors',

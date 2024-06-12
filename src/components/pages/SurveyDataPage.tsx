@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Survey } from '../../model/existing-objects/Survey';
 import { useRequest } from '../../hooks/useRequest.hook';
+import { settings } from '../../settings';
 
 const SurveyDataPage: FC = () => {
     const [survey, setSurvey] = useState<Survey | null>(null);
@@ -9,7 +10,7 @@ const SurveyDataPage: FC = () => {
     const { id } = useParams();
 
     const { data, processing, error } = useRequest(
-        `http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/surveys/${id}`,
+        settings.backendAPIUrl + `surveys/${id}`,
         { method: 'GET' },
     );
 

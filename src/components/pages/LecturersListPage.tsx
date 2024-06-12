@@ -1,6 +1,7 @@
 import { FC, useEffect } from 'react';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { useRequest } from '../../hooks/useRequest.hook';
+import { settings } from '../../settings';
 
 const LecturersListPage: FC = () => {
     const {
@@ -8,7 +9,7 @@ const LecturersListPage: FC = () => {
         processing,
         error,
     } = useRequest(
-        'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/lecturers',
+        settings.backendAPIUrl + 'lecturers',
         { method: 'GET' },
     );
 

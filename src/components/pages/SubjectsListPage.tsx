@@ -7,12 +7,13 @@ import { useGetLecturers } from '../../hooks/useGetLecturers.hook';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { Subject } from '../../model/existing-objects/Subject';
 import { useRequest } from '../../hooks/useRequest.hook';
+import { settings } from '../../settings';
 
 const SubjectsListPage: FC = () => {
     const [subjects, setSubjects] = useState<Subject[]>([]);
 
     const { data, processing, error } = useRequest(
-        'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/subjects',
+        settings.backendAPIUrl + 'subjects',
         { method: 'GET' },
     );
 

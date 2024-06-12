@@ -1,10 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Lecturer } from '../model/existing-objects/Lecturer';
 import { useRequest } from './useRequest.hook';
+import { settings } from '../settings';
 
 const useGetLecturers = () => {
-    const request = useRequest('http://192.168.1.220:8080/lecturers', {
+    const request = useRequest(settings.backendAPIUrl + 'lecturers', {
         method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+        }
     });
 
     const [lecturers, _setLecturers] = useState<Lecturer[]>([]);

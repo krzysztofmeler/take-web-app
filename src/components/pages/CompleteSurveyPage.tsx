@@ -5,6 +5,7 @@ import { StarRatio } from '../forms/StarRatio';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { jsSubmit } from '../../utils/js-submit';
 import { Answer } from '../../model/existing-objects/Answer';
+import { settings } from '../../settings';
 
 const CompleteSurveyPage: FC = () => {
     const { id } = useParams();
@@ -12,7 +13,7 @@ const CompleteSurveyPage: FC = () => {
     const [survey, setSurvey] = useState<Survey | null>(null);
 
     const surveyRequest = useRequest(
-        `http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/surveys/${id}`,
+        settings.backendAPIUrl + `surveys/${id}`,
         { method: 'GET', mode: 'cors' },
     );
 
@@ -87,7 +88,7 @@ const CompleteSurveyPage: FC = () => {
             };
 
             sendAnswers(
-                'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/answers',
+                settings.backendAPIUrl + 'answers',
                 {
                     method: 'POST',
                     mode: 'cors',
