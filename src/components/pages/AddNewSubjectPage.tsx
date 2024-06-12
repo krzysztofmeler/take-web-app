@@ -12,10 +12,10 @@ const AddNewSubjectPage: FC = () => {
 
     const { send: sendRequest, data: response } = useRequest();
 
-    const {
-        data: lecturers,
-        error,
-    } = useRequest(`${settings.backendAPIUrl}lecturers`, { method: 'GET' });
+    const { data: lecturers, error } = useRequest(
+        `${settings.backendAPIUrl}lecturers`,
+        { method: 'GET' },
+    );
 
     useEffect(() => {
         if (error) {

@@ -23,14 +23,14 @@ const useRequest = (input?: RequestInfo | URL, init?: RequestInit) => {
                 _setError(
                     new ResponseError('Response status is not from 2xx range.'),
                 );
-            } else if (
-                response.headers.get('Content-type') !== 'application/json'
-            ) {
-                _setError(
-                    new ResponseError(
-                        'Response content-type is not application/json',
-                    ),
-                );
+            // } else if (
+            //     response.headers.get('Content-type') !== 'application/json'
+            // ) {
+            //     _setError(
+            //         new ResponseError(
+            //             'Response content-type is not application/json',
+            //         ),
+            //     );
             } else {
                 response
                     .json()

@@ -6,10 +6,9 @@ import { settings } from '../../settings';
 const StudentsListPage: FC = () => {
     const [students, setStudents] = useState<Student[]>([]);
 
-    const { data, error } = useRequest(
-        `${settings.backendAPIUrl}students`,
-        { method: 'GET' },
-    );
+    const { data, error } = useRequest(`${settings.backendAPIUrl}students`, {
+        method: 'GET',
+    });
 
     // todo: fix duplicated request to students list via GET
 
