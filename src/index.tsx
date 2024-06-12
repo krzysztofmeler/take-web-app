@@ -16,6 +16,7 @@ import { CompleteSurveyPage } from './components/pages/CompleteSurveyPage';
 import { SurveysListPage } from './components/pages/SurveysListPage';
 import { SurveyDataPage } from './components/pages/SurveyDataPage';
 import { SurveysOfStudentPage } from './components/pages/SurveysOfStudentPage';
+import { LecturerDataPage } from './components/pages/LecturerDataPage';
 
 const root = ReactDOM.createRoot(
     document.getElementById('react-page-root') as HTMLElement,
@@ -42,7 +43,7 @@ root.render(
                 },
                 {
                     path: '/administration/lecturer-profile/:id',
-                    element: <LecturersListPage />,
+                    element: <LecturerDataPage />,
                 },
                 {
                     path: '/administration/add-new-lecturer',
