@@ -55,10 +55,12 @@ const CompleteSurveyPage: FC = () => {
         setAnswers(newList);
     };
 
+    const {
+        send: sendAnswers,
+        processing: sendingAnswers,
+        ...answersRequest
+    } = useRequest();
     const [submitted, setSubmitted] = useState(false);
-    const [submittingIndex, setSubmittingIndex] = useState(-1);
-
-    const submittingRequest = useRequest();
 
     const handleSubmit = () => {
         if (survey && !submitted) {
@@ -70,50 +72,46 @@ const CompleteSurveyPage: FC = () => {
             }
 
             setSubmitted(true);
-            setSubmittingIndex(0);
+
+            const answersToSend = survey.questions.map(
+                (q): Answer => ({
+                    studentId: 1, // todo: add real id,
+                    questionId: q.questionId,
+                    surveyId: survey.surveyId,
+                    rating: answers.find((a) => a[0] === q.questionId)![1],
+                }),
+            );
+
+            const body = {
+                answers: answersToSend,
+            };
+
+            sendAnswers(
+                'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/answers',
+                {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body),
+                },
+            );
         }
     };
 
     const [success, setSuccess] = useState(false);
 
     useEffect(() => {
-        if (submittingIndex > -1 && survey) {
-            if (submittingIndex >= answers.length - 1) {
-                setSubmittingIndex(-1);
-                setSuccess(true);
-            }
-
-            submittingRequest.send(
-                'http://localhost:8091/znowututaj-1.0-SNAPSHOT/api/answers',
-                {
-                    method: 'POST',
-                    mode: 'cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        surveyId: survey.surveyId,
-                        studentId: 1, // todo: add real,
-                        questionId: answers[submittingIndex][0],
-                        rating: answers[submittingIndex][1],
-                    } as Answer),
-                },
-            );
+        if (answersRequest.error) {
+            window.alert('An error occurred');
+            setSubmitted(false);
         }
-    }, [submittingIndex]);
+    }, [answersRequest.error]);
 
     useEffect(() => {
-        if (submittingIndex > -1 && survey) {
-            setSubmittingIndex(submittingIndex + 1);
+        if (!sendingAnswers && answersRequest.data) {
+            setSuccess(true);
         }
-    }, [submittingRequest.data, submittingRequest.error]); // todo: remove submittingRequest.error
-
-    // useEffect(() => { // todo: uncomment
-    //     if (submittingRequest.error) {
-    //         setSubmittingIndex(-1);
-    //         setSubmitted(false);
-    //         window.alert('An error occurred.');
-    //         console.error(submittingRequest.error);
-    //     }
-    // }, [submittingRequest.error]);
+    }, [sendingAnswers]);
 
     if (!survey) {
         return (
