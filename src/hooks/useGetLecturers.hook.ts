@@ -4,12 +4,12 @@ import { useRequest } from './useRequest.hook';
 import { settings } from '../settings';
 
 const useGetLecturers = () => {
-    const request = useRequest(settings.backendAPIUrl + 'lecturers', {
+    const request = useRequest(`${settings.backendAPIUrl}lecturers`, {
         method: 'GET',
         mode: 'cors',
         headers: {
             'Content-Type': 'application/json',
-        }
+        },
     });
 
     const [lecturers, _setLecturers] = useState<Lecturer[]>([]);

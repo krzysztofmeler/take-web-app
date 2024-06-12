@@ -8,7 +8,7 @@ const SurveysListPage: FC = () => {
     const [surveys, setSurveys] = useState<BasicSurvey[]>([]);
 
     const { data, processing, error } = useRequest(
-        settings.backendAPIUrl + 'surveys',
+        `${settings.backendAPIUrl}surveys`,
         { method: 'GET' },
     );
 

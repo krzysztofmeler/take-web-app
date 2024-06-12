@@ -18,10 +18,7 @@ const AddNewSubjectPage: FC = () => {
         data: lecturers,
         processing,
         error,
-    } = useRequest(
-        settings.backendAPIUrl + 'lecturers',
-        { method: 'GET' },
-    );
+    } = useRequest(`${settings.backendAPIUrl}lecturers`, { method: 'GET' });
 
     useEffect(() => {
         if (error) {
@@ -49,20 +46,17 @@ const AddNewSubjectPage: FC = () => {
     }, [lecturers]);
 
     const submit = () => {
-        sendRequest(
-            settings.backendAPIUrl + 'subjects',
-            {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name,
-                    lecturerId,
-                }),
+        sendRequest(`${settings.backendAPIUrl}subjects`, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
             },
-        );
+            body: JSON.stringify({
+                name,
+                lecturerId,
+            }),
+        });
     };
 
     useEffect(() => {

@@ -30,7 +30,7 @@ const MySurveysPage: FC = () => {
 
     const submitEmail = () => {
         requestStudentByEmail(
-            settings.backendAPIUrl + `students/by-email?email=${encodeURIComponent(
+            `${settings.backendAPIUrl}students/email/${encodeURIComponent(
                 email,
             )}`,
             { method: 'GET', mode: 'cors' },
@@ -59,14 +59,14 @@ const MySurveysPage: FC = () => {
         if (studentId) {
             // student id is set, so we can ask for all surveys and surveys filled by this student
             requestFilledSurveys(
-                settings.backendAPIUrl + `students/${studentId}/surveys`,
+                `${settings.backendAPIUrl}students/${studentId}/surveys`,
                 { method: 'GET', mode: 'cors' },
             );
 
-            requestAllSurveys(
-                settings.backendAPIUrl + 'surveys',
-                { method: 'GET', mode: 'cors' },
-            );
+            requestAllSurveys(`${settings.backendAPIUrl}surveys`, {
+                method: 'GET',
+                mode: 'cors',
+            });
         }
     }, [studentId]);
 

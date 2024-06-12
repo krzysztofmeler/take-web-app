@@ -13,7 +13,7 @@ const SubjectsListPage: FC = () => {
     const [subjects, setSubjects] = useState<Subject[]>([]);
 
     const { data, processing, error } = useRequest(
-        settings.backendAPIUrl + 'subjects',
+        `${settings.backendAPIUrl}subjects`,
         { method: 'GET' },
     );
 

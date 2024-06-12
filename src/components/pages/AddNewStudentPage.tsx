@@ -13,21 +13,18 @@ const AddNewStudentPage: FC = () => {
     const { send: sendRequest, data: response, ...request } = useRequest();
 
     const submit = () => {
-        sendRequest(
-            settings.backendAPIUrl + 'students',
-            {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    firstName,
-                    lastName,
-                    email,
-                }),
+        sendRequest(`${settings.backendAPIUrl}students`, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
             },
-        );
+            body: JSON.stringify({
+                firstName,
+                lastName,
+                email,
+            }),
+        });
     };
 
     const navigate = useNavigate();

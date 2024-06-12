@@ -3,17 +3,19 @@ import { useParams } from 'react-router';
 import { Survey } from '../../model/existing-objects/Survey';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
-import { Answer, GetSurveysResultResponse } from '../../model/existing-objects/Answer';
+import {
+    Answer,
+    GetSurveysResultResponse,
+} from '../../model/existing-objects/Answer';
 
 const SurveyDataPage: FC = () => {
     const [survey, setSurvey] = useState<Survey | null>(null);
 
     const { id } = useParams();
 
-    const surveyRequest = useRequest(
-        settings.backendAPIUrl + `surveys/${id}`,
-        { method: 'GET' },
-    );
+    const surveyRequest = useRequest(`${settings.backendAPIUrl}surveys/${id}`, {
+        method: 'GET',
+    });
 
     // todo: fix duplicated request to survey data EP via GET
 
@@ -33,18 +35,22 @@ const SurveyDataPage: FC = () => {
     }, [surveyRequest.data]);
 
     useEffect(() => {
-        if (survey ) {
-            resultsRequest.send(settings.backendAPIUrl + `surveys/${survey.surveyId}/results`)
+        if (survey) {
+            resultsRequest.send(
+                `${settings.backendAPIUrl}surveys/${survey.surveyId}/results`,
+            );
         }
-    }, [survey])
+    }, [survey]);
 
-    const [results, setResults] = useState<GetSurveysResultResponse|null>(null);
+    const [results, setResults] = useState<GetSurveysResultResponse | null>(
+        null,
+    );
 
     useEffect(() => {
         if (resultsRequest.data) {
             setResults(resultsRequest.data as GetSurveysResultResponse);
         }
-    }, [resultsRequest.data])
+    }, [resultsRequest.data]);
 
     const loading = surveyRequest.processing || resultsRequest.processing;
 

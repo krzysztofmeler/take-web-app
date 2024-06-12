@@ -12,10 +12,10 @@ const CompleteSurveyPage: FC = () => {
 
     const [survey, setSurvey] = useState<Survey | null>(null);
 
-    const surveyRequest = useRequest(
-        settings.backendAPIUrl + `surveys/${id}`,
-        { method: 'GET', mode: 'cors' },
-    );
+    const surveyRequest = useRequest(`${settings.backendAPIUrl}surveys/${id}`, {
+        method: 'GET',
+        mode: 'cors',
+    });
 
     useEffect(() => {
         if (surveyRequest.error) {
@@ -87,15 +87,12 @@ const CompleteSurveyPage: FC = () => {
                 answers: answersToSend,
             };
 
-            sendAnswers(
-                settings.backendAPIUrl + 'answers',
-                {
-                    method: 'POST',
-                    mode: 'cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(body),
-                },
-            );
+            sendAnswers(`${settings.backendAPIUrl}answers`, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            });
         }
     };
 

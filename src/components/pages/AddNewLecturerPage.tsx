@@ -24,10 +24,7 @@ const AddNewLecturerPage: FC = () => {
         data: subjects,
         processing,
         error,
-    } = useRequest(
-        settings.backendAPIUrl + 'subjects',
-        { method: 'GET' },
-    );
+    } = useRequest(`${settings.backendAPIUrl}subjects`, { method: 'GET' });
 
     // todo: fix duplicated request to lecturers list via GET
 
@@ -42,23 +39,20 @@ const AddNewLecturerPage: FC = () => {
 
     const submit = () => {
         setFormEnabled(false);
-        sendRequest(
-            settings.backendAPIUrl + 'lecturers',
-            {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    firstName,
-                    lastName,
-                    email,
-                    subjects: subjectIds,
-                    surveys: [],
-                }),
+        sendRequest(`${settings.backendAPIUrl}lecturers`, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
             },
-        );
+            body: JSON.stringify({
+                firstName,
+                lastName,
+                email,
+                subjects: subjectIds,
+                surveys: [],
+            }),
+        });
     };
 
     useEffect(() => {

@@ -8,7 +8,7 @@ const StudentsListPage: FC = () => {
     const [students, setStudents] = useState<Student[]>([]);
 
     const { data, processing, error } = useRequest(
-        settings.backendAPIUrl + 'students',
+        `${settings.backendAPIUrl}students`,
         { method: 'GET' },
     );
 

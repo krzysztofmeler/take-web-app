@@ -8,10 +8,7 @@ const LecturersListPage: FC = () => {
         data: lecturers,
         processing,
         error,
-    } = useRequest(
-        settings.backendAPIUrl + 'lecturers',
-        { method: 'GET' },
-    );
+    } = useRequest(`${settings.backendAPIUrl}lecturers`, { method: 'GET' });
 
     // todo: fix duplicated request to lecturers list via GET
 
