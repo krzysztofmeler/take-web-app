@@ -13,4 +13,9 @@ interface BasicSurvey {
     name: string;
 }
 
-export type { Survey, BasicSurvey };
+type StudentSurveyListResponse = {
+    surveyId: number;
+    surveyName: string;
+}[];
+
+export type { Survey, BasicSurvey, StudentSurveyListResponse };
