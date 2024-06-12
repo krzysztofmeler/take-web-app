@@ -3,10 +3,7 @@ import { useParams } from 'react-router';
 import { Survey } from '../../model/existing-objects/Survey';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
-import {
-    Answer,
-    GetSurveysResultResponse,
-} from '../../model/existing-objects/Answer';
+import { GetSurveysResultResponse } from '../../model/existing-objects/Answer';
 
 const SurveyDataPage: FC = () => {
     const [survey, setSurvey] = useState<Survey | null>(null);
@@ -37,7 +34,7 @@ const SurveyDataPage: FC = () => {
     useEffect(() => {
         if (survey) {
             resultsRequest.send(
-                `${settings.backendAPIUrl}surveys/${survey.surveyId}/results`,
+                `${settings.backendAPIUrl}surveys/results/${survey.surveyId}`,
             );
         }
     }, [survey]);
