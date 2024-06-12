@@ -45,7 +45,7 @@ const AddNewLecturerPage: FC = () => {
                 firstName,
                 lastName,
                 email,
-                subjects: subjectIds.map(id => parseInt(id, 10)),
+                subjectIds: subjectIds.map(id => parseInt(id, 10)),
                 surveys: [],
             }),
         });
