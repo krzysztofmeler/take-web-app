@@ -3,13 +3,14 @@ import { useParams } from 'react-router';
 import { Survey } from '../../model/existing-objects/Survey';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
+import { Answer, GetSurveysResultResponse } from '../../model/existing-objects/Answer';
 
 const SurveyDataPage: FC = () => {
     const [survey, setSurvey] = useState<Survey | null>(null);
 
     const { id } = useParams();
 
-    const { data, processing, error } = useRequest(
+    const surveyRequest = useRequest(
         settings.backendAPIUrl + `surveys/${id}`,
         { method: 'GET' },
     );
@@ -17,23 +18,41 @@ const SurveyDataPage: FC = () => {
     // todo: fix duplicated request to survey data EP via GET
 
     useEffect(() => {
-        if (error) {
+        if (surveyRequest.error) {
             alert('An error occurred');
-            console.error(error);
+            console.error(surveyRequest.error);
         }
-    }, [error]);
+    }, [surveyRequest.error]);
+
+    const resultsRequest = useRequest();
 
     useEffect(() => {
-        if (data) {
-            setSurvey(data as Survey);
+        if (surveyRequest.data) {
+            setSurvey(surveyRequest.data as Survey);
         }
-    }, [data]);
+    }, [surveyRequest.data]);
+
+    useEffect(() => {
+        if (survey ) {
+            resultsRequest.send(settings.backendAPIUrl + `surveys/${survey.surveyId}/results`)
+        }
+    }, [survey])
+
+    const [results, setResults] = useState<GetSurveysResultResponse|null>(null);
+
+    useEffect(() => {
+        if (resultsRequest.data) {
+            setResults(resultsRequest.data as GetSurveysResultResponse);
+        }
+    }, [resultsRequest.data])
+
+    const loading = surveyRequest.processing || resultsRequest.processing;
 
     return (
         <>
             <h1>Survey data</h1>
-            {processing && <p>Loading</p>}
-            {!processing && survey !== null && (
+            {loading && <p>Loading</p>}
+            {!loading && survey !== null && results !== null && (
                 <>
                     <p>Name: {survey.name}</p>
                     <p>Created at: {survey.dateCreated}</p>
@@ -41,12 +60,14 @@ const SurveyDataPage: FC = () => {
                         <thead>
                             <tr>
                                 <td>Question</td>
+                                <td>Average rating</td>
                             </tr>
                         </thead>
                         <tbody>
-                            {survey.questions.map((question) => (
-                                <tr key={question.questionId}>
-                                    <td>{question.content}</td>
+                            {results.map((result) => (
+                                <tr key={result.questionContent}>
+                                    <td>{result.questionContent}</td>
+                                    <td>{result.averageRating}</td>
                                 </tr>
                             ))}
                         </tbody>

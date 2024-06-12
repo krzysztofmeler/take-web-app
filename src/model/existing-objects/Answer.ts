@@ -5,4 +5,11 @@ interface Answer {
     rating: number;
 }
 
-export type { Answer };
+interface Result {
+    questionContent: string;
+    averageRating: number;
+}
+
+type GetSurveysResultResponse = Result[];
+
+export type { Answer, Result, GetSurveysResultResponse };
