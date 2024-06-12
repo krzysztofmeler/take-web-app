@@ -42,6 +42,12 @@ const AddNewSubjectPage: FC = () => {
         }
     }, [lecturers]);
 
+    useEffect(() => {
+        if (lecturerSelectorOptions.length > 0) {
+            setLecturerId(lecturerSelectorOptions[0][0]);
+        }
+    }, [lecturerSelectorOptions])
+
     const submit = () => {
         sendRequest(`${settings.backendAPIUrl}subjects`, {
             method: 'POST',
