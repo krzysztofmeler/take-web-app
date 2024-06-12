@@ -40,6 +40,10 @@ root.render(
                     element: <LecturersListPage />,
                 },
                 {
+                    path: '/administration/lecturer-profile/:id',
+                    element: <LecturersListPage />,
+                },
+                {
                     path: '/administration/add-new-lecturer',
                     element: <AddNewLecturerPage />,
                 },

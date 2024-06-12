@@ -1,4 +1,5 @@
 import { FC, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
@@ -37,7 +38,11 @@ const LecturersListPage: FC = () => {
                         {(lecturers as Lecturer[]).map((lecturer) => (
                             <tr key={lecturer.lecturerId}>
                                 <td>
-                                    {lecturer.firstName} {lecturer.lastName}
+                                    <Link
+                                      to={`/administration/lecturer-profile/${lecturer.lecturerId}`}
+                                    >
+                                        {lecturer.firstName} {lecturer.lastName}
+                                    </Link>
                                 </td>
                                 <td>{lecturer.email}</td>
                             </tr>
