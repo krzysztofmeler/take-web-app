@@ -32,12 +32,19 @@ const useRequest = (input?: RequestInfo | URL, init?: RequestInit) => {
             //         ),
             //     );
             } else {
-                response
-                    .json()
-                    .then(_setData)
-                    .catch((jsonError) => {
-                        _setError(jsonError);
-                    });
+
+                if (response.headers.get('Content-length') === "0") {
+                    _setData({status: response.status}); // todo: this is dirty workaround
+                } else {
+                    response
+                      .json()
+                      .then(_setData)
+                      .catch((jsonError) => {
+                          _setError(jsonError);
+                      });
+                }
+
+
             }
         }
     }, [response]);
