@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import { TextInput } from '../forms/TextInput';
 import { jsSubmit } from '../../utils/js-submit';
 import { useRequest } from '../../hooks/useRequest.hook';
-import { Student, StudentWithSurveys } from '../../model/existing-objects/Student';
+import {
+    Student,
+    StudentWithSurveys,
+} from '../../model/existing-objects/Student';
 import { BasicSurvey } from '../../model/existing-objects/Survey';
 import { ResponseError } from '../../errors/types/ResponseError';
 import { settings } from '../../settings';

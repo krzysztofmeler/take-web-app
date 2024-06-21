@@ -22,8 +22,8 @@ const AddNewSubjectPage: FC = () => {
         });
     };
 
-    useEffect(() => {
-    }, [response]);
+    // useEffect(() => {
+    // }, [response]);
 
     return (
         <form>

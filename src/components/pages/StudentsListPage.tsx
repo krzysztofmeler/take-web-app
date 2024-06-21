@@ -39,17 +39,23 @@ const StudentsListPage: FC = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {students.map((lecturer) => (
-                        <tr key={lecturer.studentId}>
+                    {students.map((student) => (
+                        <tr key={student.studentId}>
                             <td>
-                                {lecturer.firstName} {lecturer.lastName}
+                                {student.firstName} {student.lastName}
                             </td>
-                            <td>{lecturer.email}</td>
+                            <td>{student.email}</td>
                             <td>
                                 <Link
-                                  to={`/administration/surveys-of-student/${lecturer.studentId}`}
+                                  to={`/administration/surveys-of-student/${student.studentId}`}
                                 >
                                     Surveys
+                                </Link>
+
+                                <Link
+                                  to={`/administration/edit-student-data/${student.studentId}`}
+                                >
+                                    Edit data
                                 </Link>
                             </td>
                         </tr>

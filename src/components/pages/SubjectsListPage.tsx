@@ -1,5 +1,8 @@
 import { FC, useEffect, useState } from 'react';
-import { Subject, SubjectWithLecturer } from '../../model/existing-objects/Subject';
+import {
+    Subject,
+    SubjectWithLecturer,
+} from '../../model/existing-objects/Subject';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
 

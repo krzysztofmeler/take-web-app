@@ -1,16 +1,19 @@
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { TextInput } from '../forms/TextInput';
 import { jsSubmit } from '../../utils/js-submit';
 import { CheckboxSelector } from '../forms/CheckboxSelector';
 import { useRequest } from '../../hooks/useRequest.hook';
-import { Subject, SubjectWithLecturer } from '../../model/existing-objects/Subject';
+import {
+    Subject,
+    SubjectWithLecturer,
+} from '../../model/existing-objects/Subject';
 import { settings } from '../../settings';
-import { useParams } from 'react-router';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
 
 const EditLecturerDataPage: FC = () => {
-    const {id } = useParams();
+    const { id } = useParams();
 
     const [firstName, setFirstName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
@@ -22,11 +25,9 @@ const EditLecturerDataPage: FC = () => {
     const { send: sendRequest, data: response, ...request } = useRequest();
 
     const { data: lecturer, error: lecturerReqError } = useRequest(
-      `${settings.backendAPIUrl}lecturers/profile/` + id,
-      { method: 'GET' },
+        `${settings.backendAPIUrl}lecturers/profile/${id}`,
+        { method: 'GET' },
     );
-
-
 
     const { data: subjects, error } = useRequest(
         `${settings.backendAPIUrl}subjects`,
@@ -35,16 +36,19 @@ const EditLecturerDataPage: FC = () => {
 
     useEffect(() => {
         if (lecturer && subjects) {
-
-
             const lecturerData: Lecturer = lecturer as Lecturer;
             const subjectsData: Subject[] = subjects as Subject[];
 
             setEmail(lecturerData.email);
             setFirstName(lecturerData.firstName);
             setLastName(lecturerData.lastName);
-            setSubjectIds(lecturerData.subjects.map(name => ((subjectsData.find(sub => sub.name === name)) as Subject).id.toString()));
-
+            setSubjectIds(
+                lecturerData.subjects.map((name) =>
+                    (
+                        subjectsData.find((sub) => sub.name === name) as Subject
+                    ).id.toString(),
+                ),
+            );
         }
     }, [lecturer, subjects]);
 

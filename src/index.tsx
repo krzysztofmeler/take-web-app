@@ -18,6 +18,7 @@ import { SurveyDataPage } from './components/pages/SurveyDataPage';
 import { SurveysOfStudentPage } from './components/pages/SurveysOfStudentPage';
 import { LecturerDataPage } from './components/pages/LecturerDataPage';
 import { EditLecturerDataPage } from './components/pages/EditLecturerDataPage';
+import { EditStudentDataPage } from './components/pages/EditStudentDataPage';
 
 const root = ReactDOM.createRoot(
     document.getElementById('react-page-root') as HTMLElement,
@@ -51,8 +52,8 @@ root.render(
                     element: <AddNewLecturerPage />,
                 },
                 {
-                  path: '/administration/edit-lecturer-data/:id',
-                  element: <EditLecturerDataPage />,
+                    path: '/administration/edit-lecturer-data/:id',
+                    element: <EditLecturerDataPage />,
                 },
                 {
                     path: '/administration/subjects-list',
@@ -65,6 +66,10 @@ root.render(
                 {
                     path: '/administration/students-list',
                     element: <StudentsListPage />,
+                },
+                {
+                    path: '/administration/edit-student-data/:id',
+                    element: <EditStudentDataPage />,
                 },
                 {
                     path: '/administration/surveys-of-student/:id',
