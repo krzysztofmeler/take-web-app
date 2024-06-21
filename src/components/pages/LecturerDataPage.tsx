@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
+import { Link } from 'react-router-dom';
 
 const LecturerDataPage: FC = () => {
     const [lecturer, setLecturer] = useState<Lecturer | null>(null);
@@ -55,6 +56,9 @@ const LecturerDataPage: FC = () => {
                             <li key={surveyName}>{surveyName}</li>
                         ))}
                     </ul>
+
+                    <br />
+                    <Link to={`/administration/edit-lecturer-data/${id}`}>Edit data</Link>
                 </>
             )}
         </>
