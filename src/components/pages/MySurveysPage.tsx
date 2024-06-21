@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { TextInput } from '../forms/TextInput';
 import { jsSubmit } from '../../utils/js-submit';
 import { useRequest } from '../../hooks/useRequest.hook';
-import { Student } from '../../model/existing-objects/Student';
+import { Student, StudentWithSurveys } from '../../model/existing-objects/Student';
 import { BasicSurvey } from '../../model/existing-objects/Survey';
 import { ResponseError } from '../../errors/types/ResponseError';
 import { settings } from '../../settings';
@@ -59,7 +59,7 @@ const MySurveysPage: FC = () => {
         if (studentId) {
             // student id is set, so we can ask for all surveys and surveys filled by this student
             requestFilledSurveys(
-                `${settings.backendAPIUrl}students/${studentId}/surveys`,
+                `${settings.backendAPIUrl}students/profile/${studentId}`,
                 { method: 'GET', mode: 'cors' },
             );
 
@@ -86,7 +86,7 @@ const MySurveysPage: FC = () => {
                 allSurveysResponse as BasicSurvey[]
             ).filter(
                 (survey) =>
-                    !(filledSurveysResponse as BasicSurvey[]).find(
+                    !(filledSurveysResponse as StudentWithSurveys).surveys.find(
                         (s) => s.surveyId === survey.surveyId,
                     ),
             );

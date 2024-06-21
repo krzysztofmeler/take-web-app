@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Student } from '../../model/existing-objects/Student';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
-import { Link } from 'react-router-dom';
 
 const StudentsListPage: FC = () => {
     const [students, setStudents] = useState<Student[]>([]);
@@ -35,7 +35,7 @@ const StudentsListPage: FC = () => {
                     <tr>
                         <td>Student name</td>
                         <td>Student e-email address</td>
-                        <td></td>
+                        <td />
                     </tr>
                 </thead>
                 <tbody>
@@ -45,7 +45,13 @@ const StudentsListPage: FC = () => {
                                 {lecturer.firstName} {lecturer.lastName}
                             </td>
                             <td>{lecturer.email}</td>
-                            <td><Link to={`/administration/surveys-of-student/${lecturer.studentId}`}>Surveys</Link></td>
+                            <td>
+                                <Link
+                                  to={`/administration/surveys-of-student/${lecturer.studentId}`}
+                                >
+                                    Surveys
+                                </Link>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

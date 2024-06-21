@@ -62,8 +62,8 @@ root.render(
                     element: <StudentsListPage />,
                 },
                 {
-                  path: '/administration/surveys-of-student/:id',
-                  element: <SurveysOfStudentPage />,
+                    path: '/administration/surveys-of-student/:id',
+                    element: <SurveysOfStudentPage />,
                 },
                 {
                     path: '/administration/add-new-student',

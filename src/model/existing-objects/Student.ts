@@ -1,3 +1,5 @@
+import { StudentSurveyListResponse } from './Survey';
+
 interface Student {
     studentId: number;
     firstName: string;
@@ -5,4 +7,8 @@ interface Student {
     email: string;
 }
 
-export type { Student };
+interface StudentWithSurveys extends Student {
+    surveys: StudentSurveyListResponse;
+}
+
+export type { Student, StudentWithSurveys };

@@ -4,7 +4,7 @@ import { TextInput } from '../forms/TextInput';
 import { jsSubmit } from '../../utils/js-submit';
 import { CheckboxSelector } from '../forms/CheckboxSelector';
 import { useRequest } from '../../hooks/useRequest.hook';
-import { Subject } from '../../model/existing-objects/Subject';
+import { Subject, SubjectWithLecturer } from '../../model/existing-objects/Subject';
 import { settings } from '../../settings';
 
 const AddNewLecturerPage: FC = () => {
@@ -79,7 +79,7 @@ const AddNewLecturerPage: FC = () => {
         if (subjects) {
             setSubjectsCheckboxData(
                 (subjects as Subject[]).map((subject) => [
-                    subject.subjectId.toString(),
+                    subject.id.toString(),
                     subject.name,
                 ]),
             );

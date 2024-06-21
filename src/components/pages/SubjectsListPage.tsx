@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Subject } from '../../model/existing-objects/Subject';
+import { Subject, SubjectWithLecturer } from '../../model/existing-objects/Subject';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
 
@@ -44,12 +44,12 @@ const SubjectsListPage: FC = () => {
                     </thead>
                     <tbody>
                         {subjects.map((subject) => (
-                            <tr key={subject.subjectId}>
+                            <tr key={subject.id}>
                                 <td>{subject.name}</td>
-                                <td>
-                                    {subject.lecturer.firstName}{' '}
-                                    {subject.lecturer.lastName}
-                                </td>
+                                {/* <td> */}
+                                {/*     {subject.lecturer.firstName}{' '} */}
+                                {/*     {subject.lecturer.lastName} */}
+                                {/* </td> */}
                             </tr>
                         ))}
                     </tbody>

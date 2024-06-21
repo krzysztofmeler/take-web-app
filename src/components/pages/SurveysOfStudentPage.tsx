@@ -3,14 +3,17 @@ import { useParams } from 'react-router';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
 import { StudentSurveyListResponse } from '../../model/existing-objects/Survey';
+import { StudentWithSurveys } from '../../model/existing-objects/Student';
 
 const SurveysOfStudentPage: FC = () => {
-    const [surveys, setSurveys] = useState<StudentSurveyListResponse | null>(null);
+    const [surveys, setSurveys] = useState<StudentSurveyListResponse | null>(
+        null,
+    );
 
     const { id } = useParams();
 
     const request = useRequest(
-        `${settings.backendAPIUrl}students/${id}/surveys`,
+        `${settings.backendAPIUrl}students/profile/${id}`,
         {
             method: 'GET',
         },
@@ -27,7 +30,7 @@ const SurveysOfStudentPage: FC = () => {
 
     useEffect(() => {
         if (request.data) {
-            setSurveys(request.data as StudentSurveyListResponse);
+            setSurveys((request.data as StudentWithSurveys).surveys);
         }
     }, [request.data]);
 
@@ -39,8 +42,9 @@ const SurveysOfStudentPage: FC = () => {
                 <>
                     <p>Student survey:</p>
                     <ul>
-                        { surveys.map(({surveyId, surveyName}) => (<li key={surveyId}>{surveyName}</li>)) }
-
+                        {surveys.map(({ surveyId, surveyName }) => (
+                            <li key={surveyId}>{surveyName}</li>
+                        ))}
                     </ul>
                 </>
             )}

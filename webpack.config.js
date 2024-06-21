@@ -61,6 +61,11 @@ module.exports = {
         minimizer: [minimizer],
         concatenateModules: true,
     },
+    devServer: {
+        historyApiFallback: {
+
+        },
+    },
     plugins: [htmlPlugin],
     output: {
         filename: 'scripts-bundled.js',
