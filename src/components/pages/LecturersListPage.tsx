@@ -20,6 +20,15 @@ const LecturersListPage: FC = () => {
         }
     }, [error]);
 
+    const deleteLecturer = async (email: string) => {
+        const response = await fetch(
+            `${settings.backendAPIUrl}lecturers/email/${encodeURIComponent(
+                email,
+            )}`,
+            { mode: 'cors', method: 'DELETE' },
+        );
+    };
+
     return (
         <>
             <h1>Lecturers list</h1>
@@ -45,6 +54,17 @@ const LecturersListPage: FC = () => {
                                     </Link>
                                 </td>
                                 <td>{lecturer.email}</td>
+
+                                <td>
+                                    <button
+                                      type="button"
+                                      onClick={(e) =>
+                                            deleteLecturer(lecturer.email)
+                                        }
+                                    >
+                                        Delete
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
