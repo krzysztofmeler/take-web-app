@@ -66,7 +66,7 @@ const SubjectsListPage: FC = () => {
 
             <Group gap={10}>
                 {(subjects as Subject[]).map((subject) => (
-                    <Card w="100%" shadow="sm" withBorder>
+                    <Card w="100%" shadow="sm" withBorder key={subject.id}>
                         <Flex justify="space-between" align="center">
                             <Text>{subject.name}</Text>
 

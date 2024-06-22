@@ -79,7 +79,12 @@ const StudentsListPage: FC = () => {
 
             <Group gap={10}>
                 {(students as Student[]).map((student) => (
-                    <Card w="100%" shadow="sm" withBorder>
+                    <Card
+                      w="100%"
+                      shadow="sm"
+                      withBorder
+                      key={student.studentId}
+                    >
                         <Flex justify="space-between">
                             <Flex align="center" gap={20}>
                                 <StudentAvatar student={student} />

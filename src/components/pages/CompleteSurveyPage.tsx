@@ -171,7 +171,7 @@ const CompleteSurveyPage: FC = () => {
 
                 <Group>
                     {survey.questions.map((question) => (
-                        <Grid w="100%">
+                        <Grid w="100%" key={question.questionId}>
                             <Grid.Col span={9}>
                                 <Text>{question.content}</Text>
                             </Grid.Col>

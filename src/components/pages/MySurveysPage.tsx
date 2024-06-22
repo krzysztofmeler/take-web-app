@@ -193,7 +193,10 @@ const MySurveysPage: FC = () => {
                 {listReady && (
                     <Group gap={10}>
                         {surveys.map((survey) => (
-                            <SurveyListElement survey={survey} />
+                            <SurveyListElement
+                              key={survey.surveyId}
+                              survey={survey}
+                            />
                         ))}
                     </Group>
                 )}

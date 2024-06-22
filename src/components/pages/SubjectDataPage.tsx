@@ -90,7 +90,7 @@ const SubjectDataPage: FC = () => {
 
             <Group gap={10}>
                 {subject.lecturers.map((lecturer) => (
-                    <Card w="100%" shadow="sm" withBorder>
+                    <Card w="100%" shadow="sm" withBorder key={lecturer[0]}>
                         <Flex align="center" gap={20}>
                             <LecturerAvatar
                               lecturer={{

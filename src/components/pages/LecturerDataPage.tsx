@@ -85,7 +85,9 @@ const LecturerDataPage: FC = () => {
 
                         <Flex mt={7} wrap="wrap" justify="start" gap={8}>
                             {lecturer.subjects.map((subject) => (
-                                <Badge fw={400}>{subject}</Badge>
+                                <Badge fw={400} key={subject}>
+                                    {subject}
+                                </Badge>
                             ))}
                         </Flex>
                     </Flex>

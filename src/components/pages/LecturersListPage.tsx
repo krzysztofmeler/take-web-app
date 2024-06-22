@@ -69,7 +69,12 @@ const LecturersListPage: FC = () => {
 
             <Group gap={10}>
                 {(lecturers as Lecturer[]).map((lecturer) => (
-                    <Card w="100%" shadow="sm" withBorder>
+                    <Card
+                      w="100%"
+                      shadow="sm"
+                      withBorder
+                      key={lecturer.lecturerId}
+                    >
                         <Flex justify="space-between">
                             <Flex align="center" gap={20}>
                                 <LecturerAvatar lecturer={lecturer} />

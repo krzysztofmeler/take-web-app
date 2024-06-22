@@ -60,7 +60,7 @@ const SurveysListPage: FC = () => {
 
             <Group gap={10}>
                 {(surveys as Survey[]).map((survey) => (
-                    <Card w="100%" shadow="sm" withBorder>
+                    <Card w="100%" shadow="sm" withBorder key={survey.surveyId}>
                         <Flex justify="space-between" align="center">
                             <Text>{survey.name}</Text>
 

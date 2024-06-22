@@ -102,7 +102,7 @@ const AdministrationPage: FC = () => (
           mx="auto"
         >
             {cardItemsDesc.map((desc) => (
-                <Card maw={430} shadow="lg" w="100%">
+                <Card maw={430} shadow="lg" w="100%" key={desc.name}>
                     <Card.Section>
                         <Image src={desc.image} height={220} alt="Norway" />
                     </Card.Section>
@@ -117,6 +117,7 @@ const AdministrationPage: FC = () => (
                     <Flex align="center" justify="start" gap={10}>
                         {desc.elements.map((elem) => (
                             <Button
+                              key={elem.link}
                                 variant="light"
                                 component={Link}
                                 to={elem.link}

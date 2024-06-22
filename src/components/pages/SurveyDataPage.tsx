@@ -138,7 +138,7 @@ const SurveyDataPage: FC = () => {
 
                 <Group>
                     {results.map((result) => (
-                        <Grid w="100%">
+                        <Grid w="100%" key={result.questionContent}>
                             <Grid.Col span={9}>
                                 <Text>{result.questionContent}</Text>
                             </Grid.Col>
