@@ -99,6 +99,26 @@ const SurveyDataPage: FC = () => {
         return 'green';
     };
 
+    if (results.length === 0) {
+        return (
+            <Flex direction="column" px={10} py={20} maw={1200} mx="auto">
+                <Flex justify="space-between" align="center">
+                    <Text component="h2" size="xl">
+                        Survey
+                    </Text>
+                </Flex>
+
+                <Divider my={12} />
+
+                <Card withBorder maw={1200}>
+                    <Flex justify="center" align="center" w="100%" mih={140}>
+                        <Text>No results yet</Text>
+                    </Flex>
+                </Card>
+            </Flex>
+        );
+    }
+
     return (
         <Flex direction="column" px={10} py={20} maw={1200} mx="auto">
             <Flex justify="space-between" align="center">
