@@ -1,8 +1,20 @@
 import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import {
+    Button,
+    Card,
+    Divider,
+    Flex,
+    Group,
+    Loader,
+    Text,
+} from '@mantine/core';
 import { Student } from '../../model/existing-objects/Student';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
+import { Lecturer } from '../../model/existing-objects/Lecturer';
+import { LecturerAvatar } from '../LecturerAvatar';
+import { StudentAvatar } from '../StudentAvatar';
 
 const StudentsListPage: FC = () => {
     const [students, setStudents] = useState<Student[]>([]);
@@ -39,50 +51,79 @@ const StudentsListPage: FC = () => {
         }
     };
 
+    if (students === null) {
+        return (
+            <Flex
+              mih={200}
+              w="100%"
+              align="center"
+              direction="column"
+              justify="center"
+            >
+                <Loader size="lg" />
+            </Flex>
+        );
+    }
+
     return (
-        <>
-            <h1>Students list</h1>
-            <p>List contains data about all students.</p>
-            <table>
-                <thead>
-                    <tr>
-                        <td>Student name</td>
-                        <td>Student e-email address</td>
-                        <td />
-                    </tr>
-                </thead>
-                <tbody>
-                    {students.map((student) => (
-                        <tr key={student.studentId}>
-                            <td>
-                                {student.firstName} {student.lastName}
-                            </td>
-                            <td>{student.email}</td>
-                            <td>
-                                <Link
-                                  to={`/administration/surveys-of-student/${student.studentId}`}
-                                >
-                                    Surveys
-                                </Link>
+        <Flex direction="column" px={10} py={20} maw={1200} mx="auto">
+            <Flex justify="space-between" align="center">
+                <Text component="h2" size="xl">
+                    Students
+                </Text>
 
-                                <Link
-                                  to={`/administration/edit-student-data/${student.studentId}`}
-                                >
-                                    Edit data
-                                </Link>
+                <Button component={Link} to="/administration/add-new-student">
+                    Add new
+                </Button>
+            </Flex>
 
-                                <button
-                                  type="button"
+            <Divider my={10} />
+
+            <Group gap={10}>
+                {(students as Student[]).map((student) => (
+                    <Card w="100%" shadow="sm" withBorder>
+                        <Flex justify="space-between">
+                            <Flex align="center" gap={20}>
+                                <StudentAvatar student={student} />
+
+                                <Flex direction="column" align="start">
+                                    <Text>
+                                        {student.firstName} {student.lastName}
+                                    </Text>
+                                    <Text size="xs">{student.email}</Text>
+                                </Flex>
+                            </Flex>
+
+                            <Flex gap={12} align="center">
+                                <Button
+                                  variant="subtle"
+                                  c="red"
                                   onClick={() => deleteStudent(student.email)}
                                 >
                                     Delete
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </>
+                                </Button>
+                                <Button
+                                  variant="subtle"
+                                  component={Link}
+                                  to={`/administration/edit-student-data/${student.studentId}`}
+                                >
+                                    Edit
+                                </Button>
+
+                                <Divider orientation="vertical" mx={3} />
+
+                                <Button
+                                  component={Link}
+                                  to={`/administration/surveys-of-student/${student.studentId}`}
+                                >
+                                    Show surveys {'>'}
+                                </Button>
+                            </Flex>
+                        </Flex>
+                    </Card>
+                ))}
+            </Group>
+        </Flex>
     );
 };
 
