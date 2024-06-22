@@ -1,13 +1,9 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-
-type LinkData = {
-    text: string;
-    link: string;
-};
+import { LinksDesc } from '../../types/link-desc';
 
 const AdministrationPage: FC = () => {
-    const links: LinkData[] = [
+    const links: LinksDesc = [
         {
             link: 'subjects-list',
             text: 'All subjects list',

@@ -51,6 +51,10 @@ module.exports = {
                 test: /\.sass$/,
                 use: ['style-loader', 'css-loader', 'sass-loader'],
             },
+            {
+                test: /\.(png|jpeg|jpg)/,
+                type: 'asset/inline',
+            },
         ],
     },
     resolve: {
@@ -62,9 +66,7 @@ module.exports = {
         concatenateModules: true,
     },
     devServer: {
-        historyApiFallback: {
-
-        },
+        historyApiFallback: true,
     },
     plugins: [htmlPlugin],
     output: {
