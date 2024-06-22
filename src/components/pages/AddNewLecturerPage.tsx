@@ -22,6 +22,7 @@ import { useRequest } from '../../hooks/useRequest.hook';
 import { Subject } from '../../model/existing-objects/Subject';
 import { settings } from '../../settings';
 import { update } from '../../utils/forms';
+import { LecturerForm } from '../LecturerForm';
 
 const AddNewLecturerPage: FC = () => {
     const [firstName, setFirstName] = useState<string>('');
@@ -121,52 +122,20 @@ const AddNewLecturerPage: FC = () => {
                     </Text>
                 </Blockquote>
 
-                <Grid maw={700}>
-                    <Grid.Col span={6}>
-                        <TextInput
-                            value={firstName}
-                            onChange={update(setFirstName)}
-                            label="Name"
-                        />
-                    </Grid.Col>
-                    <Grid.Col span={6}>
-                        <TextInput
-                            value={lastName}
-                            onChange={update(setLastName)}
-                            label="Surname"
-                        />
-                    </Grid.Col>
-
-                    <Grid.Col span={8}>
-                        <TextInput
-                            value={email}
-                            onChange={update(setEmail)}
-                            label="E-mail"
-                        />
-                    </Grid.Col>
-
-                    <Grid.Col span={12}>
-                        <MultiSelect
-                          hidePickedOptions
-                            label="Subjects"
-                            placeholder="Select subjects"
-                          data={(subjects as Subject[]).map((s) => ({
-                                value: s.id.toString(),
-                                label: s.name,
-                            }))}
-                          onChange={(e) => setSubjectIds(e)}
-                        />
-                    </Grid.Col>
-
-                    <Grid.Col span={10}>
-                        <Button
-                            disabled={!formEnabled}
-                            onClick={jsSubmit(submit)}
-                        >
-                            Proceed and close
-                        </Button>
-                    </Grid.Col>
-                </Grid>
+                <Group maw={700}>
+                    <LecturerForm
+                      firstName={firstName}
+                      lastName={lastName}
+                      email={email}
+                      setFirstName={setFirstName}
+                      setLastName={setLastName}
+                      setEmail={setEmail}
+                      submit={submit}
+                      subjects={subjects as Subject[]}
+                      setSubjectIds={setSubjectIds}
+                      subjectIds={subjectIds}
+                    />
+                </Group>
             </Group>
         </Card>
     );

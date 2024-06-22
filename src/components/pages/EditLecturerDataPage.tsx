@@ -1,6 +1,15 @@
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router';
+import {
+    Blockquote,
+    Card,
+    Flex,
+    Group,
+    Loader,
+    Space,
+    Text,
+} from '@mantine/core';
 import { TextInput } from '../forms/TextInput';
 import { jsSubmit } from '../../utils/js-submit';
 import { CheckboxSelector } from '../forms/CheckboxSelector';
@@ -11,6 +20,7 @@ import {
 } from '../../model/existing-objects/Subject';
 import { settings } from '../../settings';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
+import { LecturerForm } from '../LecturerForm';
 
 const EditLecturerDataPage: FC = () => {
     const { id } = useParams();
@@ -18,9 +28,7 @@ const EditLecturerDataPage: FC = () => {
     const [firstName, setFirstName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
-    const [subjectIds, setSubjectIds] = useState<string[]>([]);
-
-    const [formEnabled, setFormEnabled] = useState(false); // false because list of subjects needs to be loaded
+    const [subjectIds, setSubjectIds] = useState<string[] | null>(null);
 
     const { send: sendRequest, data: response, ...request } = useRequest();
 
@@ -64,7 +72,10 @@ const EditLecturerDataPage: FC = () => {
     }, [error]);
 
     const submit = () => {
-        setFormEnabled(false);
+        if (subjectIds === null) {
+            return;
+        }
+
         sendRequest(`${settings.backendAPIUrl}lecturers/${id}`, {
             method: 'PUT',
             mode: 'cors',
@@ -85,7 +96,6 @@ const EditLecturerDataPage: FC = () => {
         if (request.error) {
             window.alert('An error occurred!'); // TODO: add proper handling
             console.error(request.error);
-            setFormEnabled(true);
         }
     }, [request.error]);
 
@@ -101,59 +111,65 @@ const EditLecturerDataPage: FC = () => {
         }
     }, [response]);
 
-    const [subjectsCheckboxData, setSubjectsCheckboxData] = useState<
-        [string, string][]
-    >([]);
-
     useEffect(() => {
-        if (subjects) {
-            setSubjectsCheckboxData(
-                (subjects as Subject[]).map((subject) => [
-                    subject.id.toString(),
-                    subject.name,
-                ]),
-            );
-            setFormEnabled(true);
+        if (subjects !== null && lecturer) {
+            const preselectedSubjects = (lecturer as Lecturer).subjects
+                .map((name) =>
+                    (subjects as Subject[]).find((s) => s.name === name),
+                )
+                .map((s) => s!.id.toString());
+            console.dir({ preselectedSubjects });
+            setSubjectIds(preselectedSubjects);
         }
-    }, [subjects]);
+    }, [subjects, lecturer]);
+
+    if (subjectIds === null || lecturer === null) {
+        return (
+            <Flex
+              mih={200}
+              w="100%"
+              align="center"
+              direction="column"
+              justify="center"
+            >
+                <Loader size="lg" />
+                <Space h={20} />
+                <Text>Loading subject list</Text>
+            </Flex>
+        );
+    }
 
     return (
-        <>
-            <h1>Edit lecturer data</h1>
-            <form>
-                <TextInput
-                  value={firstName}
-                  updateValue={setFirstName}
-                  label="Name"
-                />
-                <TextInput
-                  value={lastName}
-                  updateValue={setLastName}
-                  label="Surname"
-                />
-                <TextInput
-                  value={email}
-                  updateValue={setEmail}
-                  label="E-mail"
-                />
+        <Card withBorder shadow="md" maw={800} my={20} mx="auto">
+            <Group gap={20} p={10}>
+                <Text component="h2" size="lg">
+                    Edit lecturer profile
+                </Text>
+                <Blockquote p={10}>
+                    <Text size="xs">
+                        Editing lecturer data does modify data immediately. If
+                        new subject are selected, additional surveys will be
+                        created. Existing surveys are not deleted even if
+                        subject is removed from the list.
+                    </Text>
+                </Blockquote>
 
-                <CheckboxSelector
-                  values={subjectsCheckboxData}
-                  selectedValues={subjectIds}
-                  updateValue={setSubjectIds}
-                  label="Subjects"
-                />
-
-                {!formEnabled && <p>Processing</p>}
-
-                <input
-                  disabled={!formEnabled}
-                  onClick={jsSubmit(submit)}
-                  type="submit"
-                  value="Proceed and close"
-                />
-            </form>
-        </>
+                <Group maw={700}>
+                    <LecturerForm
+                      firstName={firstName}
+                      lastName={lastName}
+                      email={email}
+                      setFirstName={setFirstName}
+                      setLastName={setLastName}
+                      setEmail={setEmail}
+                      submit={submit}
+                      subjects={subjects as Subject[]}
+                      setSubjectIds={setSubjectIds}
+                      subjectIds={subjectIds}
+                    />
+                </Group>
+            </Group>
+        </Card>
     );
 };
 
