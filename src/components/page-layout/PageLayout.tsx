@@ -13,43 +13,12 @@ import { Outlet, useParams, useLocation } from 'react-router';
 
 import { Link } from 'react-router-dom';
 import logo from '../../assets/logo-cut.png';
-import { LinksDesc } from '../../types/link-desc';
+import { settings } from '../../settings';
 
 const PageLayout: FC = () => {
     const [opened, { toggle }] = useDisclosure();
 
     const { pathname } = useLocation();
-
-    const links: LinksDesc = [
-        {
-            link: '/administration/subjects-list',
-            text: 'All subjects list',
-        },
-        {
-            link: '/administration/add-new-subject',
-            text: 'Add new subject',
-        },
-        {
-            link: '/administration/lecturers-list',
-            text: 'All lecturers list',
-        },
-        {
-            link: '/administration/add-new-lecturer',
-            text: 'Add new lecturer',
-        },
-        {
-            link: '/administration/surveys-list',
-            text: 'All surveys list',
-        },
-        {
-            link: '/administration/students-list',
-            text: 'All students list',
-        },
-        {
-            link: '/administration/add-new-student',
-            text: 'Add new student',
-        },
-    ];
 
     return (
         <AppShell
@@ -130,7 +99,7 @@ const PageLayout: FC = () => {
             </AppShell.Header>
 
             <AppShell.Navbar p="md">
-                {links.map((link) => (
+                {settings.adminAreaLinks.map((link) => (
                     <Button
                         c="#222"
                         fw={400}

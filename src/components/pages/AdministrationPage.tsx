@@ -1,38 +1,8 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { LinksDesc } from '../../types/link-desc';
+import { settings } from '../../settings';
 
 const AdministrationPage: FC = () => {
-    const links: LinksDesc = [
-        {
-            link: 'subjects-list',
-            text: 'All subjects list',
-        },
-        {
-            link: 'add-new-subject',
-            text: 'Add new subject',
-        },
-        {
-            link: 'lecturers-list',
-            text: 'All lecturers list',
-        },
-        {
-            link: 'add-new-lecturer',
-            text: 'Add new lecturer',
-        },
-        {
-            link: 'surveys-list',
-            text: 'All surveys list',
-        },
-        {
-            link: 'students-list',
-            text: 'All students list',
-        },
-        {
-            link: 'add-new-student',
-            text: 'Add new student',
-        },
-    ];
 
     return (
         <div>
@@ -42,7 +12,7 @@ const AdministrationPage: FC = () => {
             <p>Authorized staff only!</p>
 
             <ul>
-                {links.map((link) => (
+                {settings.adminAreaLinks.map((link) => (
                     <li key={link.link}>
                         <Link to={link.link}>{link.text}</Link>
                     </li>
