@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import { Avatar } from '@mantine/core';
-import { Lecturer } from '../model/existing-objects/Lecturer';
+import { LecturerData } from '../model/existing-objects/Lecturer';
 
 type LecturerAvatarProps = {
-    lecturer: Lecturer;
+    lecturer: LecturerData;
 };
 const LecturerAvatar: FC<LecturerAvatarProps> = ({
     lecturer: { firstName, lastName },
