@@ -10,7 +10,7 @@ import {
     useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { Outlet, useParams, useLocation } from 'react-router';
+import { Outlet, useLocation } from 'react-router';
 
 import { Link } from 'react-router-dom';
 import logo from '../../assets/logo-cut.png';

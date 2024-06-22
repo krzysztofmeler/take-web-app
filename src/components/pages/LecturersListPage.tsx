@@ -5,19 +5,13 @@ import {
     Card,
     Divider,
     Flex,
-    Grid,
     Group,
     Loader,
-    Space,
     Text,
-    TextInput,
 } from '@mantine/core';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
-import { update } from '../../utils/forms';
-import { jsSubmit } from '../../utils/js-submit';
-import { SurveyListStudentSection } from '../SurveyListStudentSection';
 import { LecturerAvatar } from '../LecturerAvatar';
 
 const LecturersListPage: FC = () => {

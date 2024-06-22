@@ -7,7 +7,6 @@ import {
     Flex,
     Grid,
     Group,
-    List,
     Rating,
     Space,
     Text,
@@ -18,7 +17,6 @@ import { useRequest } from '../../hooks/useRequest.hook';
 import { jsSubmit } from '../../utils/js-submit';
 import { Answer } from '../../model/existing-objects/Answer';
 import { settings } from '../../settings';
-import { SurveyListStudentSection } from '../SurveyListStudentSection';
 
 const CompleteSurveyPage: FC = () => {
     const { id } = useParams();

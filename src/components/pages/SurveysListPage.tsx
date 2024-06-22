@@ -12,8 +12,6 @@ import {
 import { BasicSurvey, Survey } from '../../model/existing-objects/Survey';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
-import { Student } from '../../model/existing-objects/Student';
-import { StudentAvatar } from '../StudentAvatar';
 
 const SurveysListPage: FC = () => {
     const [surveys, setSurveys] = useState<BasicSurvey[]>([]);

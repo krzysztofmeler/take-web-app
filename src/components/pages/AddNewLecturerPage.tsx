@@ -2,24 +2,16 @@ import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     Blockquote,
-    Breadcrumbs,
-    Button,
     Card,
-    em,
     Flex,
-    Grid,
     Group,
     Loader,
-    MultiSelect,
     Space,
     Text,
-    TextInput,
 } from '@mantine/core';
-import { jsSubmit } from '../../utils/js-submit';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { Subject } from '../../model/existing-objects/Subject';
 import { settings } from '../../settings';
-import { update } from '../../utils/forms';
 import { LecturerForm } from '../LecturerForm';
 
 const AddNewLecturerPage: FC = () => {

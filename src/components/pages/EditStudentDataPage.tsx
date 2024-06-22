@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { Card, Group, Text } from '@mantine/core';
-import { jsSubmit } from '../../utils/js-submit';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
 import { Student } from '../../model/existing-objects/Student';

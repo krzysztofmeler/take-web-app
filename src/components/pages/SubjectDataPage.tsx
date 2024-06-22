@@ -14,7 +14,6 @@ import {
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
 import { SubjectWithLecturers } from '../../model/existing-objects/Subject';
-import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { LecturerAvatar } from '../LecturerAvatar';
 
 const SubjectDataPage: FC = () => {

@@ -1,18 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 
-import {
-    Avatar,
-    Button,
-    Card,
-    Divider,
-    Flex,
-    Group,
-    Loader,
-    Space,
-    Text,
-    TextInput,
-} from '@mantine/core';
-import { jsSubmit } from '../../utils/js-submit';
+import { Divider, Flex, Group, Loader, Text } from '@mantine/core';
 import { useRequest } from '../../hooks/useRequest.hook';
 import {
     Student,
@@ -24,9 +12,7 @@ import { settings } from '../../settings';
 import { request } from '../../utils/request';
 import { useAsyncEffect } from '../../hooks/useAsyncEffect.hook';
 import { SurveyListElement } from '../SurveyListElement';
-import { StudentAvatar } from '../StudentAvatar';
 import { SurveyListStudentSection } from '../SurveyListStudentSection';
-import { StudentLoginForm } from '../StudentLoginForm';
 import { SurveyLoginCard } from '../SurveyLoginCard';
 
 const MySurveysPage: FC = () => {

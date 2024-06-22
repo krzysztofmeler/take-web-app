@@ -1,5 +1,3 @@
-import { Lecturer, LecturerData } from './Lecturer';
-
 interface Subject {
     id: number;
     name: string;

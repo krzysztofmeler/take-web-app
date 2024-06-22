@@ -10,12 +10,8 @@ import {
     Space,
     Text,
 } from '@mantine/core';
-import { jsSubmit } from '../../utils/js-submit';
 import { useRequest } from '../../hooks/useRequest.hook';
-import {
-    Subject,
-    SubjectWithLecturers,
-} from '../../model/existing-objects/Subject';
+import { Subject } from '../../model/existing-objects/Subject';
 import { settings } from '../../settings';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { LecturerForm } from '../LecturerForm';

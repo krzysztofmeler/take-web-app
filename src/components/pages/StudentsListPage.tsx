@@ -12,8 +12,6 @@ import {
 import { Student } from '../../model/existing-objects/Student';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
-import { Lecturer } from '../../model/existing-objects/Lecturer';
-import { LecturerAvatar } from '../LecturerAvatar';
 import { StudentAvatar } from '../StudentAvatar';
 
 const StudentsListPage: FC = () => {

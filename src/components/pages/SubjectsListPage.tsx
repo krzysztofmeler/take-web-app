@@ -12,7 +12,6 @@ import {
 import { Subject } from '../../model/existing-objects/Subject';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
-import { Survey } from '../../model/existing-objects/Survey';
 
 const SubjectsListPage: FC = () => {
     const [subjects, setSubjects] = useState<Subject[]>([]);
