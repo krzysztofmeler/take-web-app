@@ -69,9 +69,9 @@ const PageLayout: FC = () => {
                                 <Text
                                     c="#222"
                                     component="h1"
-                                    size={'lg'}
+                                    size="lg"
                                     style={{ textDecoration: 'none' }}
-                                    visibleFrom={'xs'}
+                                    visibleFrom="xs"
                                 >
                                     Rank your lecturer
                                 </Text>

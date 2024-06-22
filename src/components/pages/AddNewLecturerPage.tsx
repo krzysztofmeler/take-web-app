@@ -1,11 +1,27 @@
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextInput } from '../forms/TextInput';
+import {
+    Blockquote,
+    Breadcrumbs,
+    Button,
+    Card,
+    em,
+    Flex,
+    Grid,
+    Group,
+    Loader,
+    MultiSelect,
+    Space,
+    Text,
+    TextInput,
+} from '@mantine/core';
+import { TextInput as OldTextInput } from '../forms/TextInput';
 import { jsSubmit } from '../../utils/js-submit';
 import { CheckboxSelector } from '../forms/CheckboxSelector';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { Subject } from '../../model/existing-objects/Subject';
 import { settings } from '../../settings';
+import { update } from '../../utils/forms';
 
 const AddNewLecturerPage: FC = () => {
     const [firstName, setFirstName] = useState<string>('');
@@ -13,7 +29,7 @@ const AddNewLecturerPage: FC = () => {
     const [email, setEmail] = useState<string>('');
     const [subjectIds, setSubjectIds] = useState<string[]>([]);
 
-    const [formEnabled, setFormEnabled] = useState(false); // false because list of subjects needs to be loaded
+    const [formEnabled, setFormEnabled] = useState(true); // false because list of subjects needs to be loaded
 
     const { send: sendRequest, data: response, ...request } = useRequest();
 
@@ -71,64 +87,88 @@ const AddNewLecturerPage: FC = () => {
         }
     }, [response]);
 
-    const [subjectsCheckboxData, setSubjectsCheckboxData] = useState<
-        [string, string][]
-    >([]);
+    if (error) {
+        return <>Error</>;
+    }
 
-    useEffect(() => {
-        if (subjects) {
-            setSubjectsCheckboxData(
-                (subjects as Subject[]).map((subject) => [
-                    subject.id.toString(),
-                    subject.name,
-                ]),
-            );
-            setFormEnabled(true);
-        }
-    }, [subjects]);
+    if (subjects === null) {
+        return (
+            <Flex
+                mih={200}
+                w="100%"
+                align="center"
+                direction="column"
+                justify="center"
+            >
+                <Loader size="lg" />
+                <Space h={20} />
+                <Text>Loading subject list</Text>
+            </Flex>
+        );
+    }
 
     return (
-        <>
-            <h1>Add new Lecturer</h1>
-            <p>
-                Adding new lecturer will cause new set of questions within new
-                survey to be created for this lecturer. This is automatic and
-                cannot be disabled.
-            </p>
-            <form>
-                <TextInput
-                  value={firstName}
-                  updateValue={setFirstName}
-                  label="Name"
-                />
-                <TextInput
-                  value={lastName}
-                  updateValue={setLastName}
-                  label="Surname"
-                />
-                <TextInput
-                  value={email}
-                  updateValue={setEmail}
-                  label="E-mail"
-                />
+        <Card withBorder shadow="md" maw={800} my={20} mx="auto">
+            <Group gap={20} p={10}>
+                <Text component="h2" size="lg">
+                    Add new Lecturer
+                </Text>
+                <Blockquote p={10}>
+                    <Text size="xs">
+                        Adding new lecturer will cause new set of questions
+                        within new survey to be created for this lecturer. This
+                        is automatic and cannot be disabled.
+                    </Text>
+                </Blockquote>
 
-                <CheckboxSelector
-                  values={subjectsCheckboxData}
-                  selectedValues={subjectIds}
-                  updateValue={setSubjectIds}
-                  label="Subjects"
-                />
+                <Grid maw={700}>
+                    <Grid.Col span={6}>
+                        <TextInput
+                            value={firstName}
+                            onChange={update(setFirstName)}
+                            label="Name"
+                        />
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                        <TextInput
+                            value={lastName}
+                            onChange={update(setLastName)}
+                            label="Surname"
+                        />
+                    </Grid.Col>
 
-                {!formEnabled && <p>Processing</p>}
+                    <Grid.Col span={8}>
+                        <TextInput
+                            value={email}
+                            onChange={update(setEmail)}
+                            label="E-mail"
+                        />
+                    </Grid.Col>
 
-                <input
-                  disabled={!formEnabled}
-                  onClick={jsSubmit(submit)}
-                  type="submit"
-                  value="Proceed and close"
-                />
-            </form>
-        </>
+                    <Grid.Col span={12}>
+                        <MultiSelect
+                          hidePickedOptions
+                            label="Subjects"
+                            placeholder="Select subjects"
+                          data={(subjects as Subject[]).map((s) => ({
+                                value: s.id.toString(),
+                                label: s.name,
+                            }))}
+                          onChange={(e) => setSubjectIds(e)}
+                        />
+                    </Grid.Col>
+
+                    <Grid.Col span={10}>
+                        <Button
+                            disabled={!formEnabled}
+                            onClick={jsSubmit(submit)}
+                        >
+                            Proceed and close
+                        </Button>
+                    </Grid.Col>
+                </Grid>
+            </Group>
+        </Card>
     );
 };
 

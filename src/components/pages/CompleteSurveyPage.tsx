@@ -1,6 +1,18 @@
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { Button, Card, Divider, Flex, Grid, Group, List, Rating, Space, Text } from '@mantine/core';
+import {
+    Button,
+    Card,
+    Divider,
+    Flex,
+    Grid,
+    Group,
+    List,
+    Rating,
+    Space,
+    Text,
+} from '@mantine/core';
+import { Link } from 'react-router-dom';
 import { Survey } from '../../model/existing-objects/Survey';
 import { StarRatio } from '../forms/StarRatio';
 import { useRequest } from '../../hooks/useRequest.hook';
@@ -8,7 +20,6 @@ import { jsSubmit } from '../../utils/js-submit';
 import { Answer } from '../../model/existing-objects/Answer';
 import { settings } from '../../settings';
 import { SurveyListStudentSection } from '../SurveyListStudentSection';
-import { Link } from 'react-router-dom';
 
 const CompleteSurveyPage: FC = () => {
     const { id } = useParams();
@@ -125,15 +136,22 @@ const CompleteSurveyPage: FC = () => {
 
     if (success) {
         return (
-          <Flex direction={'column'} align={'center'} my={30}>
-              <Card mih={120} maw={800} w={600} withBorder shadow="sm" >
-                  <Flex direction={'column'} align={'center'} justify={'center'} gap={20} p={20}>
-
-                  <Text>Thank you for answers</Text>
-                  <Button component={Link} to={'/my-surveys'}>Go back to surveys</Button>
-                  </Flex>
-              </Card>
-          </Flex>
+            <Flex direction="column" align="center" my={30}>
+                <Card mih={120} maw={800} w={600} withBorder shadow="sm">
+                    <Flex
+                      direction="column"
+                      align="center"
+                      justify="center"
+                      gap={20}
+                      p={20}
+                    >
+                        <Text>Thank you for answers</Text>
+                        <Button component={Link} to="/my-surveys">
+                            Go back to surveys
+                        </Button>
+                    </Flex>
+                </Card>
+            </Flex>
         );
     }
 
@@ -156,32 +174,34 @@ const CompleteSurveyPage: FC = () => {
 
                 <Group>
                     {survey.questions.map((question) => (
-                      <Grid w={'100%'}>
-                          <Grid.Col span={9}>
-                              <Text>{question.content}</Text>
-                          </Grid.Col>
+                        <Grid w="100%">
+                            <Grid.Col span={9}>
+                                <Text>{question.content}</Text>
+                            </Grid.Col>
 
-                          <Grid.Col span={1} offset={1}>
-
-                              <Rating value={
-                                  answers.find(
-                                    (a) => a[0] === question.questionId,
-                                  )?.[1]
-                              } onChange={v => updateAnswer(question.questionId, v)} />
-                          </Grid.Col>
-                      </Grid>
+                            <Grid.Col span={1} offset={1}>
+                                <Rating
+                                  value={
+                                        answers.find(
+                                            (a) => a[0] === question.questionId,
+                                        )?.[1]
+                                    }
+                                  onChange={(v) =>
+                                        updateAnswer(question.questionId, v)
+                                    }
+                                />
+                            </Grid.Col>
+                        </Grid>
                     ))}
-
                 </Group>
 
                 <Space h={20} />
 
-
-
-
                 <Button
                   maw={220}
-                  disabled={submitted || answers.length < survey.questions.length}
+                  disabled={
+                        submitted || answers.length < survey.questions.length
+                    }
                   onClick={jsSubmit(handleSubmit)}
                 >
                     Submit
