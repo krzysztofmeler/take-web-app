@@ -1,8 +1,6 @@
 import { FC, useEffect, useState } from 'react';
-import {
-    Subject,
-    SubjectWithLecturer,
-} from '../../model/existing-objects/Subject';
+import { Link } from 'react-router-dom';
+import { Subject } from '../../model/existing-objects/Subject';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
 
@@ -48,11 +46,13 @@ const SubjectsListPage: FC = () => {
                     <tbody>
                         {subjects.map((subject) => (
                             <tr key={subject.id}>
-                                <td>{subject.name}</td>
-                                {/* <td> */}
-                                {/*     {subject.lecturer.firstName}{' '} */}
-                                {/*     {subject.lecturer.lastName} */}
-                                {/* </td> */}
+                                <td>
+                                    <Link
+                                      to={`/administration/subject-data/${subject.id}`}
+                                    >
+                                        {subject.name}
+                                    </Link>
+                                </td>
                             </tr>
                         ))}
                     </tbody>

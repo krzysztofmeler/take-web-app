@@ -1,12 +1,12 @@
-import { Lecturer } from './Lecturer';
+import { Lecturer, LecturerData } from './Lecturer';
 
 interface Subject {
     id: number;
     name: string;
 }
 
-interface SubjectWithLecturer extends Subject {
-    lecturer: Lecturer;
+interface SubjectWithLecturers extends Subject {
+    lecturers: [number, string, string, string][];
 }
 
-export type { Subject, SubjectWithLecturer };
+export type { Subject, SubjectWithLecturers };

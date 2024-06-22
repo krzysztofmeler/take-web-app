@@ -7,7 +7,7 @@ import { CheckboxSelector } from '../forms/CheckboxSelector';
 import { useRequest } from '../../hooks/useRequest.hook';
 import {
     Subject,
-    SubjectWithLecturer,
+    SubjectWithLecturers,
 } from '../../model/existing-objects/Subject';
 import { settings } from '../../settings';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
