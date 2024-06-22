@@ -26,6 +26,14 @@ const StudentsListPage: FC = () => {
         }
     }, [data]);
 
+    const deleteStudent = async (email: string) => {
+        const response = await fetch(`${settings.backendAPIUrl}students/email/${encodeURIComponent(email)}`, { mode: 'cors', method: 'DELETE' });
+
+        if (response.status === 204) {
+            setStudents(students.filter(s => s.email !== email));
+        }
+    }
+
     return (
         <>
             <h1>Students list</h1>
@@ -57,6 +65,8 @@ const StudentsListPage: FC = () => {
                                 >
                                     Edit data
                                 </Link>
+
+                                <button onClick={() => deleteStudent(student.email)}>Delete</button>
                             </td>
                         </tr>
                     ))}
