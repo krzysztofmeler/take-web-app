@@ -7,6 +7,7 @@ import {
     Group,
     Image,
     Text,
+    useMantineTheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Outlet, useParams, useLocation } from 'react-router';
@@ -19,6 +20,8 @@ const PageLayout: FC = () => {
     const [opened, { toggle }] = useDisclosure();
 
     const { pathname } = useLocation();
+
+    const { colors } = useMantineTheme();
 
     return (
         <AppShell
@@ -34,14 +37,17 @@ const PageLayout: FC = () => {
             padding="md"
         >
             <AppShell.Header
-                style={{ boxShadow: '0 0 40px 0 rgba(0, 0, 0, 0.15)' }}
+                style={{ boxShadow: '0 0 30px 0 rgba(0, 0, 0, 0.15)' }}
             >
                 <Group flex={1} style={{ justifyContent: 'center' }} h="100%">
                     <Burger
+                      px={30}
+                      py={20}
+                      mih={60}
                         opened={opened}
                         onClick={toggle}
                         hiddenFrom="sm"
-                        size="sm"
+                        size="md"
                     />
 
                     <Group
@@ -74,7 +80,7 @@ const PageLayout: FC = () => {
                             justify="space-between"
                             px="md"
                             gap={40}
-                            visibleFrom="md"
+                            visibleFrom="sm"
                         >
                             <Button
                                 fw={500}
@@ -117,7 +123,7 @@ const PageLayout: FC = () => {
                 ))}
             </AppShell.Navbar>
 
-            <AppShell.Main>
+            <AppShell.Main bg={colors.gray[0]}>
                 <Outlet />
             </AppShell.Main>
         </AppShell>
