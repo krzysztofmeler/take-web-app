@@ -1,15 +1,16 @@
 import { FC, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+
 import {
+    Avatar,
     Button,
     Card,
+    Divider,
     Flex,
     Group,
-    Text,
-    Image,
-    TextInput,
+    Loader,
     Space,
-    Avatar,
+    Text,
+    TextInput,
 } from '@mantine/core';
 import { jsSubmit } from '../../utils/js-submit';
 import { useRequest } from '../../hooks/useRequest.hook';
@@ -22,12 +23,16 @@ import { ResponseError } from '../../errors/types/ResponseError';
 import { settings } from '../../settings';
 import { request } from '../../utils/request';
 import { useAsyncEffect } from '../../hooks/useAsyncEffect.hook';
+import { SurveyListElement } from '../SurveyListElement';
+import { StudentAvatar } from '../StudentAvatar';
+import { SurveyListStudentSection } from '../SurveyListStudentSection';
+import { StudentLoginForm } from '../StudentLoginForm';
+import { SurveyLoginCard } from '../SurveyLoginCard';
 
 const MySurveysPage: FC = () => {
     const [studentId, setStudentId] = useState<number | null>(null);
 
     const [student, setStudent] = useState<Student | null>(null);
-    const [email, setEmail] = useState<string>('');
 
     useAsyncEffect(async () => {
         const storedStudentId = window.localStorage.getItem(
@@ -61,15 +66,6 @@ const MySurveysPage: FC = () => {
         data: filledSurveysResponse,
         ...filledSurveysRequest
     } = useRequest();
-
-    const submitEmail = () => {
-        requestStudentByEmail(
-            `${settings.backendAPIUrl}students/email/${encodeURIComponent(
-                email,
-            )}`,
-            { method: 'GET', mode: 'cors' },
-        );
-    };
 
     useEffect(() => {
         if (studentRequest.error) {
@@ -144,86 +140,73 @@ const MySurveysPage: FC = () => {
         window.localStorage.removeItem('take-web-app:student-login:id');
     };
 
+    const [searchString, setSearchString] = useState('');
+    const applySearch = () => {
+        console.log('applying');
+    };
+
+    const handleLoginError = (error: Error) => {
+        console.error(error);
+    };
+
+    const handleLoginSuccess = (student: Student) => {
+        setStudent(student);
+        setStudentId(student.studentId);
+    };
+
     if (studentId && student === null) {
         return <>Loading</>;
     } else if (studentId === null) {
         return (
-            <Flex justify="left" direction="column" w="100%">
-                <Card shadow="sm" padding="lg" radius="md" withBorder>
-                    <Group justify="space-between" mt="md" mb="xs">
-                        <Text component="h2" fw={500}>
-                            Login
-                        </Text>
-                    </Group>
-
-                    <Text size="sm" c="dimmed">
-                        You have to provide your student's email address to to
-                        start surveys completion
-                    </Text>
-
-                    <Space mih={20} />
-
-                    <TextInput
-                      maw={400}
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      label="E-mail"
-                    />
-
-                    <Space mih={20} />
-
-                    <Button
-                      maw={240}
-                      color="blue"
-                      radius="md"
-                      onClick={jsSubmit(submitEmail)}
-                    >
-                        Login
-                    </Button>
-                </Card>
+            <Flex justify="center" w="100%" my={40}>
+                <SurveyLoginCard
+                  onSuccess={handleLoginSuccess}
+                  onFailure={handleLoginError}
+                />
             </Flex>
         );
     } else if (student !== null) {
+        const listReady = !(
+            studentRequest.processing || filledSurveysRequest.processing
+        );
+
         return (
             <Flex direction="column" px={10} py={20} maw={1200} mx="auto">
                 <Flex justify="space-between" align="center">
                     <Text component="h2" size="xl">
                         Fill surveys
                     </Text>
-                    <Group>
-                        <Avatar color="cyan" radius="xl">
-                            {student.firstName.at(0)}
-                            {student.lastName.at(0)}
-                        </Avatar>
-                        <Text>{student.email}</Text>
-                        <Button onClick={jsSubmit(logout)} variant="filled">
-                            Logout
-                        </Button>
-                    </Group>
+                    <SurveyListStudentSection
+                      student={student}
+                      logout={logout}
+                    />
                 </Flex>
-                <div>
-                    {(studentRequest.processing ||
-                        filledSurveysRequest.processing) && (
-                        <div>loading list of your surveys...</div>
-                    )}
-                    {!(
-                        studentRequest.processing ||
-                        filledSurveysRequest.processing
-                    ) && (
-                        <ul>
-                            {surveys.map((survey) => (
-                                <li key={survey.surveyId}>
-                                    {' '}
-                                    <Link
-                                      to={`/complete-survey/${survey.surveyId}`}
-                                    >
-                                        {survey.name}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                </div>
+
+                <Divider my={12} />
+
+                <Group my={10}>
+                    <TextInput
+                      value={searchString}
+                      onChange={(e) => setSearchString(e.target.value)}
+                    />
+                    <Button onClick={jsSubmit(applySearch)}>Search</Button>
+                </Group>
+
+                <Space mih={10} />
+
+                {!listReady && (
+                    <Flex mih={200} w="100%" align="center" justify="center">
+                        <Loader size="lg" />
+                    </Flex>
+                )}
+
+                {listReady && (
+                    <Group gap={10}>
+                        {surveys.map((survey) => (
+                            <SurveyListElement survey={survey} />
+                        ))}
+                    </Group>
+                )}
             </Flex>
         );
     } else {
