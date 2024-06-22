@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { Button, Card, Divider, Flex, Text } from '@mantine/core';
+import { Button, Card, Divider, Flex, Grid, Group, List, Rating, Space, Text } from '@mantine/core';
 import { Survey } from '../../model/existing-objects/Survey';
 import { StarRatio } from '../forms/StarRatio';
 import { useRequest } from '../../hooks/useRequest.hook';
@@ -8,6 +8,7 @@ import { jsSubmit } from '../../utils/js-submit';
 import { Answer } from '../../model/existing-objects/Answer';
 import { settings } from '../../settings';
 import { SurveyListStudentSection } from '../SurveyListStudentSection';
+import { Link } from 'react-router-dom';
 
 const CompleteSurveyPage: FC = () => {
     const { id } = useParams();
@@ -123,7 +124,17 @@ const CompleteSurveyPage: FC = () => {
     }
 
     if (success) {
-        return <h1>Thank you for answers</h1>;
+        return (
+          <Flex direction={'column'} align={'center'} my={30}>
+              <Card mih={120} maw={800} w={600} withBorder shadow="sm" >
+                  <Flex direction={'column'} align={'center'} justify={'center'} gap={20} p={20}>
+
+                  <Text>Thank you for answers</Text>
+                  <Button component={Link} to={'/my-surveys'}>Go back to surveys</Button>
+                  </Flex>
+              </Card>
+          </Flex>
+        );
     }
 
     return (
@@ -141,26 +152,36 @@ const CompleteSurveyPage: FC = () => {
                     {survey.name}
                 </Text>
 
-                {survey.questions.map((question) => (
-                    <div key={question.questionId}>
-                        <p>{question.content}</p>
-                        <StarRatio
-                          groupName={question.questionId.toString()}
-                          value={
-                                answers.find(
+                <Space h={20} />
+
+                <Group>
+                    {survey.questions.map((question) => (
+                      <Grid w={'100%'}>
+                          <Grid.Col span={9}>
+                              <Text>{question.content}</Text>
+                          </Grid.Col>
+
+                          <Grid.Col span={1} offset={1}>
+
+                              <Rating value={
+                                  answers.find(
                                     (a) => a[0] === question.questionId,
-                                )?.[1]
-                            }
-                          updateValue={(value) =>
-                                updateAnswer(question.questionId, value)
-                            }
-                        />
-                    </div>
-                ))}
+                                  )?.[1]
+                              } onChange={v => updateAnswer(question.questionId, v)} />
+                          </Grid.Col>
+                      </Grid>
+                    ))}
+
+                </Group>
+
+                <Space h={20} />
+
+
+
 
                 <Button
                   maw={220}
-                  disabled={submitted}
+                  disabled={submitted || answers.length < survey.questions.length}
                   onClick={jsSubmit(handleSubmit)}
                 >
                     Submit
