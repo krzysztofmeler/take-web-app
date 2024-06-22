@@ -1,11 +1,13 @@
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import { Button, Card, Divider, Flex, Text } from '@mantine/core';
 import { Survey } from '../../model/existing-objects/Survey';
 import { StarRatio } from '../forms/StarRatio';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { jsSubmit } from '../../utils/js-submit';
 import { Answer } from '../../model/existing-objects/Answer';
 import { settings } from '../../settings';
+import { SurveyListStudentSection } from '../SurveyListStudentSection';
 
 const CompleteSurveyPage: FC = () => {
     const { id } = useParams();
@@ -125,10 +127,20 @@ const CompleteSurveyPage: FC = () => {
     }
 
     return (
-        <>
-            <h1>Complete Survey {`"${survey.name}"`}</h1>
+        <Flex direction="column" px={10} py={20} maw={1200} mx="auto">
+            <Flex justify="space-between" align="center">
+                <Text component="h2" size="xl">
+                    Fill survey
+                </Text>
+            </Flex>
 
-            <form>
+            <Divider my={12} />
+
+            <Card withBorder maw={1200}>
+                <Text component="h3" size="lg">
+                    {survey.name}
+                </Text>
+
                 {survey.questions.map((question) => (
                     <div key={question.questionId}>
                         <p>{question.content}</p>
@@ -146,14 +158,15 @@ const CompleteSurveyPage: FC = () => {
                     </div>
                 ))}
 
-                <input
+                <Button
+                  maw={220}
                   disabled={submitted}
-                  type="submit"
-                  value="Send answers"
                   onClick={jsSubmit(handleSubmit)}
-                />
-            </form>
-        </>
+                >
+                    Submit
+                </Button>
+            </Card>
+        </Flex>
     );
 };
 

@@ -156,9 +156,9 @@ const MySurveysPage: FC = () => {
 
     if (studentId && student === null) {
         return (
-          <Flex mih={200} w="100%" align="center" justify="center">
-              <Loader size="lg" />
-          </Flex>
+            <Flex mih={200} w="100%" align="center" justify="center">
+                <Loader size="lg" />
+            </Flex>
         );
     } else if (studentId === null) {
         return (
