@@ -1,5 +1,16 @@
 import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import {
+    Button,
+    Card,
+    Flex,
+    Group,
+    Text,
+    Image,
+    TextInput,
+    Space,
+    Avatar,
+} from '@mantine/core';
 import { jsSubmit } from '../../utils/js-submit';
 import { useRequest } from '../../hooks/useRequest.hook';
 import {
@@ -9,11 +20,31 @@ import {
 import { BasicSurvey } from '../../model/existing-objects/Survey';
 import { ResponseError } from '../../errors/types/ResponseError';
 import { settings } from '../../settings';
-import { Button, Card, Flex, Group, Text, Image, TextInput, Space } from '@mantine/core';
+import { request } from '../../utils/request';
+import { useAsyncEffect } from '../../hooks/useAsyncEffect.hook';
 
 const MySurveysPage: FC = () => {
     const [studentId, setStudentId] = useState<number | null>(null);
+
+    const [student, setStudent] = useState<Student | null>(null);
     const [email, setEmail] = useState<string>('');
+
+    useAsyncEffect(async () => {
+        const storedStudentId = window.localStorage.getItem(
+            'take-web-app:student-login:id',
+        );
+
+        if (storedStudentId) {
+            setStudentId(Number.parseInt(storedStudentId, 10));
+        }
+    }, []);
+
+    useAsyncEffect(async () => {
+        if (studentId) {
+            const response = await request.get(`students/profile/${studentId}`);
+            setStudent(response.data as Student);
+        }
+    }, [studentId]);
 
     const {
         send: requestStudentByEmail,
@@ -60,6 +91,15 @@ const MySurveysPage: FC = () => {
 
     useEffect(() => {
         if (studentId) {
+            window.localStorage.setItem(
+                'take-web-app:student-login:id',
+                studentId.toString(),
+            );
+        }
+    }, [studentId]);
+
+    useEffect(() => {
+        if (studentId) {
             // student id is set, so we can ask for all surveys and surveys filled by this student
             requestFilledSurveys(
                 `${settings.backendAPIUrl}students/profile/${studentId}`,
@@ -98,39 +138,69 @@ const MySurveysPage: FC = () => {
         }
     }, [filledSurveysResponse, allSurveysResponse]);
 
-    if (!studentId) {
+    const logout = () => {
+        setStudent(null);
+        setStudentId(null);
+        window.localStorage.removeItem('take-web-app:student-login:id');
+    };
+
+    if (studentId && student === null) {
+        return <>Loading</>;
+    } else if (studentId === null) {
         return (
-            <Flex justify={'left'} direction={'column'} w={'100%'}>
-
+            <Flex justify="left" direction="column" w="100%">
                 <Card shadow="sm" padding="lg" radius="md" withBorder>
-
                     <Group justify="space-between" mt="md" mb="xs">
-                        <Text component={'h2'} fw={500}>Login</Text>
+                        <Text component="h2" fw={500}>
+                            Login
+                        </Text>
                     </Group>
 
                     <Text size="sm" c="dimmed">
-                        You have to provide your student{"'"}s email address to
-                        to start surveys completion
+                        You have to provide your student's email address to to
+                        start surveys completion
                     </Text>
 
                     <Space mih={20} />
 
-                    <TextInput maw={400} value={email} onChange={(e) => setEmail(e.target.value)} label={'E-mail'} />
+                    <TextInput
+                      maw={400}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      label="E-mail"
+                    />
 
                     <Space mih={20} />
 
-                    <Button maw={240} color="blue" radius="md" onClick={jsSubmit(submitEmail)}>
+                    <Button
+                      maw={240}
+                      color="blue"
+                      radius="md"
+                      onClick={jsSubmit(submitEmail)}
+                    >
                         Login
                     </Button>
                 </Card>
             </Flex>
         );
-    } else {
+    } else if (student !== null) {
         return (
-            <div>
-                <h1>My surveys</h1>
-                <p>List contains all surveys you had not filled yet.</p>
-
+            <Flex direction="column" px={10} py={20} maw={1200} mx="auto">
+                <Flex justify="space-between" align="center">
+                    <Text component="h2" size="xl">
+                        Fill surveys
+                    </Text>
+                    <Group>
+                        <Avatar color="cyan" radius="xl">
+                            {student.firstName.at(0)}
+                            {student.lastName.at(0)}
+                        </Avatar>
+                        <Text>{student.email}</Text>
+                        <Button onClick={jsSubmit(logout)} variant="filled">
+                            Logout
+                        </Button>
+                    </Group>
+                </Flex>
                 <div>
                     {(studentRequest.processing ||
                         filledSurveysRequest.processing) && (
@@ -154,8 +224,11 @@ const MySurveysPage: FC = () => {
                         </ul>
                     )}
                 </div>
-            </div>
+            </Flex>
         );
+    } else {
+        console.error('error');
+        return <>error</>;
     }
 };
 

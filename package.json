@@ -123,6 +123,7 @@
             "react/require-default-props": "off",
             "linebreak-style": "off",
             "react/jsx-indent-props": "warn",
+            "react/no-unescaped-entities": "warn",
             "no-else-return": "off",
             "jsx-a11y/anchor-is-valid": "off",
             "jsx-a11y/click-events-have-key-events": "warn",
