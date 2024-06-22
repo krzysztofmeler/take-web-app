@@ -1,18 +1,9 @@
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-    Button,
-    Card,
-    Grid,
-    Group,
-    MultiSelect,
-    Text,
-    TextInput,
-} from '@mantine/core';
-import { jsSubmit } from '../../utils/js-submit';
+import { Card, Group, Text } from '@mantine/core';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
-import { update } from '../../utils/forms';
+import { StudentForm } from '../StudentForm';
 
 const AddNewStudentPage: FC = () => {
     const [firstName, setFirstName] = useState<string>('');
@@ -55,36 +46,15 @@ const AddNewStudentPage: FC = () => {
                     Add new student
                 </Text>
 
-                <Grid maw={700}>
-                    <Grid.Col span={6}>
-                        <TextInput
-                          value={firstName}
-                          onChange={update(setFirstName)}
-                          label="Name"
-                        />
-                    </Grid.Col>
-                    <Grid.Col span={6}>
-                        <TextInput
-                          value={lastName}
-                          onChange={update(setLastName)}
-                          label="Surname"
-                        />
-                    </Grid.Col>
-
-                    <Grid.Col span={8}>
-                        <TextInput
-                          value={email}
-                          onChange={update(setEmail)}
-                          label="E-mail"
-                        />
-                    </Grid.Col>
-
-                    <Grid.Col span={10}>
-                        <Button onClick={jsSubmit(submit)}>
-                            Proceed and close
-                        </Button>
-                    </Grid.Col>
-                </Grid>
+                <StudentForm
+                  firstName={firstName}
+                  lastName={lastName}
+                  email={email}
+                  setFirstName={setFirstName}
+                  setLastName={setLastName}
+                  setEmail={setEmail}
+                  submit={submit}
+                />
             </Group>
         </Card>
     );

@@ -1,11 +1,13 @@
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router';
+import { Card, Group, Text } from '@mantine/core';
 import { TextInput } from '../forms/TextInput';
 import { jsSubmit } from '../../utils/js-submit';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
 import { Student } from '../../model/existing-objects/Student';
+import { StudentForm } from '../StudentForm';
 
 const EditStudentDataPage: FC = () => {
     const [firstName, setFirstName] = useState<string>('');
@@ -65,25 +67,23 @@ const EditStudentDataPage: FC = () => {
     }, [response]);
 
     return (
-        <form>
-            <TextInput
-              value={firstName}
-              updateValue={setFirstName}
-              label="First name"
-            />
-            <TextInput
-              value={lastName}
-              updateValue={setLastName}
-              label="Last name"
-            />
-            <TextInput value={email} updateValue={setEmail} label="E-mail" />
+        <Card withBorder shadow="md" maw={800} my={20} mx="auto">
+            <Group gap={20} p={10}>
+                <Text component="h2" size="lg">
+                    Edit student profile
+                </Text>
 
-            <input
-              onClick={jsSubmit(submit)}
-              type="submit"
-              value="Proceed and close"
-            />
-        </form>
+                <StudentForm
+                  firstName={firstName}
+                  lastName={lastName}
+                  email={email}
+                  setFirstName={setFirstName}
+                  setLastName={setLastName}
+                  setEmail={setEmail}
+                  submit={submit}
+                />
+            </Group>
+        </Card>
     );
 };
 
