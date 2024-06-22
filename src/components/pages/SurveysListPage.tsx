@@ -1,8 +1,19 @@
 import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BasicSurvey } from '../../model/existing-objects/Survey';
+import {
+    Button,
+    Card,
+    Divider,
+    Flex,
+    Group,
+    Loader,
+    Text,
+} from '@mantine/core';
+import { BasicSurvey, Survey } from '../../model/existing-objects/Survey';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
+import { Student } from '../../model/existing-objects/Student';
+import { StudentAvatar } from '../StudentAvatar';
 
 const SurveysListPage: FC = () => {
     const [surveys, setSurveys] = useState<BasicSurvey[]>([]);
@@ -27,37 +38,45 @@ const SurveysListPage: FC = () => {
         }
     }, [data]);
 
+    if (surveys === null) {
+        return (
+            <Flex
+              mih={200}
+              w="100%"
+              align="center"
+              direction="column"
+              justify="center"
+            >
+                <Loader size="lg" />
+            </Flex>
+        );
+    }
+
     return (
-        <>
-            <h1>Surveys list</h1>
-            <p>
-                List of all surveys. Surveys are created separately for each
-                lecturer and are common for all his/her subjects.
-            </p>
-            {processing && <p>Loading</p>}
-            {!processing && (
-                <table>
-                    <thead>
-                        <tr>
-                            <td>Survey Name</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {surveys.map((survey) => (
-                            <tr key={survey.surveyId}>
-                                <td>
-                                    <Link
-                                      to={`/administration/survey-data/${survey.surveyId}`}
-                                    >
-                                        {survey.name}
-                                    </Link>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            )}
-        </>
+        <Flex direction="column" px={10} py={20} maw={1200} mx="auto">
+            <Text component="h2" size="xl">
+                Surveys
+            </Text>
+
+            <Divider my={10} />
+
+            <Group gap={10}>
+                {(surveys as Survey[]).map((survey) => (
+                    <Card w="100%" shadow="sm" withBorder>
+                        <Flex justify="space-between" align="center">
+                            <Text>{survey.name}</Text>
+
+                            <Button
+                              component={Link}
+                              to={`/administration/survey-data/${survey.surveyId}`}
+                            >
+                                Show results {'>'}
+                            </Button>
+                        </Flex>
+                    </Card>
+                ))}
+            </Group>
+        </Flex>
     );
 };
 
