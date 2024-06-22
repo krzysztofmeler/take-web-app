@@ -180,16 +180,20 @@ const CompleteSurveyPage: FC = () => {
                             </Grid.Col>
 
                             <Grid.Col span={1} offset={1}>
-                                <Rating
-                                  value={
-                                        answers.find(
-                                            (a) => a[0] === question.questionId,
-                                        )?.[1]
-                                    }
-                                  onChange={(v) =>
-                                        updateAnswer(question.questionId, v)
-                                    }
-                                />
+                                <Flex justify="center" align="center" h="100%">
+                                    <Rating
+                                      value={
+                                            answers.find(
+                                                (a) =>
+                                                    a[0] ===
+                                                    question.questionId,
+                                            )?.[1]
+                                        }
+                                      onChange={(v) =>
+                                            updateAnswer(question.questionId, v)
+                                        }
+                                    />
+                                </Flex>
                             </Grid.Col>
                         </Grid>
                     ))}
