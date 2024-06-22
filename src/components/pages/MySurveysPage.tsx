@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { TextInput } from '../forms/TextInput';
 import { jsSubmit } from '../../utils/js-submit';
 import { useRequest } from '../../hooks/useRequest.hook';
 import {
@@ -10,6 +9,7 @@ import {
 import { BasicSurvey } from '../../model/existing-objects/Survey';
 import { ResponseError } from '../../errors/types/ResponseError';
 import { settings } from '../../settings';
+import { Button, Card, Flex, Group, Text, Image, TextInput, Space } from '@mantine/core';
 
 const MySurveysPage: FC = () => {
     const [studentId, setStudentId] = useState<number | null>(null);
@@ -100,25 +100,30 @@ const MySurveysPage: FC = () => {
 
     if (!studentId) {
         return (
-            <>
-                <h1>Login</h1>
-                <p>
-                    You need to provide your e-mail address to start survey
-                    completion.
-                </p>
-                <form>
-                    <TextInput
-                      value={email}
-                      updateValue={setEmail}
-                      label="E-mail"
-                    />
-                    <input
-                      type="submit"
-                      value="Login"
-                      onClick={jsSubmit(submitEmail)}
-                    />
-                </form>
-            </>
+            <Flex justify={'left'} direction={'column'} w={'100%'}>
+
+                <Card shadow="sm" padding="lg" radius="md" withBorder>
+
+                    <Group justify="space-between" mt="md" mb="xs">
+                        <Text component={'h2'} fw={500}>Login</Text>
+                    </Group>
+
+                    <Text size="sm" c="dimmed">
+                        You have to provide your student{"'"}s email address to
+                        to start surveys completion
+                    </Text>
+
+                    <Space mih={20} />
+
+                    <TextInput maw={400} value={email} onChange={(e) => setEmail(e.target.value)} label={'E-mail'} />
+
+                    <Space mih={20} />
+
+                    <Button maw={240} color="blue" radius="md" onClick={jsSubmit(submitEmail)}>
+                        Login
+                    </Button>
+                </Card>
+            </Flex>
         );
     } else {
         return (
