@@ -141,9 +141,9 @@ const MySurveysPage: FC = () => {
     };
 
     const [searchString, setSearchString] = useState('');
-    const applySearch = () => {
-        console.log('applying');
-    };
+    // const applySearch = () => {
+    //     console.log('applying');
+    // };
 
     const handleLoginError = (error: Error) => {
         console.error(error);
@@ -155,7 +155,11 @@ const MySurveysPage: FC = () => {
     };
 
     if (studentId && student === null) {
-        return <>Loading</>;
+        return (
+          <Flex mih={200} w="100%" align="center" justify="center">
+              <Loader size="lg" />
+          </Flex>
+        );
     } else if (studentId === null) {
         return (
             <Flex justify="center" w="100%" my={40}>
@@ -184,15 +188,15 @@ const MySurveysPage: FC = () => {
 
                 <Divider my={12} />
 
-                <Group my={10}>
-                    <TextInput
-                      value={searchString}
-                      onChange={(e) => setSearchString(e.target.value)}
-                    />
-                    <Button onClick={jsSubmit(applySearch)}>Search</Button>
-                </Group>
-
-                <Space mih={10} />
+                {/* <Group my={10}> */}
+                {/*     <TextInput */}
+                {/*       value={searchString} */}
+                {/*       onChange={(e) => setSearchString(e.target.value)} */}
+                {/*     /> */}
+                {/*     <Button onClick={jsSubmit(applySearch)}>Search</Button> */}
+                {/* </Group> */}
+                {/*  */}
+                {/* <Space mih={10} /> */}
 
                 {!listReady && (
                     <Flex mih={200} w="100%" align="center" justify="center">
