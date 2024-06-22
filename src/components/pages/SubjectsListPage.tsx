@@ -1,8 +1,18 @@
 import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import {
+    Button,
+    Card,
+    Divider,
+    Flex,
+    Group,
+    Loader,
+    Text,
+} from '@mantine/core';
 import { Subject } from '../../model/existing-objects/Subject';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
+import { Survey } from '../../model/existing-objects/Survey';
 
 const SubjectsListPage: FC = () => {
     const [subjects, setSubjects] = useState<Subject[]>([]);
@@ -27,38 +37,51 @@ const SubjectsListPage: FC = () => {
         }
     }, [data]);
 
+    if (subjects === null) {
+        return (
+            <Flex
+              mih={200}
+              w="100%"
+              align="center"
+              direction="column"
+              justify="center"
+            >
+                <Loader size="lg" />
+            </Flex>
+        );
+    }
+
     return (
-        <>
-            <h1>Subjects list</h1>
-            <p>
-                List contains data about all subjects - name and lecturer who
-                directs it.
-            </p>
-            {processing && <p>Loading</p>}
-            {!processing && (
-                <table>
-                    <thead>
-                        <tr>
-                            <td>Subject name</td>
-                            <td>Lecturer</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {subjects.map((subject) => (
-                            <tr key={subject.id}>
-                                <td>
-                                    <Link
-                                      to={`/administration/subject-data/${subject.id}`}
-                                    >
-                                        {subject.name}
-                                    </Link>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            )}
-        </>
+        <Flex direction="column" px={10} py={20} maw={1200} mx="auto">
+            <Flex justify="space-between" align="center">
+                <Text component="h2" size="xl">
+                    Subjects
+                </Text>
+
+                <Button component={Link} to="/administration/add-new-subject">
+                    Add new
+                </Button>
+            </Flex>
+
+            <Divider my={10} />
+
+            <Group gap={10}>
+                {(subjects as Subject[]).map((subject) => (
+                    <Card w="100%" shadow="sm" withBorder>
+                        <Flex justify="space-between" align="center">
+                            <Text>{subject.name}</Text>
+
+                            <Button
+                              component={Link}
+                              to={`/administration/subject-data/${subject.id}`}
+                            >
+                                Show {'>'}
+                            </Button>
+                        </Flex>
+                    </Card>
+                ))}
+            </Group>
+        </Flex>
     );
 };
 
