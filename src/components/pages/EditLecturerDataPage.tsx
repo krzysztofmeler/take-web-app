@@ -10,9 +10,7 @@ import {
     Space,
     Text,
 } from '@mantine/core';
-import { TextInput } from '../forms/TextInput';
 import { jsSubmit } from '../../utils/js-submit';
-import { CheckboxSelector } from '../forms/CheckboxSelector';
 import { useRequest } from '../../hooks/useRequest.hook';
 import {
     Subject,

@@ -14,7 +14,6 @@ import {
 } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import { Survey } from '../../model/existing-objects/Survey';
-import { StarRatio } from '../forms/StarRatio';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { jsSubmit } from '../../utils/js-submit';
 import { Answer } from '../../model/existing-objects/Answer';
