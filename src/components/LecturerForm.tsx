@@ -19,6 +19,8 @@ type LecturerFormProps = {
   subjects: Subject[];
 
   submit: () => void;
+  disableSubmit: boolean;
+  loading: boolean;
 };
 
 const LecturerForm: FC<LecturerFormProps> = ({
@@ -32,6 +34,8 @@ const LecturerForm: FC<LecturerFormProps> = ({
   setSubjectIds,
   subjects,
   submit,
+  loading,
+  disableSubmit,
 }) => (
   <Grid>
     <Grid.Col span={6}>
@@ -60,7 +64,9 @@ const LecturerForm: FC<LecturerFormProps> = ({
     </Grid.Col>
 
     <Grid.Col span={10}>
-      <Button onClick={jsSubmit(submit)}>Proceed and close</Button>
+      <Button disabled={disableSubmit} loading={loading} onClick={jsSubmit(submit)}>
+        Proceed and close
+      </Button>
     </Grid.Col>
   </Grid>
 );

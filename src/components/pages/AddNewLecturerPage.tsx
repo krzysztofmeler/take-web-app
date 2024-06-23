@@ -1,10 +1,15 @@
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Blockquote, Card, Flex, Group, Loader, Space, Text } from '@mantine/core';
-import { useRequest } from '../../hooks/useRequest.hook';
 import { Subject } from '../../model/existing-objects/Subject';
-import { settings } from '../../settings';
 import { LecturerForm } from '../LecturerForm';
+import { useGetSubjects } from '../../hooks/useGetSubjects.hook';
+import { SubpageError } from '../SubpageError';
+import { useAddLecturer } from '../../hooks/useAddLecturer.hook';
+import { BasicRequestResult } from '../../types/BasicRequestResult';
+import { showNotification } from '../../utils/Notifications';
+import { useAsyncEffect } from '../../hooks/useAsyncEffect.hook';
+import { sleep } from '../../utils/sleep';
 
 const AddNewLecturerPage: FC = () => {
   const [firstName, setFirstName] = useState<string>('');
@@ -12,59 +17,41 @@ const AddNewLecturerPage: FC = () => {
   const [email, setEmail] = useState<string>('');
   const [subjectIds, setSubjectIds] = useState<string[]>([]);
 
-  const [formEnabled, setFormEnabled] = useState(true); // false because list of subjects needs to be loaded
+  const { subjects, error: getSubjectsError } = useGetSubjects();
 
-  const { send: sendRequest, data: response, ...request } = useRequest();
-
-  const { data: subjects, error } = useRequest(`${settings.backendAPIUrl}subjects`, { method: 'GET' });
-
-  // todo: fix duplicated request to lecturers list via GET
-
-  useEffect(() => {
-    if (error) {
-      alert(
-        'An error occurred while loading list of subjects. Subject selection function unavailable and form is disabled. Reload if needed.',
-      );
-      console.error(error);
-    }
-  }, [error]);
-
-  const submit = () => {
-    setFormEnabled(false);
-    sendRequest(`${settings.backendAPIUrl}lecturers`, {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        firstName,
-        lastName,
-        email,
-        subjectIds: subjectIds.map((id) => parseInt(id, 10)),
-        surveys: [],
-      }),
-    });
-  };
-
-  useEffect(() => {
-    if (request.error) {
-      window.alert('An error occurred!'); // TODO: add proper handling
-      console.error(request.error);
-      setFormEnabled(true);
-    }
-  }, [request.error]);
+  const { proceed: addLecturer, result: addLecturerResult } = useAddLecturer();
 
   const navigate = useNavigate();
 
+  const submit = async () => {
+    await addLecturer({ email, firstName, lastName, subjectIds: subjectIds.map((s) => Number.parseInt(s, 10)) });
+  };
+
   useEffect(() => {
-    if (typeof response === 'object' && response !== null && Object.hasOwn(response, 'lecturerId')) {
+    if (addLecturerResult === BasicRequestResult.Error) {
+      showNotification({
+        color: 'red',
+        title: 'An error occurred',
+        message: 'Unknown error occurred, check provided data and try again or contact administrator.',
+      });
+    } else if (addLecturerResult === BasicRequestResult.Ok) {
+      showNotification({
+        color: 'green',
+        title: 'New lecturer added',
+        message: 'Lecturer has been added to system and students can now rank him/her.',
+      });
+    }
+  }, [addLecturerResult]);
+
+  useAsyncEffect(async () => {
+    if (addLecturerResult === BasicRequestResult.Ok) {
+      await sleep(500);
       navigate('/administration/lecturers-list');
     }
-  }, [response]);
+  }, [addLecturerResult]);
 
-  if (error) {
-    return <>Error</>;
+  if (getSubjectsError) {
+    return <SubpageError text="Error while loading subject list. Contact administrator." />;
   }
 
   if (subjects === null) {
@@ -102,6 +89,8 @@ const AddNewLecturerPage: FC = () => {
             subjects={subjects as Subject[]}
             setSubjectIds={setSubjectIds}
             subjectIds={subjectIds}
+            loading={addLecturerResult === BasicRequestResult.Loading}
+            disableSubmit={[BasicRequestResult.Ok, BasicRequestResult.Loading].includes(addLecturerResult)}
           />
         </Group>
       </Group>

@@ -130,6 +130,8 @@ const EditLecturerDataPage: FC = () => {
             subjects={subjects as Subject[]}
             setSubjectIds={setSubjectIds}
             subjectIds={subjectIds}
+            disableSubmit={false} // todo
+            loading={false} // todo
           />
         </Group>
       </Group>
