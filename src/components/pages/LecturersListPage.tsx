@@ -12,7 +12,7 @@ import {
 import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
-import { LecturerAvatar } from '../LecturerAvatar';
+import { InitialsAvatar } from '../InitialsAvatar';
 
 const LecturersListPage: FC = () => {
     const {
@@ -77,7 +77,7 @@ const LecturersListPage: FC = () => {
                     >
                         <Flex justify="space-between">
                             <Flex align="center" gap={20}>
-                                <LecturerAvatar lecturer={lecturer} />
+                                <InitialsAvatar {...lecturer} />
 
                                 <Flex direction="column" align="start">
                                     <Text>

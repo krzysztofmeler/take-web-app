@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { Button, Group, Text } from '@mantine/core';
-import { StudentAvatar } from './StudentAvatar';
 import { jsSubmit } from '../utils/js-submit';
 import { Student } from '../model/existing-objects/Student';
+import { InitialsAvatar } from './InitialsAvatar';
 
 type SurveyListStudentSectionProps = {
     student: Student;
@@ -14,7 +14,7 @@ const SurveyListStudentSection: FC<SurveyListStudentSectionProps> = ({
     logout,
 }) => (
     <Group>
-        <StudentAvatar student={student} />
+        <InitialsAvatar {...student} />
         <Text>{student.email}</Text>
         <Button onClick={jsSubmit(logout)} variant="filled">
             Logout

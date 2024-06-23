@@ -8,6 +8,8 @@ const request = axios.create({
     fetchOptions: {
         mode: 'cors',
     },
+    validateStatus: () => true,
+    maxRedirects: 0,
 });
 
 export { request };

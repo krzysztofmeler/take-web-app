@@ -14,7 +14,7 @@ import {
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
 import { SubjectWithLecturers } from '../../model/existing-objects/Subject';
-import { LecturerAvatar } from '../LecturerAvatar';
+import { InitialsAvatar } from '../InitialsAvatar';
 
 const SubjectDataPage: FC = () => {
     const [subject, setSubject] = useState<SubjectWithLecturers | null>(null);
@@ -90,22 +90,17 @@ const SubjectDataPage: FC = () => {
 
             <Group gap={10}>
                 {subject.lecturers.map((lecturer) => (
-                    <Card w="100%" shadow="sm" withBorder key={lecturer[0]}>
+                    <Card w="100%" shadow="sm" withBorder key={lecturer}>
                         <Flex align="center" gap={20}>
-                            <LecturerAvatar
-                              lecturer={{
-                                    firstName: lecturer[1],
-                                    lastName: lecturer[2],
-                                    email: lecturer[3],
-                                    lecturerId: lecturer[0],
-                                }}
+                            <InitialsAvatar
+                              firstName={lecturer.split(' ')[0]}
+                              lastName={lecturer.split(' ')[1]}
                             />
 
                             <Flex direction="column" align="start">
                                 <Text>
                                     {lecturer[1]} {lecturer[2]}
                                 </Text>
-                                <Text size="xs">{lecturer[3]}</Text>
                             </Flex>
                         </Flex>
                     </Card>

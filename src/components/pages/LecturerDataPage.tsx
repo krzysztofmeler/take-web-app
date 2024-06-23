@@ -13,7 +13,7 @@ import {
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
-import { LecturerAvatar } from '../LecturerAvatar';
+import { InitialsAvatar } from '../InitialsAvatar';
 
 const LecturerDataPage: FC = () => {
     const [lecturer, setLecturer] = useState<Lecturer | null>(null);
@@ -75,7 +75,7 @@ const LecturerDataPage: FC = () => {
 
             <Card withBorder maw={1200} shadow="md">
                 <Flex align="center" gap={20}>
-                    <LecturerAvatar lecturer={lecturer} />
+                    <InitialsAvatar {...lecturer} />
 
                     <Flex direction="column" align="start">
                         <Text>

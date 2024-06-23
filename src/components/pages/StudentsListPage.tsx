@@ -12,7 +12,7 @@ import {
 import { Student } from '../../model/existing-objects/Student';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
-import { StudentAvatar } from '../StudentAvatar';
+import { InitialsAvatar } from '../InitialsAvatar';
 
 const StudentsListPage: FC = () => {
     const [students, setStudents] = useState<Student[]>([]);
@@ -87,7 +87,7 @@ const StudentsListPage: FC = () => {
                     >
                         <Flex justify="space-between">
                             <Flex align="center" gap={20}>
-                                <StudentAvatar student={student} />
+                                <InitialsAvatar {...student} />
 
                                 <Flex direction="column" align="start">
                                     <Text>

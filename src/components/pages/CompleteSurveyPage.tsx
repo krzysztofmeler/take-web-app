@@ -85,7 +85,9 @@ const CompleteSurveyPage: FC = () => {
 
             setSubmitted(true);
 
-            const studentId = window.localStorage.getItem('take-web-app:student-login:id');
+            const studentId = window.localStorage.getItem(
+                'take-web-app:student-login:id',
+            );
 
             if (studentId === null) {
                 return;

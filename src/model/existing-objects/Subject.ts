@@ -4,7 +4,7 @@ interface Subject {
 }
 
 interface SubjectWithLecturers extends Subject {
-    lecturers: [number, string, string, string][];
+    lecturers: string[];
 }
 
 export type { Subject, SubjectWithLecturers };
