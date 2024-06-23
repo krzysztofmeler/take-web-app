@@ -18,6 +18,12 @@ const MySurveysPage: FC = () => {
 
   const [student, setStudent] = useState<Student | null>(null);
 
+  const logout = () => {
+    setStudent(null);
+    setStudentId(null);
+    window.localStorage.removeItem('take-web-app:student-login:id');
+  };
+
   useAsyncEffect(async () => {
     const storedStudentId = window.localStorage.getItem('take-web-app:student-login:id');
 
@@ -29,7 +35,12 @@ const MySurveysPage: FC = () => {
   useAsyncEffect(async () => {
     if (studentId) {
       const response = await request.get(`students/profile/${studentId}`);
-      setStudent(response.data as Student);
+
+      if (response.status === 200) {
+        setStudent(response.data as Student);
+      } else {
+        logout();
+      }
     }
   }, [studentId]);
 
@@ -95,12 +106,6 @@ const MySurveysPage: FC = () => {
       setSurveys(filteredSurveys);
     }
   }, [filledSurveysResponse, allSurveysResponse]);
-
-  const logout = () => {
-    setStudent(null);
-    setStudentId(null);
-    window.localStorage.removeItem('take-web-app:student-login:id');
-  };
 
   const handleLoginError = (error: Error) => {
     console.error(error);
