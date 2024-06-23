@@ -6,6 +6,29 @@ const path = require('path');
 const ESLintPlugin = require('eslint-webpack-plugin');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const TerserPlugin = require('terser-webpack-plugin');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { settings } = require('./src/settings');
+
+
+const configs = {
+  production: {
+    mode: 'production',
+  },
+  development: {
+    mode: 'development',
+  }
+}
+
+
+if (process.env.NODE_ENV === undefined) {
+  throw new Error('NODE_ENV must be defined');
+}
+
+if (! Object.keys(configs).includes(process.env.NODE_ENV.toLowerCase())) {
+  throw new Error('Invalid NODE_ENV');
+}
+
+const envConfig = configs[process.env.NODE_ENV];
 
 const htmlPlugin = new HtmlWebPackPlugin({
   template: './src/index.html',
@@ -28,7 +51,7 @@ const minimizer = new TerserPlugin({
 });
 
 module.exports = {
-  mode: 'development',
+  ...envConfig,
   module: {
     rules: [
       {
@@ -70,6 +93,7 @@ module.exports = {
   },
   plugins: [htmlPlugin],
   output: {
+    publicPath: settings.browserBaseURL,
     filename: 'scripts-bundled.js',
     path: path.resolve(__dirname, 'build'),
   },

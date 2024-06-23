@@ -8,6 +8,7 @@ import { useGetStudents } from '../../hooks/useGetStudents.hook';
 import { useDeleteStudent } from '../../hooks/useDeleteStudent.hook';
 import { BasicRequestResult } from '../../types/BasicRequestResult';
 import { showNotification } from '../../utils/Notifications';
+import { settings } from '../../settings';
 
 const StudentsListPage: FC = () => {
   const { students, error: getStudentsError, updateList } = useGetStudents();
@@ -59,7 +60,7 @@ const StudentsListPage: FC = () => {
           Students
         </Text>
 
-        <Button component={Link} to="/administration/add-new-student">
+        <Button component={Link} to={`${settings.browserBaseURL}/administration/add-new-student`}>
           Add new
         </Button>
       </Flex>
@@ -87,13 +88,20 @@ const StudentsListPage: FC = () => {
                 <Button variant="subtle" c="red" onClick={() => handleDelete(student.email)}>
                   Delete
                 </Button>
-                <Button variant="subtle" component={Link} to={`/administration/edit-student-data/${student.studentId}`}>
+                <Button
+                  variant="subtle"
+                  component={Link}
+                  to={`${settings.browserBaseURL}/administration/edit-student-data/${student.studentId}`}
+                >
                   Edit
                 </Button>
 
                 <Divider orientation="vertical" mx={3} />
 
-                <Button component={Link} to={`/administration/surveys-of-student/${student.studentId}`}>
+                <Button
+                  component={Link}
+                  to={`${settings.browserBaseURL}/administration/surveys-of-student/${student.studentId}`}
+                >
                   Show surveys {'>'}
                 </Button>
               </Flex>

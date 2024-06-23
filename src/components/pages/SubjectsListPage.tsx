@@ -5,6 +5,7 @@ import { Subject } from '../../model/existing-objects/Subject';
 import { SubpageError } from '../SubpageError';
 import { useGetSubjects } from '../../hooks/useGetSubjects.hook';
 import { SubpageLoader } from '../SubpageLoader';
+import { settings } from '../../settings';
 
 const SubjectsListPage: FC = () => {
   const { subjects, error } = useGetSubjects();
@@ -24,7 +25,7 @@ const SubjectsListPage: FC = () => {
           Subjects
         </Text>
 
-        <Button component={Link} to="/administration/add-new-subject">
+        <Button component={Link} to={`${settings.browserBaseURL}/administration/add-new-subject`}>
           Add new
         </Button>
       </Flex>
@@ -39,7 +40,7 @@ const SubjectsListPage: FC = () => {
             <Flex justify="space-between" align="center">
               <Text>{subject.name}</Text>
 
-              <Button component={Link} to={`/administration/subject-data/${subject.id}`}>
+              <Button component={Link} to={`${settings.browserBaseURL}/administration/subject-data/${subject.id}`}>
                 Show {'>'}
               </Button>
             </Flex>

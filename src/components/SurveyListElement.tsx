@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { Button, Card, Flex, Text } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import { BasicSurvey } from '../model/existing-objects/Survey';
+import { settings } from '../settings';
 
 type SurveyListElementProps = {
   survey: BasicSurvey;
@@ -12,7 +13,7 @@ const SurveyListElement: FC<SurveyListElementProps> = ({ survey: { name, surveyI
     <Flex justify="space-between" align="center">
       <Text>{name}</Text>
 
-      <Button component={Link} to={`/complete-survey/${surveyId}`} variant="subtle">
+      <Button component={Link} to={`${settings.browserBaseURL}/complete-survey/${surveyId}`} variant="subtle">
         Complete {'>'}
       </Button>
     </Flex>

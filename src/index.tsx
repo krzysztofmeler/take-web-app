@@ -24,10 +24,17 @@ import { EditStudentDataPage } from './components/pages/EditStudentDataPage';
 import { SubjectDataPage } from './components/pages/SubjectDataPage';
 import { PageLayout } from './components/page-layout/PageLayout';
 import { EditSubjectDataPage } from './components/pages/EditSubjectDataPage';
+import { settings } from './settings';
 
 const theme = createTheme({
   fontFamily: 'Poppins, Open Sans, sans-serif',
 });
+
+let basePath = new URL(settings.browserBaseURL).pathname;
+
+if (basePath.endsWith('/')) {
+  basePath = basePath.slice(0, -1);
+}
 
 const root = ReactDOM.createRoot(document.getElementById('react-page-root') as HTMLElement);
 root.render(
@@ -41,75 +48,75 @@ root.render(
             element: <PageLayout />,
             children: [
               {
-                path: '/complete-survey/:id',
+                path: `${basePath}/complete-survey/:id`,
                 element: <CompleteSurveyPage />,
               },
               {
-                path: '/administration/surveys-list',
+                path: `${basePath}/administration/surveys-list`,
                 element: <SurveysListPage />,
               },
               {
-                path: '/administration/survey-data/:id',
+                path: `${basePath}/administration/survey-data/:id`,
                 element: <SurveyDataPage />,
               },
               {
-                path: '/administration/lecturers-list',
+                path: `${basePath}/administration/lecturers-list`,
                 element: <LecturersListPage />,
               },
               {
-                path: '/administration/lecturer-profile/:id',
+                path: `${basePath}/administration/lecturer-profile/:id`,
                 element: <LecturerDataPage />,
               },
               {
-                path: '/administration/add-new-lecturer',
+                path: `${basePath}/administration/add-new-lecturer`,
                 element: <AddNewLecturerPage />,
               },
               {
-                path: '/administration/edit-lecturer-data/:id',
+                path: `${basePath}/administration/edit-lecturer-data/:id`,
                 element: <EditLecturerDataPage />,
               },
               {
-                path: '/administration/subjects-list',
+                path: `${basePath}/administration/subjects-list`,
                 element: <SubjectsListPage />,
               },
               {
-                path: '/administration/subject-data/:id',
+                path: `${basePath}/administration/subject-data/:id`,
                 element: <SubjectDataPage />,
               },
               {
-                path: '/administration/add-new-subject',
+                path: `${basePath}/administration/add-new-subject`,
                 element: <AddNewSubjectPage />,
               },
               {
-                path: '/administration/edit-subject-data/:id',
+                path: `${basePath}/administration/edit-subject-data/:id`,
                 element: <EditSubjectDataPage />,
               },
               {
-                path: '/administration/students-list',
+                path: `${basePath}/administration/students-list`,
                 element: <StudentsListPage />,
               },
               {
-                path: '/administration/edit-student-data/:id',
+                path: `${basePath}/administration/edit-student-data/:id`,
                 element: <EditStudentDataPage />,
               },
               {
-                path: '/administration/surveys-of-student/:id',
+                path: `${basePath}/administration/surveys-of-student/:id`,
                 element: <SurveysOfStudentPage />,
               },
               {
-                path: '/administration/add-new-student',
+                path: `${basePath}/administration/add-new-student`,
                 element: <AddNewStudentPage />,
               },
               {
-                path: '/administration',
+                path: `${basePath}/administration`,
                 element: <AdministrationPage />,
               },
               {
-                path: '/my-surveys',
+                path: `${basePath}/my-surveys`,
                 element: <MySurveysPage />,
               },
               {
-                path: '/',
+                path: `${basePath}/`,
                 element: <ContextSelectionPage />,
               },
               {

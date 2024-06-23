@@ -6,6 +6,7 @@ import lecturersImage from '../../assets/lecturers.jpg';
 import subjectsImage from '../../assets/subjects.jpg';
 import surveysImage from '../../assets/surveys.png';
 import { LinksDesc } from '../../types/link-desc';
+import { settings } from '../../settings';
 
 type CardItemDesc = {
   name: string;
@@ -21,11 +22,11 @@ const cardItemsDesc: CardItemsDesc = [
     image: studentsImage,
     elements: [
       {
-        link: '/administration/students-list',
+        link: `${settings.browserBaseURL}/administration/students-list`,
         text: 'List of students',
       },
       {
-        link: '/administration/add-new-student',
+        link: `${settings.browserBaseURL}/administration/add-new-student`,
         text: 'Add student',
       },
     ],
@@ -35,11 +36,11 @@ const cardItemsDesc: CardItemsDesc = [
     image: lecturersImage,
     elements: [
       {
-        link: '/administration/lecturers-list',
+        link: `${settings.browserBaseURL}/administration/lecturers-list`,
         text: 'List of lecturers',
       },
       {
-        link: '/administration/add-new-lecturer',
+        link: `${settings.browserBaseURL}/administration/add-new-lecturer`,
         text: 'Add lecturers',
       },
     ],
@@ -49,11 +50,11 @@ const cardItemsDesc: CardItemsDesc = [
     image: subjectsImage,
     elements: [
       {
-        link: '/administration/subjects-list',
+        link: `${settings.browserBaseURL}/administration/subjects-list`,
         text: 'List of subjects',
       },
       {
-        link: '/administration/add-new-subject',
+        link: `${settings.browserBaseURL}/administration/add-new-subject`,
         text: 'Add subject',
       },
     ],
@@ -63,7 +64,7 @@ const cardItemsDesc: CardItemsDesc = [
     image: surveysImage,
     elements: [
       {
-        link: '/administration/surveys-list',
+        link: `${settings.browserBaseURL}/administration/surveys-list`,
         text: 'List of surveys',
       },
     ],

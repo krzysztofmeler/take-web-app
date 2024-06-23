@@ -4,6 +4,7 @@ import { Badge, Button, Card, Group, Text, Image, Flex } from '@mantine/core';
 
 import administratorImage from '../../assets/administrator.jpg';
 import lectureImage from '../../assets/lecture.jpg';
+import { settings } from '../../settings';
 
 const ContextSelectionPage: FC = () => (
   <Flex justify="center" w="100%" gap={20} py={30} px={20} wrap="wrap">
@@ -22,7 +23,7 @@ const ContextSelectionPage: FC = () => (
         better at what they do.
       </Text>
 
-      <Button component={Link} to="/my-surveys" color="blue" fullWidth mt="md" radius="md">
+      <Button component={Link} to={`${settings.browserBaseURL}/my-surveys`} color="blue" fullWidth mt="md" radius="md">
         Fill survey
       </Button>
     </Card>
@@ -41,7 +42,14 @@ const ContextSelectionPage: FC = () => (
         Add new students, subjects and lecturers to the system. Edit or correct their data, check surveys and results.
       </Text>
 
-      <Button component={Link} to="/administration" color="blue" fullWidth mt="md" radius="md">
+      <Button
+        component={Link}
+        to={`${settings.browserBaseURL}/administration`}
+        color="blue"
+        fullWidth
+        mt="md"
+        radius="md"
+      >
         Open panel
       </Button>
     </Card>

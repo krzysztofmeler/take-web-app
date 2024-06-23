@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Card, Flex, Group, Text } from '@mantine/core';
+import { settings } from '../../settings';
 
 const PageNotFoundPage: FC = () => (
   <Flex w="100%" justify="center">
@@ -11,7 +12,7 @@ const PageNotFoundPage: FC = () => (
             Page not found
           </Text>
           <Text size="sm">Sorry, buy we cannot find the content you are looking for.</Text>
-          <Button component={Link} to="/" fullWidth={false}>
+          <Button component={Link} to={settings.browserBaseURL} fullWidth={false}>
             Main page
           </Button>
         </Flex>

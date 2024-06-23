@@ -9,6 +9,7 @@ import { SubpageLoader } from '../SubpageLoader';
 import { useDeleteLecturer } from '../../hooks/useDeleteLecturer.hook';
 import { BasicRequestResult } from '../../types/BasicRequestResult';
 import { showNotification } from '../../utils/Notifications';
+import { settings } from '../../settings';
 
 const LecturersListPage: FC = () => {
   const { lecturers, error, updateList } = useGetLecturers();
@@ -57,7 +58,7 @@ const LecturersListPage: FC = () => {
           Lecturers
         </Text>
 
-        <Button component={Link} to="/administration/add-new-lecturer">
+        <Button component={Link} to={`${settings.browserBaseURL}/administration/add-new-lecturer`}>
           Add new
         </Button>
       </Flex>
@@ -94,14 +95,17 @@ const LecturersListPage: FC = () => {
                 <Button
                   variant="subtle"
                   component={Link}
-                  to={`/administration/edit-lecturer-data/${lecturer.lecturerId}`}
+                  to={`${settings.browserBaseURL}/administration/edit-lecturer-data/${lecturer.lecturerId}`}
                 >
                   Edit
                 </Button>
 
                 <Divider orientation="vertical" mx={3} />
 
-                <Button component={Link} to={`/administration/lecturer-profile/${lecturer.lecturerId}`}>
+                <Button
+                  component={Link}
+                  to={`${settings.browserBaseURL}/administration/lecturer-profile/${lecturer.lecturerId}`}
+                >
                   Show {'>'}
                 </Button>
               </Flex>

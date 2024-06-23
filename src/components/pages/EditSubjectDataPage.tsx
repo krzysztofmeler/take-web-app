@@ -13,6 +13,7 @@ import { showNotification } from '../../utils/Notifications';
 import { sleep } from '../../utils/sleep';
 import { SubpageError } from '../SubpageError';
 import { SubjectSchemaType, SubjectValidationSchema } from '../../validation-schemas/subject';
+import { settings } from '../../settings';
 
 const EditSubjectDataPage: FC = () => {
   const {
@@ -70,7 +71,7 @@ const EditSubjectDataPage: FC = () => {
   useAsyncEffect(async () => {
     if (editSubjectResult === BasicRequestResult.Ok) {
       await sleep(500);
-      navigate(`/administration/subject-data/${id}`);
+      navigate(`${settings.browserBaseURL}/administration/subject-data/${id}`);
     }
   }, [editSubjectResult]);
 

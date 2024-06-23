@@ -9,6 +9,7 @@ import { useAsyncEffect } from '../../hooks/useAsyncEffect.hook';
 import { BasicRequestResult } from '../../types/BasicRequestResult';
 import { SubpageLoader } from '../SubpageLoader';
 import { SubpageError } from '../SubpageError';
+import { settings } from '../../settings';
 
 const LecturerDataPage: FC = () => {
   const [lecturer, setLecturer] = useState<Lecturer | null>(null);
@@ -40,7 +41,7 @@ const LecturerDataPage: FC = () => {
           Lecturer
         </Text>
 
-        <Button component={Link} to={`/administration/edit-lecturer-data/${id}`}>
+        <Button component={Link} to={`${settings.browserBaseURL}/administration/edit-lecturer-data/${id}`}>
           Edit profile
         </Button>
       </Flex>

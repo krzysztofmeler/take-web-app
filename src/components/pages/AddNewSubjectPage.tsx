@@ -10,6 +10,7 @@ import { useAsyncEffect } from '../../hooks/useAsyncEffect.hook';
 import { sleep } from '../../utils/sleep';
 import { showNotification } from '../../utils/Notifications';
 import { SubjectSchemaType, SubjectValidationSchema } from '../../validation-schemas/subject';
+import { settings } from '../../settings';
 
 const AddNewSubjectPage: FC = () => {
   const { proceed: addSubject, result: addSubjectResult } = useAddSubject();
@@ -44,7 +45,7 @@ const AddNewSubjectPage: FC = () => {
   useAsyncEffect(async () => {
     if (addSubjectResult === BasicRequestResult.Ok) {
       await sleep(500);
-      navigate('/administration/subjects-list');
+      navigate(`${settings.browserBaseURL}/administration/subjects-list`);
     }
   }, [addSubjectResult]);
 

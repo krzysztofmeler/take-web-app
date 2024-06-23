@@ -1,32 +1,33 @@
 import { LinksDesc } from '../types/link-desc';
+import { settings } from '../settings';
 
 const AdminAreaLinks: LinksDesc = [
   {
-    link: '/administration/subjects-list',
+    link: `${settings.browserBaseURL}/administration/subjects-list`,
     text: 'All subjects list',
   },
   {
-    link: '/administration/add-new-subject',
+    link: `${settings.browserBaseURL}/administration/add-new-subject`,
     text: 'Add new subject',
   },
   {
-    link: '/administration/lecturers-list',
+    link: `${settings.browserBaseURL}/administration/lecturers-list`,
     text: 'All lecturers list',
   },
   {
-    link: '/administration/add-new-lecturer',
+    link: `${settings.browserBaseURL}/administration/add-new-lecturer`,
     text: 'Add new lecturer',
   },
   {
-    link: '/administration/surveys-list',
+    link: `${settings.browserBaseURL}/administration/surveys-list`,
     text: 'All surveys list',
   },
   {
-    link: '/administration/students-list',
+    link: `${settings.browserBaseURL}/administration/students-list`,
     text: 'All students list',
   },
   {
-    link: '/administration/add-new-student',
+    link: `${settings.browserBaseURL}/administration/add-new-student`,
     text: 'Add new student',
   },
 ];

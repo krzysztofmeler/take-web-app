@@ -9,29 +9,21 @@ import { Answer } from '../../model/existing-objects/Answer';
 import { settings } from '../../settings';
 import { RatingMax } from '../../commons/RatingRange';
 import { SubpageLoader } from '../SubpageLoader';
+import { request } from '../../utils/request';
+import { useAsyncEffect } from '../../hooks/useAsyncEffect.hook';
 
 const CompleteSurveyPage: FC = () => {
   const { id } = useParams();
 
   const [survey, setSurvey] = useState<Survey | null>(null);
 
-  const surveyRequest = useRequest(`${settings.backendAPIUrl}surveys/${id}`, {
-    method: 'GET',
-    mode: 'cors',
-  });
+  useAsyncEffect(async () => {
+    const surveyRequest = await request.get(`surveys/${id}`);
 
-  useEffect(() => {
-    if (surveyRequest.error) {
-      window.alert('An error occurred while loading survey, try again later.');
-      console.error(surveyRequest.error);
+    if (surveyRequest.status === 200) {
+      setSurvey(surveyRequest.data);
     }
-  }, [surveyRequest.error]);
-
-  useEffect(() => {
-    if (surveyRequest.data && Object.hasOwn(surveyRequest.data, 'surveyId')) {
-      setSurvey(surveyRequest.data as Survey);
-    }
-  }, [surveyRequest.data]);
+  }, []);
 
   const [answers, setAnswers] = useState<[number, number][]>([]);
 
@@ -117,7 +109,7 @@ const CompleteSurveyPage: FC = () => {
         <Card mih={120} maw={800} w={600} withBorder shadow="sm">
           <Flex direction="column" align="center" justify="center" gap={20} p={20}>
             <Text>Thank you for answers</Text>
-            <Button component={Link} to="/my-surveys">
+            <Button component={Link} to={`${settings.browserBaseURL}/my-surveys`}>
               Go back to surveys
             </Button>
           </Flex>

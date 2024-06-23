@@ -56,7 +56,7 @@ const SurveysOfStudentPage: FC = () => {
             <Flex justify="space-between" align="center">
               <Text>{survey.surveyName}</Text>
 
-              <Button component={Link} to={`/administration/survey-data/${survey.surveyId}`}>
+              <Button component={Link} to={`${settings.browserBaseURL}/administration/survey-data/${survey.surveyId}`}>
                 Show averages {'>'}
               </Button>
             </Flex>

@@ -16,6 +16,7 @@ import { useEditLecturer } from '../../hooks/useEditLecturer.hook';
 import { sleep } from '../../utils/sleep';
 import { showNotification } from '../../utils/Notifications';
 import { LecturerSchemaType, LecturerValidationSchema } from '../../validation-schemas/lecturer';
+import { settings } from '../../settings';
 
 const EditLecturerDataPage: FC = () => {
   const {
@@ -90,7 +91,7 @@ const EditLecturerDataPage: FC = () => {
   useAsyncEffect(async () => {
     if (editLecturerResult === BasicRequestResult.Ok) {
       await sleep(500);
-      navigate(`/administration/lecturer-profile/${id}`);
+      navigate(`${settings.browserBaseURL}/administration/lecturer-profile/${id}`);
     }
   }, [editLecturerResult]);
 

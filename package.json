@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "lint": "eslint src --fix",
-    "build": "webpack",
-    "start:watch": "webpack server --config webpack.config.js"
+    "build": "export NODE_ENV=production && webpack",
+    "start:watch": "export NODE_ENV=development && webpack server --config webpack.config.js"
   },
   "author": "Krzysztof Meler",
   "license": "UNLICENSED",

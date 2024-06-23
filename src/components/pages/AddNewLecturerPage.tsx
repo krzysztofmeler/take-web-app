@@ -13,6 +13,7 @@ import { showNotification } from '../../utils/Notifications';
 import { useAsyncEffect } from '../../hooks/useAsyncEffect.hook';
 import { sleep } from '../../utils/sleep';
 import { LecturerSchemaType, LecturerValidationSchema } from '../../validation-schemas/lecturer';
+import { settings } from '../../settings';
 
 const AddNewLecturerPage: FC = () => {
   const {
@@ -58,7 +59,7 @@ const AddNewLecturerPage: FC = () => {
   useAsyncEffect(async () => {
     if (addLecturerResult === BasicRequestResult.Ok) {
       await sleep(500);
-      navigate('/administration/lecturers-list');
+      navigate(`${settings.browserBaseURL}/administration/lecturers-list`);
     }
   }, [addLecturerResult]);
 

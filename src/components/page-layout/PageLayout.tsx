@@ -33,7 +33,7 @@ const PageLayout: FC = () => {
           <Burger px={30} py={20} mih={60} opened={opened} onClick={toggle} hiddenFrom="sm" size="md" />
 
           <Group flex={1} style={{ justifyContent: 'space-between' }} px={10}>
-            <Button variant="subtle" px={14} py={10} mih={60} radius="md" component={Link} to="/">
+            <Button variant="subtle" px={14} py={10} mih={60} radius="md" component={Link} to={settings.browserBaseURL}>
               <Flex gap={6} style={{ alignItems: 'center' }}>
                 <Image width={50} h={50} src={logo} />
                 <Text c="#222" component="h1" size="lg" style={{ textDecoration: 'none' }} visibleFrom="xs">
@@ -43,11 +43,11 @@ const PageLayout: FC = () => {
             </Button>
 
             <Flex justify="space-between" px="md" gap={40} visibleFrom="sm">
-              <Button fw={500} variant="subtle" component={Link} to="/my-surveys">
+              <Button fw={500} variant="subtle" component={Link} to={`${settings.browserBaseURL}/my-surveys`}>
                 Fill surveys
               </Button>
 
-              <Button fw={500} variant="subtle" component={Link} to="/administration">
+              <Button fw={500} variant="subtle" component={Link} to={`${settings.browserBaseURL}/administration`}>
                 Administration
               </Button>
             </Flex>

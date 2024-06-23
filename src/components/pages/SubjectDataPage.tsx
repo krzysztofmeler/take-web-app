@@ -54,7 +54,7 @@ const SubjectDataPage: FC = () => {
       });
 
       await sleep(500);
-      navigate('/administration/subjects-list');
+      navigate(`${settings.browserBaseURL}/administration/subjects-list`);
     } else {
       showNotification({
         color: 'red',
@@ -76,7 +76,10 @@ const SubjectDataPage: FC = () => {
             Delete
           </Button>
 
-          <Button component={Link} to={`/administration/edit-subject-data/${subject.subjectId}`}>
+          <Button
+            component={Link}
+            to={`${settings.browserBaseURL}/administration/edit-subject-data/${subject.subjectId}`}
+          >
             Edit name
           </Button>
         </Group>

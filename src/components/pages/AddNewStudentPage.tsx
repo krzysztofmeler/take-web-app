@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Group, Text } from '@mantine/core';
 import { useForm } from 'react-hook-form';
@@ -10,6 +10,7 @@ import { showNotification } from '../../utils/Notifications';
 import { useAsyncEffect } from '../../hooks/useAsyncEffect.hook';
 import { sleep } from '../../utils/sleep';
 import { StudentSchemaType, StudentValidationSchema } from '../../validation-schemas/student';
+import { settings } from '../../settings';
 
 const AddNewStudentPage: FC = () => {
   const {
@@ -44,7 +45,7 @@ const AddNewStudentPage: FC = () => {
   useAsyncEffect(async () => {
     if (result === BasicRequestResult.Ok) {
       await sleep(500);
-      navigate('/administration/students-list');
+      navigate(`${settings.browserBaseURL}/administration/students-list`);
     }
   }, [result]);
 

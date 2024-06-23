@@ -51,7 +51,7 @@ const SurveysListPage: FC = () => {
             <Flex justify="space-between" align="center">
               <Text>{survey.name}</Text>
 
-              <Button component={Link} to={`/administration/survey-data/${survey.surveyId}`}>
+              <Button component={Link} to={`${settings.browserBaseURL}/administration/survey-data/${survey.surveyId}`}>
                 Show results {'>'}
               </Button>
             </Flex>
