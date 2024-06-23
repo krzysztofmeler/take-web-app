@@ -108,14 +108,6 @@ const MySurveysPage: FC = () => {
     }
   }, [filledSurveysResponse, allSurveysResponse]);
 
-  const handleLoginError = (error: Error) => {
-    showNotification({
-      color: 'red',
-      title: 'Unknown error',
-      message: 'Check provided email and try again. If problem still occurs, contact administrator.',
-    });
-  };
-
   const handleLoginSuccess = (student: Student) => {
     setStudent(student);
     setStudentId(student.studentId);
@@ -136,7 +128,7 @@ const MySurveysPage: FC = () => {
   } else if (studentId === null) {
     return (
       <Flex justify="center" w="100%" my={40}>
-        <SurveyLoginCard onSuccess={handleLoginSuccess} onFailure={handleLoginError} />
+        <SurveyLoginCard onSuccess={handleLoginSuccess} onFailure={() => ({})} />
       </Flex>
     );
   } else if (student !== null) {
@@ -171,7 +163,6 @@ const MySurveysPage: FC = () => {
       </Flex>
     );
   } else {
-    console.error('error');
     return <>error</>;
   }
 };
