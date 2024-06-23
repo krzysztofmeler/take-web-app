@@ -72,6 +72,7 @@ const EditStudentDataPage: FC = () => {
           setLastName={setLastName}
           setEmail={setEmail}
           submit={submit}
+          submitDisabled={false} // todo
         />
       </Group>
     </Card>
