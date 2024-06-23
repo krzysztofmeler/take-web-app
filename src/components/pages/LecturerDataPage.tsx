@@ -64,6 +64,12 @@ const LecturerDataPage: FC = () => {
             <Text size="xs">{lecturer.email}</Text>
 
             <Flex mt={7} wrap="wrap" justify="start" gap={8}>
+              {lecturer.subjects.length === 0 && (
+                <Badge color="red" fw={400}>
+                  no subjects
+                </Badge>
+              )}
+
               {lecturer.subjects.map((subject) => (
                 <Badge fw={400} key={subject}>
                   {subject}

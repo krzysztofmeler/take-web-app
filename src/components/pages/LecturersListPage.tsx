@@ -65,6 +65,8 @@ const LecturersListPage: FC = () => {
       <Divider my={10} />
 
       <Group gap={10}>
+        {lecturers.length === 0 && <SubpageError text="No lecturers" />}
+
         {(lecturers as Lecturer[]).map((lecturer) => (
           <Card w="100%" shadow="sm" withBorder key={lecturer.lecturerId}>
             <Flex justify="space-between">

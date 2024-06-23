@@ -4,6 +4,7 @@ import { Button, Card, Divider, Flex, Group, Loader, Text } from '@mantine/core'
 import { Subject } from '../../model/existing-objects/Subject';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
+import { SubpageError } from '../SubpageError';
 
 const SubjectsListPage: FC = () => {
   const [subjects, setSubjects] = useState<Subject[]>([]);
@@ -48,6 +49,8 @@ const SubjectsListPage: FC = () => {
       <Divider my={10} />
 
       <Group gap={10}>
+        {subjects.length === 0 && <SubpageError text="No subjects" />}
+
         {(subjects as Subject[]).map((subject) => (
           <Card w="100%" shadow="sm" withBorder key={subject.id}>
             <Flex justify="space-between" align="center">

@@ -5,6 +5,7 @@ import { Student } from '../../model/existing-objects/Student';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
 import { InitialsAvatar } from '../InitialsAvatar';
+import { SubpageError } from '../SubpageError';
 
 const StudentsListPage: FC = () => {
   const [students, setStudents] = useState<Student[]>([]);
@@ -62,6 +63,8 @@ const StudentsListPage: FC = () => {
       <Divider my={10} />
 
       <Group gap={10}>
+        {students.length === 0 && <SubpageError text="No students" />}
+
         {(students as Student[]).map((student) => (
           <Card w="100%" shadow="sm" withBorder key={student.studentId}>
             <Flex justify="space-between">

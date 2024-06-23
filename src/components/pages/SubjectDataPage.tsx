@@ -8,6 +8,7 @@ import { SubjectWithLecturers } from '../../model/existing-objects/Subject';
 import { InitialsAvatar } from '../InitialsAvatar';
 import { jsSubmit } from '../../utils/js-submit';
 import { request } from '../../utils/request';
+import { SubpageError } from '../SubpageError';
 
 const SubjectDataPage: FC = () => {
   const [subject, setSubject] = useState<SubjectWithLecturers | null>(null);
@@ -88,6 +89,8 @@ const SubjectDataPage: FC = () => {
       <Divider my={10} />
 
       <Group gap={10}>
+        {subject.lecturersNames.length === 0 && <SubpageError text="No lecturers" />}
+
         {subject.lecturersNames.map((lecturer) => (
           <Card w="100%" shadow="sm" withBorder key={lecturer}>
             <Flex align="center" gap={20}>

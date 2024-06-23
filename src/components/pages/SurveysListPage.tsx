@@ -4,6 +4,7 @@ import { Button, Card, Divider, Flex, Group, Loader, Text } from '@mantine/core'
 import { BasicSurvey, Survey } from '../../model/existing-objects/Survey';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
+import { SubpageError } from '../SubpageError';
 
 const SurveysListPage: FC = () => {
   const [surveys, setSurveys] = useState<BasicSurvey[]>([]);
@@ -42,6 +43,8 @@ const SurveysListPage: FC = () => {
       <Divider my={10} />
 
       <Group gap={10}>
+        {surveys.length === 0 && <SubpageError text="No surveys yet" />}
+
         {(surveys as Survey[]).map((survey) => (
           <Card w="100%" shadow="sm" withBorder key={survey.surveyId}>
             <Flex justify="space-between" align="center">
