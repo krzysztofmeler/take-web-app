@@ -85,9 +85,15 @@ const CompleteSurveyPage: FC = () => {
 
             setSubmitted(true);
 
+            const studentId = window.localStorage.getItem('take-web-app:student-login:id');
+
+            if (studentId === null) {
+                return;
+            }
+
             const answersToSend = survey.questions.map(
                 (q): Answer => ({
-                    studentId: 1, // todo: add real id,
+                    studentId: Number.parseInt(studentId, 10),
                     questionId: q.questionId,
                     surveyId: survey.surveyId,
                     rating: answers.find((a) => a[0] === q.questionId)![1],
