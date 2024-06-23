@@ -25,101 +25,99 @@ import { PageLayout } from './components/page-layout/PageLayout';
 import { EditSubjectDataPage } from './components/pages/EditSubjectDataPage';
 
 const theme = createTheme({
-    fontFamily: 'Poppins, Open Sans, sans-serif',
+  fontFamily: 'Poppins, Open Sans, sans-serif',
 });
 
-const root = ReactDOM.createRoot(
-    document.getElementById('react-page-root') as HTMLElement,
-);
+const root = ReactDOM.createRoot(document.getElementById('react-page-root') as HTMLElement);
 root.render(
-    <React.StrictMode>
-        <MantineProvider theme={theme}>
-            <RouterProvider
-              router={createBrowserRouter([
-                    {
-                        path: '/',
-                        element: <PageLayout />,
-                        children: [
-                            {
-                                path: '/complete-survey/:id',
-                                element: <CompleteSurveyPage />,
-                            },
-                            {
-                                path: '/administration/surveys-list',
-                                element: <SurveysListPage />,
-                            },
-                            {
-                                path: '/administration/survey-data/:id',
-                                element: <SurveyDataPage />,
-                            },
-                            {
-                                path: '/administration/lecturers-list',
-                                element: <LecturersListPage />,
-                            },
-                            {
-                                path: '/administration/lecturer-profile/:id',
-                                element: <LecturerDataPage />,
-                            },
-                            {
-                                path: '/administration/add-new-lecturer',
-                                element: <AddNewLecturerPage />,
-                            },
-                            {
-                                path: '/administration/edit-lecturer-data/:id',
-                                element: <EditLecturerDataPage />,
-                            },
-                            {
-                                path: '/administration/subjects-list',
-                                element: <SubjectsListPage />,
-                            },
-                            {
-                                path: '/administration/subject-data/:id',
-                                element: <SubjectDataPage />,
-                            },
-                            {
-                                path: '/administration/add-new-subject',
-                                element: <AddNewSubjectPage />,
-                            },
-                            {
-                                path: '/administration/edit-subject-data/:id',
-                                element: <EditSubjectDataPage />,
-                            },
-                            {
-                                path: '/administration/students-list',
-                                element: <StudentsListPage />,
-                            },
-                            {
-                                path: '/administration/edit-student-data/:id',
-                                element: <EditStudentDataPage />,
-                            },
-                            {
-                                path: '/administration/surveys-of-student/:id',
-                                element: <SurveysOfStudentPage />,
-                            },
-                            {
-                                path: '/administration/add-new-student',
-                                element: <AddNewStudentPage />,
-                            },
-                            {
-                                path: '/administration',
-                                element: <AdministrationPage />,
-                            },
-                            {
-                                path: '/my-surveys',
-                                element: <MySurveysPage />,
-                            },
-                            {
-                                path: '/',
-                                element: <ContextSelectionPage />,
-                            },
-                            {
-                                path: '*',
-                                element: <PageNotFoundPage />,
-                            },
-                        ],
-                    },
-                ])}
-            />
-        </MantineProvider>
-    </React.StrictMode>,
+  <React.StrictMode>
+    <MantineProvider theme={theme}>
+      <RouterProvider
+        router={createBrowserRouter([
+          {
+            path: '/',
+            element: <PageLayout />,
+            children: [
+              {
+                path: '/complete-survey/:id',
+                element: <CompleteSurveyPage />,
+              },
+              {
+                path: '/administration/surveys-list',
+                element: <SurveysListPage />,
+              },
+              {
+                path: '/administration/survey-data/:id',
+                element: <SurveyDataPage />,
+              },
+              {
+                path: '/administration/lecturers-list',
+                element: <LecturersListPage />,
+              },
+              {
+                path: '/administration/lecturer-profile/:id',
+                element: <LecturerDataPage />,
+              },
+              {
+                path: '/administration/add-new-lecturer',
+                element: <AddNewLecturerPage />,
+              },
+              {
+                path: '/administration/edit-lecturer-data/:id',
+                element: <EditLecturerDataPage />,
+              },
+              {
+                path: '/administration/subjects-list',
+                element: <SubjectsListPage />,
+              },
+              {
+                path: '/administration/subject-data/:id',
+                element: <SubjectDataPage />,
+              },
+              {
+                path: '/administration/add-new-subject',
+                element: <AddNewSubjectPage />,
+              },
+              {
+                path: '/administration/edit-subject-data/:id',
+                element: <EditSubjectDataPage />,
+              },
+              {
+                path: '/administration/students-list',
+                element: <StudentsListPage />,
+              },
+              {
+                path: '/administration/edit-student-data/:id',
+                element: <EditStudentDataPage />,
+              },
+              {
+                path: '/administration/surveys-of-student/:id',
+                element: <SurveysOfStudentPage />,
+              },
+              {
+                path: '/administration/add-new-student',
+                element: <AddNewStudentPage />,
+              },
+              {
+                path: '/administration',
+                element: <AdministrationPage />,
+              },
+              {
+                path: '/my-surveys',
+                element: <MySurveysPage />,
+              },
+              {
+                path: '/',
+                element: <ContextSelectionPage />,
+              },
+              {
+                path: '*',
+                element: <PageNotFoundPage />,
+              },
+            ],
+          },
+        ])}
+      />
+    </MantineProvider>
+  </React.StrictMode>,
 );

@@ -1,15 +1,6 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import {
-    Button,
-    Card,
-    Divider,
-    Flex,
-    Group,
-    Image,
-    Space,
-    Text,
-} from '@mantine/core';
+import { Button, Card, Divider, Flex, Group, Image, Space, Text } from '@mantine/core';
 import studentsImage from '../../assets/students.jpg';
 import lecturersImage from '../../assets/lecturers.jpg';
 import subjectsImage from '../../assets/subjects.jpg';
@@ -17,121 +8,105 @@ import surveysImage from '../../assets/surveys.png';
 import { LinksDesc } from '../../types/link-desc';
 
 type CardItemDesc = {
-    name: string;
-    image: unknown;
-    elements: LinksDesc;
+  name: string;
+  image: unknown;
+  elements: LinksDesc;
 };
 
 type CardItemsDesc = CardItemDesc[];
 
 const cardItemsDesc: CardItemsDesc = [
-    {
-        name: 'Students',
-        image: studentsImage,
-        elements: [
-            {
-                link: '/administration/students-list',
-                text: 'List of students',
-            },
-            {
-                link: '/administration/add-new-student',
-                text: 'Add student',
-            },
-        ],
-    },
-    {
-        name: 'Lecturers',
-        image: lecturersImage,
-        elements: [
-            {
-                link: '/administration/lecturers-list',
-                text: 'List of lecturers',
-            },
-            {
-                link: '/administration/add-new-lecturer',
-                text: 'Add lecturers',
-            },
-        ],
-    },
-    {
-        name: 'Subjects',
-        image: subjectsImage,
-        elements: [
-            {
-                link: '/administration/subjects-list',
-                text: 'List of subjects',
-            },
-            {
-                link: '/administration/add-new-subject',
-                text: 'Add subject',
-            },
-        ],
-    },
-    {
-        name: 'Surveys',
-        image: surveysImage,
-        elements: [
-            {
-                link: '/administration/surveys-list',
-                text: 'List of surveys',
-            },
-        ],
-    },
+  {
+    name: 'Students',
+    image: studentsImage,
+    elements: [
+      {
+        link: '/administration/students-list',
+        text: 'List of students',
+      },
+      {
+        link: '/administration/add-new-student',
+        text: 'Add student',
+      },
+    ],
+  },
+  {
+    name: 'Lecturers',
+    image: lecturersImage,
+    elements: [
+      {
+        link: '/administration/lecturers-list',
+        text: 'List of lecturers',
+      },
+      {
+        link: '/administration/add-new-lecturer',
+        text: 'Add lecturers',
+      },
+    ],
+  },
+  {
+    name: 'Subjects',
+    image: subjectsImage,
+    elements: [
+      {
+        link: '/administration/subjects-list',
+        text: 'List of subjects',
+      },
+      {
+        link: '/administration/add-new-subject',
+        text: 'Add subject',
+      },
+    ],
+  },
+  {
+    name: 'Surveys',
+    image: surveysImage,
+    elements: [
+      {
+        link: '/administration/surveys-list',
+        text: 'List of surveys',
+      },
+    ],
+  },
 ];
 
 const AdministrationPage: FC = () => (
-    <>
-        <Flex direction="column" px={10} pt={20} maw={900} mx="auto">
-            <Flex justify="space-between" align="center">
-                <Text component="h2" size="xl">
-                    Administration
-                </Text>
-            </Flex>
+  <>
+    <Flex direction="column" px={10} pt={20} maw={900} mx="auto">
+      <Flex justify="space-between" align="center">
+        <Text component="h2" size="xl">
+          Administration
+        </Text>
+      </Flex>
 
-            <Divider my={12} />
-        </Flex>
+      <Divider my={12} />
+    </Flex>
 
-        <Flex
-          maw={930}
-          justify="center"
-          w="100%"
-          gap={20}
-          pb={30}
-          px={20}
-          wrap="wrap"
-          mx="auto"
-        >
-            {cardItemsDesc.map((desc) => (
-                <Card maw={430} shadow="lg" w="100%" key={desc.name}>
-                    <Card.Section>
-                        <Image src={desc.image} height={220} alt="Norway" />
-                    </Card.Section>
+    <Flex maw={930} justify="center" w="100%" gap={20} pb={30} px={20} wrap="wrap" mx="auto">
+      {cardItemsDesc.map((desc) => (
+        <Card maw={430} shadow="lg" w="100%" key={desc.name}>
+          <Card.Section>
+            <Image src={desc.image} height={220} alt="Norway" />
+          </Card.Section>
 
-                    <Group justify="space-between" mt="md">
-                        <Text fw={500}>{desc.name}</Text>
-                        {/* <Badge color="#0c8f0c">student</Badge> */}
-                    </Group>
+          <Group justify="space-between" mt="md">
+            <Text fw={500}>{desc.name}</Text>
+            {/* <Badge color="#0c8f0c">student</Badge> */}
+          </Group>
 
-                    <Space h={5} />
+          <Space h={5} />
 
-                    <Flex align="center" justify="start" gap={10}>
-                        {desc.elements.map((elem) => (
-                            <Button
-                              key={elem.link}
-                                variant="light"
-                                component={Link}
-                                to={elem.link}
-                                color="blue"
-                                radius="md"
-                            >
-                                {elem.text}
-                            </Button>
-                        ))}
-                    </Flex>
-                </Card>
+          <Flex align="center" justify="start" gap={10}>
+            {desc.elements.map((elem) => (
+              <Button key={elem.link} variant="light" component={Link} to={elem.link} color="blue" radius="md">
+                {elem.text}
+              </Button>
             ))}
-        </Flex>
-    </>
+          </Flex>
+        </Card>
+      ))}
+    </Flex>
+  </>
 );
 
 export { AdministrationPage };

@@ -6,50 +6,45 @@ import { StudentSurveyListResponse } from '../../model/existing-objects/Survey';
 import { StudentWithSurveys } from '../../model/existing-objects/Student';
 
 const SurveysOfStudentPage: FC = () => {
-    const [surveys, setSurveys] = useState<StudentSurveyListResponse | null>(
-        null,
-    );
+  const [surveys, setSurveys] = useState<StudentSurveyListResponse | null>(null);
 
-    const { id } = useParams();
+  const { id } = useParams();
 
-    const request = useRequest(
-        `${settings.backendAPIUrl}students/profile/${id}`,
-        {
-            method: 'GET',
-        },
-    );
+  const request = useRequest(`${settings.backendAPIUrl}students/profile/${id}`, {
+    method: 'GET',
+  });
 
-    // todo: fix duplicated request to survey data EP via GET
+  // todo: fix duplicated request to survey data EP via GET
 
-    useEffect(() => {
-        if (request.error) {
-            alert('An error occurred');
-            console.error(request.error);
-        }
-    }, [request.error]);
+  useEffect(() => {
+    if (request.error) {
+      alert('An error occurred');
+      console.error(request.error);
+    }
+  }, [request.error]);
 
-    useEffect(() => {
-        if (request.data) {
-            setSurveys((request.data as StudentWithSurveys).surveys);
-        }
-    }, [request.data]);
+  useEffect(() => {
+    if (request.data) {
+      setSurveys((request.data as StudentWithSurveys).surveys);
+    }
+  }, [request.data]);
 
-    return (
+  return (
+    <>
+      <h1>Student survey list</h1>
+      {request.processing && <p>Loading</p>}
+      {!request.processing && surveys !== null && (
         <>
-            <h1>Student survey list</h1>
-            {request.processing && <p>Loading</p>}
-            {!request.processing && surveys !== null && (
-                <>
-                    <p>Student survey:</p>
-                    <ul>
-                        {surveys.map(({ surveyId, surveyName }) => (
-                            <li key={surveyId}>{surveyName}</li>
-                        ))}
-                    </ul>
-                </>
-            )}
+          <p>Student survey:</p>
+          <ul>
+            {surveys.map(({ surveyId, surveyName }) => (
+              <li key={surveyId}>{surveyName}</li>
+            ))}
+          </ul>
         </>
-    );
+      )}
+    </>
+  );
 };
 
 export { SurveysOfStudentPage };

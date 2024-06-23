@@ -8,57 +8,51 @@ import { request } from '../../utils/request';
 import { Subject } from '../../model/existing-objects/Subject';
 
 const EditSubjectDataPage: FC = () => {
-    const [name, setName] = useState<string>('');
+  const [name, setName] = useState<string>('');
 
-    const { id } = useParams();
+  const { id } = useParams();
 
-    useAsyncEffect(async () => {
-        const response = await request.get('/subjects');
+  useAsyncEffect(async () => {
+    const response = await request.get('/subjects');
 
-        if (response.status === 200) {
-            const subject = (response.data as Subject[]).find(
-                (s) => s.id.toString() === id,
-            );
+    if (response.status === 200) {
+      const subject = (response.data as Subject[]).find((s) => s.id.toString() === id);
 
-            if (subject === undefined) {
-                // todo: handle as error
-            } else {
-                setName(subject.name);
-            }
-        }
-    }, []);
+      if (subject === undefined) {
+        // todo: handle as error
+      } else {
+        setName(subject.name);
+      }
+    }
+  }, []);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const submit = async () => {
-        const response = await request.put(`/subjects/${id}`, {
-            name,
-        });
+  const submit = async () => {
+    const response = await request.put(`/subjects/${id}`, {
+      name,
+    });
 
-        if (response.status === 200) {
-            setTimeout(() => {
-                navigate(`/administration/subject-data/${id}`);
-            }, 500);
-        }
-    };
+    if (response.status === 200) {
+      setTimeout(() => {
+        navigate(`/administration/subject-data/${id}`);
+      }, 500);
+    }
+  };
 
-    return (
-        <Card withBorder shadow="md" maw={800} my={20} mx="auto">
-            <Group gap={20} p={10}>
-                <Text component="h2" size="lg" w="100%">
-                    Edit subject name
-                </Text>
+  return (
+    <Card withBorder shadow="md" maw={800} my={20} mx="auto">
+      <Group gap={20} p={10}>
+        <Text component="h2" size="lg" w="100%">
+          Edit subject name
+        </Text>
 
-                <Group maw={700}>
-                    <SubjectForm
-                      name={name}
-                      setName={setName}
-                      submit={submit}
-                    />
-                </Group>
-            </Group>
-        </Card>
-    );
+        <Group maw={700}>
+          <SubjectForm name={name} setName={setName} submit={submit} />
+        </Group>
+      </Group>
+    </Card>
+  );
 };
 
 export { EditSubjectDataPage };

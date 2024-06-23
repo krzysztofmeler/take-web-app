@@ -1,6 +1,6 @@
 type LinkDesc = {
-    text: string;
-    link: string;
+  text: string;
+  link: string;
 };
 
 type LinksDesc = LinkDesc[];

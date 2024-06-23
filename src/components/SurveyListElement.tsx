@@ -4,25 +4,19 @@ import { Link } from 'react-router-dom';
 import { BasicSurvey } from '../model/existing-objects/Survey';
 
 type SurveyListElementProps = {
-    survey: BasicSurvey;
+  survey: BasicSurvey;
 };
 
-const SurveyListElement: FC<SurveyListElementProps> = ({
-    survey: { name, surveyId },
-}) => (
-    <Card w="100%">
-        <Flex justify="space-between" align="center">
-            <Text>{name}</Text>
+const SurveyListElement: FC<SurveyListElementProps> = ({ survey: { name, surveyId } }) => (
+  <Card w="100%">
+    <Flex justify="space-between" align="center">
+      <Text>{name}</Text>
 
-            <Button
-              component={Link}
-              to={`/complete-survey/${surveyId}`}
-              variant="subtle"
-            >
-                Complete {'>'}
-            </Button>
-        </Flex>
-    </Card>
+      <Button component={Link} to={`/complete-survey/${surveyId}`} variant="subtle">
+        Complete {'>'}
+      </Button>
+    </Flex>
+  </Card>
 );
 
 export { SurveyListElement };

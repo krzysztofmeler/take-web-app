@@ -1,13 +1,13 @@
 type StudentLoginContextStudentData = {
-    id: number;
-    name: string;
-    surname: string;
-    email: string;
+  id: number;
+  name: string;
+  surname: string;
+  email: string;
 };
 
 type StudentLoginContextType = {
-    student: StudentLoginContextStudentData | null;
-    update: (data: StudentLoginContextStudentData | null) => void;
+  student: StudentLoginContextStudentData | null;
+  update: (data: StudentLoginContextStudentData | null) => void;
 };
 
 export type { StudentLoginContextStudentData, StudentLoginContextType };

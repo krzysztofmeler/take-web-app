@@ -4,55 +4,43 @@ import { update } from '../utils/forms';
 import { jsSubmit } from '../utils/js-submit';
 
 type StudentFormProps = {
-    firstName: string;
-    lastName: string;
-    email: string;
+  firstName: string;
+  lastName: string;
+  email: string;
 
-    setFirstName: (arg: string) => void;
-    setLastName: (arg: string) => void;
-    setEmail: (arg: string) => void;
+  setFirstName: (arg: string) => void;
+  setLastName: (arg: string) => void;
+  setEmail: (arg: string) => void;
 
-    submit: () => void;
+  submit: () => void;
 };
 
 const StudentForm: FC<StudentFormProps> = ({
-    firstName,
-    lastName,
-    email,
-    setFirstName,
-    setLastName,
-    setEmail,
+  firstName,
+  lastName,
+  email,
+  setFirstName,
+  setLastName,
+  setEmail,
 
-    submit,
+  submit,
 }) => (
-    <Grid maw={700}>
-        <Grid.Col span={6}>
-            <TextInput
-                value={firstName}
-                onChange={update(setFirstName)}
-                label="Name"
-            />
-        </Grid.Col>
-        <Grid.Col span={6}>
-            <TextInput
-                value={lastName}
-                onChange={update(setLastName)}
-                label="Surname"
-            />
-        </Grid.Col>
+  <Grid maw={700}>
+    <Grid.Col span={6}>
+      <TextInput value={firstName} onChange={update(setFirstName)} label="Name" />
+    </Grid.Col>
+    <Grid.Col span={6}>
+      <TextInput value={lastName} onChange={update(setLastName)} label="Surname" />
+    </Grid.Col>
 
-        <Grid.Col span={8}>
-            <TextInput
-                value={email}
-                onChange={update(setEmail)}
-                label="E-mail"
-            />
-        </Grid.Col>
+    <Grid.Col span={8}>
+      <TextInput value={email} onChange={update(setEmail)} label="E-mail" />
+    </Grid.Col>
 
-        <Grid.Col span={10}>
-            <Button onClick={jsSubmit(submit)}>Proceed and close</Button>
-        </Grid.Col>
-    </Grid>
+    <Grid.Col span={10}>
+      <Button onClick={jsSubmit(submit)}>Proceed and close</Button>
+    </Grid.Col>
+  </Grid>
 );
 
 export { StudentForm };
