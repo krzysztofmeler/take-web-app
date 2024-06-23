@@ -22,7 +22,7 @@ const SubjectDataPage: FC = () => {
     const { id } = useParams();
 
     const subjectRequest = useRequest(
-        `${settings.backendAPIUrl}subjects/with-lecturers/${id}`,
+        `${settings.backendAPIUrl}subjects/profile/${id}`,
         {
             method: 'GET',
         },
@@ -89,7 +89,7 @@ const SubjectDataPage: FC = () => {
             <Divider my={10} />
 
             <Group gap={10}>
-                {subject.lecturers.map((lecturer) => (
+                {subject.lecturersNames.map((lecturer) => (
                     <Card w="100%" shadow="sm" withBorder key={lecturer}>
                         <Flex align="center" gap={20}>
                             <InitialsAvatar
@@ -99,7 +99,7 @@ const SubjectDataPage: FC = () => {
 
                             <Flex direction="column" align="start">
                                 <Text>
-                                    {lecturer[1]} {lecturer[2]}
+                                    {lecturer}
                                 </Text>
                             </Flex>
                         </Flex>
