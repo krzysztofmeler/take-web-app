@@ -6,7 +6,8 @@ import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
 import { StudentSurveyListResponse, Survey } from '../../model/existing-objects/Survey';
 import { StudentWithSurveys } from '../../model/existing-objects/Student';
-import { showNotification } from '../../utils/Notifications';
+import { SubpageError } from '../SubpageError';
+import { SubpageLoader } from '../SubpageLoader';
 
 const SurveysOfStudentPage: FC = () => {
   const [surveys, setSurveys] = useState<StudentSurveyListResponse | null>(null);
@@ -18,27 +19,17 @@ const SurveysOfStudentPage: FC = () => {
   });
 
   useEffect(() => {
-    if (request.error) {
-      showNotification({
-        color: 'red',
-        title: 'An error occurred',
-        message: 'Try again later or contact administrator',
-      });
-    }
-  }, [request.error]);
-
-  useEffect(() => {
     if (request.data) {
       setSurveys((request.data as StudentWithSurveys).surveys);
     }
   }, [request.data]);
 
+  if (request.error) {
+    return <SubpageError text="An error occurred while loading list" />;
+  }
+
   if (surveys === null) {
-    return (
-      <Flex mih={200} w="100%" align="center" direction="column" justify="center">
-        <Loader size="lg" />
-      </Flex>
-    );
+    return <SubpageLoader />;
   }
 
   return (
