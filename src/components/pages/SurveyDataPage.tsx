@@ -6,6 +6,7 @@ import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
 import { GetSurveysResultResponse } from '../../model/existing-objects/Answer';
 import { RatingMax } from '../../commons/RatingRange';
+import { SubpageLoader } from '../SubpageLoader';
 
 const SurveyDataPage: FC = () => {
   const [survey, setSurvey] = useState<Survey | null>(null);
@@ -51,9 +52,7 @@ const SurveyDataPage: FC = () => {
 
   if (loading) {
     return (
-      <Flex mih={200} w="100%" align="center" direction="column" justify="center">
-        <Loader size="lg" />
-      </Flex>
+      <SubpageLoader />
     );
   }
 

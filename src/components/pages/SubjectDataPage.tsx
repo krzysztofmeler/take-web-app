@@ -11,6 +11,7 @@ import { request } from '../../utils/request';
 import { SubpageError } from '../SubpageError';
 import { showNotification } from '../../utils/Notifications';
 import { sleep } from '../../utils/sleep';
+import { SubpageLoader } from '../SubpageLoader';
 
 const SubjectDataPage: FC = () => {
   const [subject, setSubject] = useState<SubjectWithLecturers | null>(null);
@@ -40,9 +41,7 @@ const SubjectDataPage: FC = () => {
 
   if (subject === null) {
     return (
-      <Flex mih={200} w="100%" align="center" direction="column" justify="center">
-        <Loader size="lg" />
-      </Flex>
+      <SubpageLoader />
     );
   }
 

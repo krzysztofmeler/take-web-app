@@ -1,36 +1,21 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Card, Divider, Flex, Group, Loader, Text } from '@mantine/core';
 import { Subject } from '../../model/existing-objects/Subject';
-import { useRequest } from '../../hooks/useRequest.hook';
-import { settings } from '../../settings';
 import { SubpageError } from '../SubpageError';
+import { useGetSubjects } from '../../hooks/useGetSubjects.hook';
+import { SubpageLoader } from '../SubpageLoader';
 
 const SubjectsListPage: FC = () => {
-  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const { subjects, error } = useGetSubjects()
 
-  const { data, processing, error } = useRequest(`${settings.backendAPIUrl}subjects`, { method: 'GET' });
-
-  // todo: fix duplicated request to lecturers list via GET
-
-  useEffect(() => {
-    if (error) {
-      alert('An error occurred.');
-      console.error(error);
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (data) {
-      setSubjects(data as Subject[]);
-    }
-  }, [data]);
+  if (error) {
+    return <SubpageError text={'An error occurred while loading list'} />
+  }
 
   if (subjects === null) {
     return (
-      <Flex mih={200} w="100%" align="center" direction="column" justify="center">
-        <Loader size="lg" />
-      </Flex>
+      <SubpageLoader />
     );
   }
 

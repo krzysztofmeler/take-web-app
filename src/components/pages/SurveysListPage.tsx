@@ -5,6 +5,7 @@ import { BasicSurvey, Survey } from '../../model/existing-objects/Survey';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
 import { SubpageError } from '../SubpageError';
+import { SubpageLoader } from '../SubpageLoader';
 
 const SurveysListPage: FC = () => {
   const [surveys, setSurveys] = useState<BasicSurvey[]>([]);
@@ -26,11 +27,13 @@ const SurveysListPage: FC = () => {
     }
   }, [data]);
 
+  if (error) {
+    return (<SubpageError text={'An error occurred while loading list'} />);
+  }
+
   if (surveys === null) {
     return (
-      <Flex mih={200} w="100%" align="center" direction="column" justify="center">
-        <Loader size="lg" />
-      </Flex>
+      <SubpageLoader />
     );
   }
 
