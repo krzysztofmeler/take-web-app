@@ -51,9 +51,7 @@ const SurveyDataPage: FC = () => {
   const loading = surveyRequest.processing || resultsRequest.processing || survey === null || results === null;
 
   if (loading) {
-    return (
-      <SubpageLoader />
-    );
+    return <SubpageLoader />;
   }
 
   const totalRating = results.map((r) => r.averageRating).reduce((sum, curr) => sum + curr, 0);

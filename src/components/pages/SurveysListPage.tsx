@@ -28,13 +28,11 @@ const SurveysListPage: FC = () => {
   }, [data]);
 
   if (error) {
-    return (<SubpageError text={'An error occurred while loading list'} />);
+    return <SubpageError text="An error occurred while loading list" />;
   }
 
   if (surveys === null) {
-    return (
-      <SubpageLoader />
-    );
+    return <SubpageLoader />;
   }
 
   return (

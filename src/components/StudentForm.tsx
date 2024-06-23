@@ -1,44 +1,29 @@
 import { FC } from 'react';
 import { Button, Grid, TextInput } from '@mantine/core';
+import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
 import { update } from '../utils/forms';
 import { jsSubmit } from '../utils/js-submit';
+import { StudentSchemaType } from '../validation-schemas/student';
 
 type StudentFormProps = {
-  firstName: string;
-  lastName: string;
-  email: string;
-
-  setFirstName: (arg: string) => void;
-  setLastName: (arg: string) => void;
-  setEmail: (arg: string) => void;
-
+  errors: FieldErrors<StudentSchemaType>;
   submit: () => void;
   loading: boolean;
   submitDisabled: boolean;
+  register: UseFormRegister<StudentSchemaType>;
 };
 
-const StudentForm: FC<StudentFormProps> = ({
-  firstName,
-  lastName,
-  email,
-  setFirstName,
-  setLastName,
-  setEmail,
-
-  submitDisabled,
-  submit,
-  loading,
-}) => (
+const StudentForm: FC<StudentFormProps> = ({ submitDisabled, submit, errors, loading, register }) => (
   <Grid maw={700}>
     <Grid.Col span={6}>
-      <TextInput value={firstName} onChange={update(setFirstName)} label="Name" />
+      <TextInput error={errors.firstName?.message} {...register('firstName')} withAsterisk label="Name" />
     </Grid.Col>
     <Grid.Col span={6}>
-      <TextInput value={lastName} onChange={update(setLastName)} label="Surname" />
+      <TextInput error={errors.lastName?.message} {...register('lastName')} withAsterisk label="Surname" />
     </Grid.Col>
 
     <Grid.Col span={8}>
-      <TextInput value={email} onChange={update(setEmail)} label="E-mail" />
+      <TextInput error={errors.email?.message} {...register('email')} withAsterisk label="E-mail" />
     </Grid.Col>
 
     <Grid.Col span={10}>

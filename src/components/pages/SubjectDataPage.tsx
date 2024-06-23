@@ -40,9 +40,7 @@ const SubjectDataPage: FC = () => {
   const navigate = useNavigate();
 
   if (subject === null) {
-    return (
-      <SubpageLoader />
-    );
+    return <SubpageLoader />;
   }
 
   const deleteSubject = async () => {

@@ -1,7 +1,9 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { Card, Group, Text } from '@mantine/core';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { StudentForm } from '../StudentForm';
 import { useGetStudent } from '../../hooks/useGetStudent.hook';
 import { useAsyncEffect } from '../../hooks/useAsyncEffect.hook';
@@ -11,11 +13,15 @@ import { SubpageLoader } from '../SubpageLoader';
 import { useEditStudent } from '../../hooks/useEditStudent.hook';
 import { showNotification } from '../../utils/Notifications';
 import { sleep } from '../../utils/sleep';
+import { StudentSchemaType, StudentValidationSchema } from '../../validation-schemas/student';
 
 const EditStudentDataPage: FC = () => {
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors: formErrors, isValid: formValid },
+  } = useForm<StudentSchemaType>({ resolver: zodResolver(StudentValidationSchema), mode: 'onTouched' });
 
   const { id } = useParams();
 
@@ -27,14 +33,14 @@ const EditStudentDataPage: FC = () => {
     const student = await getStudent(id!);
 
     if (student) {
-      setFirstName(student.firstName);
-      setLastName(student.lastName);
-      setEmail(student.email);
+      setValue('firstName', student.firstName);
+      setValue('lastName', student.lastName);
+      setValue('email', student.email);
     }
   }, []);
 
-  const submit = async () => {
-    await editStudent(id!, { firstName, lastName, email });
+  const submit = async (data: StudentSchemaType) => {
+    await editStudent(id!, data);
   };
 
   const navigate = useNavigate();
@@ -78,15 +84,11 @@ const EditStudentDataPage: FC = () => {
         </Text>
 
         <StudentForm
-          firstName={firstName}
-          lastName={lastName}
-          email={email}
-          setFirstName={setFirstName}
-          setLastName={setLastName}
-          setEmail={setEmail}
-          submit={submit}
+          register={register}
+          errors={formErrors}
+          submit={handleSubmit(submit)}
           loading={editStudentResult === BasicRequestResult.Loading}
-          submitDisabled={[BasicRequestResult.Loading, BasicRequestResult.Ok].includes(editStudentResult)} // todo
+          submitDisabled={[BasicRequestResult.Loading, BasicRequestResult.Ok].includes(editStudentResult) || !formValid}
         />
       </Group>
     </Card>

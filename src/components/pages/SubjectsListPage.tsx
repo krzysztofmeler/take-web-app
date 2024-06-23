@@ -7,16 +7,14 @@ import { useGetSubjects } from '../../hooks/useGetSubjects.hook';
 import { SubpageLoader } from '../SubpageLoader';
 
 const SubjectsListPage: FC = () => {
-  const { subjects, error } = useGetSubjects()
+  const { subjects, error } = useGetSubjects();
 
   if (error) {
-    return <SubpageError text={'An error occurred while loading list'} />
+    return <SubpageError text="An error occurred while loading list" />;
   }
 
   if (subjects === null) {
-    return (
-      <SubpageLoader />
-    );
+    return <SubpageLoader />;
   }
 
   return (

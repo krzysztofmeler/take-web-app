@@ -1,29 +1,29 @@
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Group, Text } from '@mantine/core';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { StudentForm } from '../StudentForm';
 import { useAddStudent } from '../../hooks/useAddStudent.hook';
 import { BasicRequestResult } from '../../types/BasicRequestResult';
 import { showNotification } from '../../utils/Notifications';
 import { useAsyncEffect } from '../../hooks/useAsyncEffect.hook';
 import { sleep } from '../../utils/sleep';
+import { StudentSchemaType, StudentValidationSchema } from '../../validation-schemas/student';
 
 const AddNewStudentPage: FC = () => {
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors: formErrors, isValid: formValid },
+  } = useForm<StudentSchemaType>({
+    resolver: zodResolver(StudentValidationSchema),
+    mode: 'onTouched',
+  });
 
   const { result, proceed: addStudent } = useAddStudent();
 
   const navigate = useNavigate();
-
-  const submit = async () => {
-    await addStudent({
-      firstName,
-      lastName,
-      email,
-    });
-  };
 
   useEffect(() => {
     if (result === BasicRequestResult.Ok) {
@@ -58,15 +58,11 @@ const AddNewStudentPage: FC = () => {
         </Text>
 
         <StudentForm
-          firstName={firstName}
-          lastName={lastName}
-          email={email}
-          setFirstName={setFirstName}
-          setLastName={setLastName}
-          setEmail={setEmail}
-          submit={submit}
+          register={register}
+          errors={formErrors}
+          submit={handleSubmit(addStudent)}
           loading={result === BasicRequestResult.Loading}
-          submitDisabled={[BasicRequestResult.Loading, BasicRequestResult.Ok].includes(result)}
+          submitDisabled={[BasicRequestResult.Loading, BasicRequestResult.Ok].includes(result) || !formValid}
         />
       </Group>
     </Card>
