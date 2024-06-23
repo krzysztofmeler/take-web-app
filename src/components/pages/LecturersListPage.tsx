@@ -1,36 +1,43 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Card, Divider, Flex, Group, Loader, Text } from '@mantine/core';
+import { Button, Card, Divider, Flex, Group, Text } from '@mantine/core';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
-import { useRequest } from '../../hooks/useRequest.hook';
-import { settings } from '../../settings';
 import { InitialsAvatar } from '../InitialsAvatar';
+import { useGetLecturers } from '../../hooks/useGetLecturers.hook';
+import { SubpageError } from '../SubpageError';
+import { SubpageLoader } from '../SubpageLoader';
+import { useDeleteLecturer } from '../../hooks/useDeleteLecturer.hook';
+import { BasicRequestResult } from '../../types/BasicRequestResult';
 
 const LecturersListPage: FC = () => {
-  const { data: lecturers, processing, error } = useRequest(`${settings.backendAPIUrl}lecturers`, { method: 'GET' });
+  const { lecturers, error, updateList } = useGetLecturers();
 
-  // todo: fix duplicated request to lecturers list via GET
+  const [deleteEmail, setDeleteEmail] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (error) {
-      alert('An error occurred');
-      console.error(error);
-    }
-  }, [error]);
+  const { proceed: deleteLecturer, result } = useDeleteLecturer();
 
-  const deleteLecturer = async (email: string) => {
-    const response = await fetch(`${settings.backendAPIUrl}lecturers/email/${encodeURIComponent(email)}`, {
-      mode: 'cors',
-      method: 'DELETE',
-    });
+  const handleDelete = async (email: string) => {
+    setDeleteEmail(email);
+    await deleteLecturer(email);
   };
 
+  useEffect(() => {
+    if (result === BasicRequestResult.Error) {
+      console.error('error');
+    } else if (result === BasicRequestResult.Ok) {
+      if (lecturers) {
+        updateList(lecturers.filter((l) => l.email !== deleteEmail));
+      }
+      console.debug('ok');
+    }
+  }, [result]);
+
+  if (error) {
+    return <SubpageError text="An error occurred" />;
+  }
+
   if (lecturers === null) {
-    return (
-      <Flex mih={200} w="100%" align="center" direction="column" justify="center">
-        <Loader size="lg" />
-      </Flex>
-    );
+    return <SubpageLoader />;
   }
 
   return (
@@ -63,7 +70,13 @@ const LecturersListPage: FC = () => {
               </Flex>
 
               <Flex gap={12} align="center">
-                <Button variant="subtle" c="red" onClick={() => deleteLecturer(lecturer.email)}>
+                <Button
+                  variant="subtle"
+                  c="red"
+                  disabled={result === BasicRequestResult.Loading}
+                  loading={lecturer.email === deleteEmail && result === BasicRequestResult.Loading}
+                  onClick={() => handleDelete(lecturer.email)}
+                >
                   Delete
                 </Button>
                 <Button
