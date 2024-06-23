@@ -9,6 +9,8 @@ import { InitialsAvatar } from '../InitialsAvatar';
 import { jsSubmit } from '../../utils/js-submit';
 import { request } from '../../utils/request';
 import { SubpageError } from '../SubpageError';
+import { showNotification } from '../../utils/Notifications';
+import { sleep } from '../../utils/sleep';
 
 const SubjectDataPage: FC = () => {
   const [subject, setSubject] = useState<SubjectWithLecturers | null>(null);
@@ -48,9 +50,20 @@ const SubjectDataPage: FC = () => {
     const response = await request.delete(`/subjects/name/${encodeURIComponent(subject.name)}`);
 
     if (response.status === 204) {
+      showNotification({
+        color: 'green',
+        title: 'Subject successfully deleted',
+        message: '',
+      });
+
+      await sleep(500);
       navigate('/administration/subjects-list');
     } else {
-      // todo: handling of issues
+      showNotification({
+        color: 'red',
+        title: 'An error occurred',
+        message: 'Try again later or contact administrator',
+      });
     }
   };
 
