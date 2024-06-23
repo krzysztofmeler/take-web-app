@@ -22,6 +22,7 @@ import { EditLecturerDataPage } from './components/pages/EditLecturerDataPage';
 import { EditStudentDataPage } from './components/pages/EditStudentDataPage';
 import { SubjectDataPage } from './components/pages/SubjectDataPage';
 import { PageLayout } from './components/page-layout/PageLayout';
+import { EditSubjectDataPage } from './components/pages/EditSubjectDataPage';
 
 const theme = createTheme({
     fontFamily: 'Poppins, Open Sans, sans-serif',
@@ -78,6 +79,10 @@ root.render(
                             {
                                 path: '/administration/add-new-subject',
                                 element: <AddNewSubjectPage />,
+                            },
+                            {
+                                path: '/administration/edit-subject-data/:id',
+                                element: <EditSubjectDataPage />,
                             },
                             {
                                 path: '/administration/students-list',

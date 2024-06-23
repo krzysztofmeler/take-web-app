@@ -1,9 +1,8 @@
 import { FC, useState } from 'react';
-import { Button, Card, Grid, Group, Text, TextInput } from '@mantine/core';
-import { jsSubmit } from '../../utils/js-submit';
+import { Card, Group, Text } from '@mantine/core';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
-import { update } from '../../utils/forms';
+import { SubjectForm } from '../SubjectForm';
 
 const AddNewSubjectPage: FC = () => {
     const [name, setName] = useState<string>('');
@@ -33,21 +32,13 @@ const AddNewSubjectPage: FC = () => {
                     Add new subject
                 </Text>
 
-                <Grid maw={700}>
-                    <Grid.Col span={9}>
-                        <TextInput
-                          value={name}
-                          onChange={update(setName)}
-                          label="Name"
-                        />
-                    </Grid.Col>
-
-                    <Grid.Col span={10}>
-                        <Button onClick={jsSubmit(submit)}>
-                            Proceed and close
-                        </Button>
-                    </Grid.Col>
-                </Grid>
+                <Group maw={700}>
+                    <SubjectForm
+                      name={name}
+                      setName={setName}
+                      submit={submit}
+                    />
+                </Group>
             </Group>
         </Card>
     );
