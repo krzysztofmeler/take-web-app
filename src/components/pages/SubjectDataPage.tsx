@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
     Button,
     Card,
@@ -15,6 +15,8 @@ import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
 import { SubjectWithLecturers } from '../../model/existing-objects/Subject';
 import { InitialsAvatar } from '../InitialsAvatar';
+import { jsSubmit } from '../../utils/js-submit';
+import { request } from '../../utils/request';
 
 const SubjectDataPage: FC = () => {
     const [subject, setSubject] = useState<SubjectWithLecturers | null>(null);
@@ -43,6 +45,8 @@ const SubjectDataPage: FC = () => {
         }
     }, [subjectRequest.data]);
 
+    const navigate = useNavigate();
+
     if (subject === null) {
         return (
             <Flex
@@ -57,6 +61,18 @@ const SubjectDataPage: FC = () => {
         );
     }
 
+    const deleteSubject = async () => {
+        const response = await request.delete(
+            `/subjects/name/${encodeURIComponent(subject.name)}`,
+        );
+
+        if (response.status === 204) {
+            navigate('/administration/subjects-list');
+        } else {
+            // todo: handling of issues
+        }
+    };
+
     return (
         <Flex direction="column" px={10} py={20} maw={1200} mx="auto">
             <Flex justify="space-between" align="center">
@@ -64,12 +80,22 @@ const SubjectDataPage: FC = () => {
                     Subject
                 </Text>
 
-                <Button
-                  component={Link}
-                  to={`/administration/edit-subject-data/${subject.id}`}
-                >
-                    Edit name
-                </Button>
+                <Group gap={10}>
+                    <Button
+                      variant="subtle"
+                      c="red"
+                      onClick={jsSubmit(deleteSubject)}
+                    >
+                        Delete
+                    </Button>
+
+                    <Button
+                      component={Link}
+                      to={`/administration/edit-subject-data/${subject.id}`}
+                    >
+                        Edit name
+                    </Button>
+                </Group>
             </Flex>
 
             <Divider my={10} />
@@ -98,9 +124,7 @@ const SubjectDataPage: FC = () => {
                             />
 
                             <Flex direction="column" align="start">
-                                <Text>
-                                    {lecturer}
-                                </Text>
+                                <Text>{lecturer}</Text>
                             </Flex>
                         </Flex>
                     </Card>
