@@ -65,7 +65,7 @@ const SubjectDataPage: FC = () => {
             Delete
           </Button>
 
-          <Button component={Link} to={`/administration/edit-subject-data/${subject.id}`}>
+          <Button component={Link} to={`/administration/edit-subject-data/${subject.subjectId}`}>
             Edit name
           </Button>
         </Group>

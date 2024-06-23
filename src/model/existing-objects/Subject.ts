@@ -3,7 +3,9 @@ interface Subject {
   name: string;
 }
 
-interface SubjectWithLecturers extends Subject {
+interface SubjectWithLecturers {
+  subjectId: number;
+  name: string;
   lecturersNames: string[];
 }
 
