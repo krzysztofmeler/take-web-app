@@ -2,11 +2,17 @@ import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { Blockquote, Card, Flex, Group, Loader, Space, Text } from '@mantine/core';
-import { useRequest } from '../../hooks/useRequest.hook';
 import { Subject } from '../../model/existing-objects/Subject';
-import { settings } from '../../settings';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { LecturerForm } from '../LecturerForm';
+import { useGetSubjects } from '../../hooks/useGetSubjects.hook';
+import { useGetLecturer } from '../../hooks/useGetLecturer.hook';
+import { useAsyncEffect } from '../../hooks/useAsyncEffect.hook';
+import { BasicRequestResult } from '../../types/BasicRequestResult';
+import { SubpageError } from '../SubpageError';
+import { useEditLecturer } from '../../hooks/useEditLecturer.hook';
+import { sleep } from '../../utils/sleep';
+import { showNotification } from '../../utils/Notifications';
 
 const EditLecturerDataPage: FC = () => {
   const { id } = useParams();
@@ -16,84 +22,73 @@ const EditLecturerDataPage: FC = () => {
   const [email, setEmail] = useState<string>('');
   const [subjectIds, setSubjectIds] = useState<string[] | null>(null);
 
-  const { send: sendRequest, data: response, ...request } = useRequest();
+  const { subjects, error: getSubjectsError } = useGetSubjects();
+  const { get: getLecturer, result: getLecturerResult } = useGetLecturer();
 
-  const { data: lecturer, error: lecturerReqError } = useRequest(`${settings.backendAPIUrl}lecturers/profile/${id}`, {
-    method: 'GET',
-  });
+  const [lecturer, setLecturer] = useState<Lecturer | null>(null);
 
-  const { data: subjects, error } = useRequest(`${settings.backendAPIUrl}subjects`, { method: 'GET' });
+  const { proceed: editLecturer, result: editLecturerResult } = useEditLecturer();
+
+  const navigate = useNavigate();
+
+  useAsyncEffect(async () => {
+    const lecturerData = await getLecturer(id!);
+
+    if (lecturerData) {
+      setLecturer(lecturerData);
+    }
+  }, []);
 
   useEffect(() => {
-    if (lecturer && subjects) {
-      const lecturerData: Lecturer = lecturer as Lecturer;
-      const subjectsData: Subject[] = subjects as Subject[];
-
-      setEmail(lecturerData.email);
-      setFirstName(lecturerData.firstName);
-      setLastName(lecturerData.lastName);
+    if (subjects !== null && lecturer !== null) {
+      setFirstName(lecturer.firstName);
+      setLastName(lecturer.lastName);
+      setEmail(lecturer.email);
       setSubjectIds(
-        lecturerData.subjects.map((name) => (subjectsData.find((sub) => sub.name === name) as Subject).id.toString()),
+        lecturer.subjects.map((name) => (subjects.find((sub) => sub.name === name) as Subject).id.toString()),
       );
     }
-  }, [lecturer, subjects]);
+  }, [subjects, lecturer]);
 
-  // todo: fix duplicated request to lecturers list via GET
-
-  useEffect(() => {
-    if (error) {
-      alert(
-        'An error occurred while loading list of subjects. Subject selection function unavailable and form is disabled. Reload if needed.',
-      );
-      console.error(error);
-    }
-  }, [error]);
-
-  const submit = () => {
-    if (subjectIds === null) {
+  const submit = async () => {
+    if (lecturer === null || subjects === null || subjectIds === null) {
       return;
     }
 
-    sendRequest(`${settings.backendAPIUrl}lecturers/${id}`, {
-      method: 'PUT',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        firstName,
-        lastName,
-        email,
-        subjectIds: subjectIds.map((id) => parseInt(id, 10)),
-        surveys: [],
-      }),
+    await editLecturer(lecturer.lecturerId, {
+      firstName,
+      lastName,
+      email,
+      subjectIds: subjectIds.map((id) => Number.parseInt(id, 10)),
     });
   };
 
   useEffect(() => {
-    if (request.error) {
-      window.alert('An error occurred!'); // TODO: add proper handling
-      console.error(request.error);
+    if (editLecturerResult === BasicRequestResult.Error) {
+      showNotification({
+        color: 'red',
+        title: 'An error occurred',
+        message: 'Unknown error occurred, check your data and try again or contact administrator.',
+      });
+    } else if (editLecturerResult === BasicRequestResult.Ok) {
+      showNotification({
+        color: 'green',
+        title: 'Success',
+        message: "Lecturer's profile successfully updated",
+      });
     }
-  }, [request.error]);
+  }, [editLecturerResult]);
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (typeof response === 'object' && response !== null && Object.hasOwn(response, 'lecturerId')) {
-      navigate('/administration/lecturers-list');
+  useAsyncEffect(async () => {
+    if (editLecturerResult === BasicRequestResult.Ok) {
+      await sleep(500);
+      navigate(`/administration/lecturer-profile/${id}`);
     }
-  }, [response]);
+  }, [editLecturerResult]);
 
-  useEffect(() => {
-    if (subjects !== null && lecturer) {
-      const preselectedSubjects = (lecturer as Lecturer).subjects
-        .map((name) => (subjects as Subject[]).find((s) => s.name === name))
-        .map((s) => s!.id.toString());
-      console.dir({ preselectedSubjects });
-      setSubjectIds(preselectedSubjects);
-    }
-  }, [subjects, lecturer]);
+  if (getSubjectsError || getLecturerResult === BasicRequestResult.Error) {
+    return <SubpageError text="An error occurred while loading data. Try again later or contact administrator." />;
+  }
 
   if (subjectIds === null || lecturer === null) {
     return (
@@ -130,8 +125,8 @@ const EditLecturerDataPage: FC = () => {
             subjects={subjects as Subject[]}
             setSubjectIds={setSubjectIds}
             subjectIds={subjectIds}
-            disableSubmit={false} // todo
-            loading={false} // todo
+            disableSubmit={[BasicRequestResult.Ok, BasicRequestResult.Loading].includes(editLecturerResult)}
+            loading={editLecturerResult === BasicRequestResult.Loading}
           />
         </Group>
       </Group>
