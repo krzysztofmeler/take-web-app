@@ -5,6 +5,7 @@ import { Survey } from '../../model/existing-objects/Survey';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
 import { GetSurveysResultResponse } from '../../model/existing-objects/Answer';
+import { RatingMax } from '../../commons/RatingRange';
 
 const SurveyDataPage: FC = () => {
   const [survey, setSurvey] = useState<Survey | null>(null);
@@ -60,13 +61,13 @@ const SurveyDataPage: FC = () => {
   const averageRating = totalRating / results.length;
 
   const colorForRating = (rating: number): string => {
-    if (rating < 1) {
+    if (rating < 2) {
       return 'red';
     }
-    if (rating < 2) {
+    if (rating < 3.5) {
       return 'orange';
     }
-    if (rating < 3.5) {
+    if (rating < 6.5) {
       return 'yellow';
     }
 
@@ -117,9 +118,14 @@ const SurveyDataPage: FC = () => {
                 <Text>{result.questionContent}</Text>
               </Grid.Col>
 
-              <Grid.Col span={2} offset={1}>
+              <Grid.Col span={3} offset={0}>
                 <Flex justify="start" align="center" h="100%">
-                  <Rating color={colorForRating(result.averageRating)} readOnly value={result.averageRating} />
+                  <Rating
+                    count={RatingMax}
+                    color={colorForRating(result.averageRating)}
+                    readOnly
+                    value={result.averageRating}
+                  />
 
                   <Space w={10} />
 
@@ -137,9 +143,15 @@ const SurveyDataPage: FC = () => {
             <Text size="lg">Average rating</Text>
           </Grid.Col>
 
-          <Grid.Col span={2} offset={1}>
+          <Grid.Col span={3} offset={0}>
             <Flex justify="start" align="center" h="100%">
-              <Rating color={colorForRating(averageRating)} fractions={10} readOnly value={averageRating} />
+              <Rating
+                count={RatingMax}
+                color={colorForRating(averageRating)}
+                fractions={10}
+                readOnly
+                value={averageRating}
+              />
 
               <Space w={10} />
 

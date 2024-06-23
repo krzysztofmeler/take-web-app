@@ -6,6 +6,7 @@ import { Outlet, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/logo-cut.png';
 import { settings } from '../../settings';
+import { AdminAreaLinks } from '../../commons/AdminAreaLinks';
 
 const PageLayout: FC = () => {
   const [opened, { toggle }] = useDisclosure();
@@ -55,7 +56,7 @@ const PageLayout: FC = () => {
       </AppShell.Header>
 
       <AppShell.Navbar p="md">
-        {settings.adminAreaLinks.map((link) => (
+        {AdminAreaLinks.map((link) => (
           <Button
             c="#222"
             fw={400}

@@ -7,6 +7,7 @@ import { useRequest } from '../../hooks/useRequest.hook';
 import { jsSubmit } from '../../utils/js-submit';
 import { Answer } from '../../model/existing-objects/Answer';
 import { settings } from '../../settings';
+import { RatingMax } from '../../commons/RatingRange';
 
 const CompleteSurveyPage: FC = () => {
   const { id } = useParams();
@@ -156,6 +157,7 @@ const CompleteSurveyPage: FC = () => {
               <Grid.Col span={1} offset={1}>
                 <Flex justify="center" align="center" h="100%">
                   <Rating
+                    count={RatingMax}
                     value={answers.find((a) => a[0] === question.questionId)?.[1]}
                     onChange={(v) => updateAnswer(question.questionId, v)}
                   />
