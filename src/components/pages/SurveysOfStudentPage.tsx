@@ -6,6 +6,7 @@ import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
 import { StudentSurveyListResponse, Survey } from '../../model/existing-objects/Survey';
 import { StudentWithSurveys } from '../../model/existing-objects/Student';
+import { showNotification } from '../../utils/Notifications';
 
 const SurveysOfStudentPage: FC = () => {
   const [surveys, setSurveys] = useState<StudentSurveyListResponse | null>(null);
@@ -16,12 +17,13 @@ const SurveysOfStudentPage: FC = () => {
     method: 'GET',
   });
 
-  // todo: fix duplicated request to survey data EP via GET
-
   useEffect(() => {
     if (request.error) {
-      alert('An error occurred');
-      console.error(request.error);
+      showNotification({
+        color: 'red',
+        title: 'An error occurred',
+        message: 'Try again later or contact administrator',
+      });
     }
   }, [request.error]);
 
