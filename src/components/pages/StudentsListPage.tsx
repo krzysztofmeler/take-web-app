@@ -1,44 +1,44 @@
 import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Card, Divider, Flex, Group, Loader, Text } from '@mantine/core';
+import { Button, Card, Divider, em, Flex, Group, Loader, Text } from '@mantine/core';
 import { Student } from '../../model/existing-objects/Student';
-import { useRequest } from '../../hooks/useRequest.hook';
-import { settings } from '../../settings';
 import { InitialsAvatar } from '../InitialsAvatar';
 import { SubpageError } from '../SubpageError';
+import { useGetStudents } from '../../hooks/useGetStudents.hook';
+import { useDeleteStudent } from '../../hooks/useDeleteStudent.hook';
+import { BasicRequestResult } from '../../types/BasicRequestResult';
+import { showNotification } from '../../utils/Notifications';
 
 const StudentsListPage: FC = () => {
-  const [students, setStudents] = useState<Student[]>([]);
+  const { students, error: getStudentsError, updateList } = useGetStudents();
 
-  const { data, error } = useRequest(`${settings.backendAPIUrl}students`, {
-    method: 'GET',
-  });
+  const [deleteEmail, setDeleteEmail] = useState<string | null>(null);
+  const { proceed: deleteStudent, result: deleteStudentResult } = useDeleteStudent();
 
-  // todo: fix duplicated request to students list via GET
-
-  useEffect(() => {
-    if (error) {
-      alert('An error occurred.');
-      console.error(error);
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (data) {
-      setStudents(data as Student[]);
-    }
-  }, [data]);
-
-  const deleteStudent = async (email: string) => {
-    const response = await fetch(`${settings.backendAPIUrl}students/email/${encodeURIComponent(email)}`, {
-      mode: 'cors',
-      method: 'DELETE',
-    });
-
-    if (response.status === 204) {
-      setStudents(students.filter((s) => s.email !== email));
-    }
+  const handleDelete = async (email: string) => {
+    setDeleteEmail(email);
+    await deleteStudent(email);
   };
+
+  useEffect(() => {
+    if (deleteStudentResult === BasicRequestResult.Error) {
+      showNotification({
+        color: 'red',
+        title: 'An error occurred',
+        message: 'Student cannot be deleted for unknown reason, try again later or contact administrator.',
+      });
+    } else if (deleteStudentResult === BasicRequestResult.Ok) {
+      showNotification({
+        color: 'green',
+        title: 'Student deleted',
+        message: 'Student has been successfully deleted and list has been updated.',
+      });
+
+      // if (students !== null) {
+      updateList(students!.filter((s) => s.email !== deleteEmail));
+      // }
+    }
+  }, [deleteStudentResult]);
 
   if (students === null) {
     return (
@@ -46,6 +46,10 @@ const StudentsListPage: FC = () => {
         <Loader size="lg" />
       </Flex>
     );
+  }
+
+  if (getStudentsError) {
+    return <SubpageError text="An error occurred while loading list." />;
   }
 
   return (
@@ -80,7 +84,7 @@ const StudentsListPage: FC = () => {
               </Flex>
 
               <Flex gap={12} align="center">
-                <Button variant="subtle" c="red" onClick={() => deleteStudent(student.email)}>
+                <Button variant="subtle" c="red" onClick={() => handleDelete(student.email)}>
                   Delete
                 </Button>
                 <Button variant="subtle" component={Link} to={`/administration/edit-student-data/${student.studentId}`}>
