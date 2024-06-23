@@ -1,42 +1,36 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Badge, Button, Card, Divider, Flex, Loader, Text } from '@mantine/core';
-import { useRequest } from '../../hooks/useRequest.hook';
-import { settings } from '../../settings';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { InitialsAvatar } from '../InitialsAvatar';
+import { useGetLecturer } from '../../hooks/useGetLecturer.hook';
+import { useAsyncEffect } from '../../hooks/useAsyncEffect.hook';
+import { BasicRequestResult } from '../../types/BasicRequestResult';
+import { SubpageLoader } from '../SubpageLoader';
+import { SubpageError } from '../SubpageError';
 
 const LecturerDataPage: FC = () => {
   const [lecturer, setLecturer] = useState<Lecturer | null>(null);
 
   const { id } = useParams();
 
-  const lecturerRequest = useRequest(`${settings.backendAPIUrl}lecturers/profile/${id}`, {
-    method: 'GET',
-  });
+  const { result: getLecturerResult, get: getLecturer } = useGetLecturer();
 
-  // todo: fix duplicated request to survey data EP via GET
+  useAsyncEffect(async () => {
+    const loadedLecturer = await getLecturer(id!);
 
-  useEffect(() => {
-    if (lecturerRequest.error) {
-      alert('An error occurred');
-      console.error(lecturerRequest.error);
+    if (loadedLecturer) {
+      setLecturer(loadedLecturer);
     }
-  }, [lecturerRequest.error]);
+  }, []);
 
-  useEffect(() => {
-    if (lecturerRequest.data) {
-      setLecturer(lecturerRequest.data as Lecturer);
-    }
-  }, [lecturerRequest.data]);
+  if (getLecturerResult === BasicRequestResult.Loading) {
+    return <SubpageLoader />;
+  }
 
   if (lecturer === null) {
-    return (
-      <Flex mih={200} w="100%" align="center" direction="column" justify="center">
-        <Loader size="lg" />
-      </Flex>
-    );
+    return <SubpageError text="An error occurred" />;
   }
 
   return (
