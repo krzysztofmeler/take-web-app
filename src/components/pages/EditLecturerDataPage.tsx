@@ -2,6 +2,8 @@ import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { Blockquote, Card, Flex, Group, Loader, Space, Text } from '@mantine/core';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Subject } from '../../model/existing-objects/Subject';
 import { Lecturer } from '../../model/existing-objects/Lecturer';
 import { LecturerForm } from '../LecturerForm';
@@ -13,14 +15,22 @@ import { SubpageError } from '../SubpageError';
 import { useEditLecturer } from '../../hooks/useEditLecturer.hook';
 import { sleep } from '../../utils/sleep';
 import { showNotification } from '../../utils/Notifications';
+import { LecturerSchemaType, LecturerValidationSchema } from '../../validation-schemas/lecturer';
 
 const EditLecturerDataPage: FC = () => {
-  const { id } = useParams();
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    formState: { errors: formErrors, isValid: formValid },
+  } = useForm<LecturerSchemaType>({
+    resolver: zodResolver(LecturerValidationSchema),
+    mode: 'onTouched',
+  });
 
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
   const [subjectIds, setSubjectIds] = useState<string[] | null>(null);
+
+  const { id } = useParams();
 
   const { subjects, error: getSubjectsError } = useGetSubjects();
   const { get: getLecturer, result: getLecturerResult } = useGetLecturer();
@@ -41,24 +51,22 @@ const EditLecturerDataPage: FC = () => {
 
   useEffect(() => {
     if (subjects !== null && lecturer !== null) {
-      setFirstName(lecturer.firstName);
-      setLastName(lecturer.lastName);
-      setEmail(lecturer.email);
+      setValue('firstName', lecturer.firstName);
+      setValue('lastName', lecturer.lastName);
+      setValue('email', lecturer.email);
       setSubjectIds(
         lecturer.subjects.map((name) => (subjects.find((sub) => sub.name === name) as Subject).id.toString()),
       );
     }
   }, [subjects, lecturer]);
 
-  const submit = async () => {
-    if (lecturer === null || subjects === null || subjectIds === null) {
+  const submit = async (data: LecturerSchemaType) => {
+    if (subjectIds === null) {
       return;
     }
 
-    await editLecturer(lecturer.lecturerId, {
-      firstName,
-      lastName,
-      email,
+    await editLecturer(id!, {
+      ...data,
       subjectIds: subjectIds.map((id) => Number.parseInt(id, 10)),
     });
   };
@@ -90,7 +98,7 @@ const EditLecturerDataPage: FC = () => {
     return <SubpageError text="An error occurred while loading data. Try again later or contact administrator." />;
   }
 
-  if (subjectIds === null || lecturer === null) {
+  if (subjects === null || subjectIds === null || lecturer === null) {
     return (
       <Flex mih={200} w="100%" align="center" direction="column" justify="center">
         <Loader size="lg" />
@@ -115,16 +123,12 @@ const EditLecturerDataPage: FC = () => {
 
         <Group maw={700}>
           <LecturerForm
-            firstName={firstName}
-            lastName={lastName}
-            email={email}
-            setFirstName={setFirstName}
-            setLastName={setLastName}
-            setEmail={setEmail}
-            submit={submit}
-            subjects={subjects as Subject[]}
+            register={register}
+            errors={formErrors}
             setSubjectIds={setSubjectIds}
             subjectIds={subjectIds}
+            submit={handleSubmit(submit)}
+            subjects={subjects as Subject[]}
             disableSubmit={[BasicRequestResult.Ok, BasicRequestResult.Loading].includes(editLecturerResult)}
             loading={editLecturerResult === BasicRequestResult.Loading}
           />

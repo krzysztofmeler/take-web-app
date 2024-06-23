@@ -1,52 +1,42 @@
 import { FC } from 'react';
 import { Button, Grid, MultiSelect, TextInput } from '@mantine/core';
-import { update } from '../utils/forms';
+import { FieldErrors, UseFormRegister } from 'react-hook-form';
 import { Subject } from '../model/existing-objects/Subject';
 import { jsSubmit } from '../utils/js-submit';
+import { LecturerSchemaType } from '../validation-schemas/lecturer';
 
 type LecturerFormProps = {
-  firstName: string;
-  lastName: string;
-  email: string;
-
-  setFirstName: (arg: string) => void;
-  setLastName: (arg: string) => void;
-  setEmail: (arg: string) => void;
-
   subjectIds: string[];
   setSubjectIds: (arg: string[]) => void;
-
   subjects: Subject[];
 
   submit: () => void;
   disableSubmit: boolean;
   loading: boolean;
+  errors: FieldErrors<LecturerSchemaType>;
+  register: UseFormRegister<LecturerSchemaType>;
 };
 
 const LecturerForm: FC<LecturerFormProps> = ({
-  firstName,
-  lastName,
-  email,
-  subjectIds,
-  setFirstName,
-  setLastName,
-  setEmail,
-  setSubjectIds,
+  register,
+  errors,
   subjects,
   submit,
   loading,
   disableSubmit,
+  setSubjectIds,
+  subjectIds,
 }) => (
   <Grid>
     <Grid.Col span={6}>
-      <TextInput value={firstName} onChange={update(setFirstName)} label="Name" />
+      <TextInput {...register('firstName')} error={errors.firstName?.message} withAsterisk label="Name" />
     </Grid.Col>
     <Grid.Col span={6}>
-      <TextInput value={lastName} onChange={update(setLastName)} label="Surname" />
+      <TextInput {...register('lastName')} error={errors.lastName?.message} withAsterisk label="Surname" />
     </Grid.Col>
 
     <Grid.Col span={8}>
-      <TextInput value={email} onChange={update(setEmail)} label="E-mail" />
+      <TextInput {...register('email')} error={errors.email?.message} withAsterisk label="E-mail" />
     </Grid.Col>
 
     <Grid.Col span={12}>

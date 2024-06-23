@@ -1,6 +1,8 @@
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Blockquote, Card, Flex, Group, Loader, Space, Text } from '@mantine/core';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Subject } from '../../model/existing-objects/Subject';
 import { LecturerForm } from '../LecturerForm';
 import { useGetSubjects } from '../../hooks/useGetSubjects.hook';
@@ -10,11 +12,18 @@ import { BasicRequestResult } from '../../types/BasicRequestResult';
 import { showNotification } from '../../utils/Notifications';
 import { useAsyncEffect } from '../../hooks/useAsyncEffect.hook';
 import { sleep } from '../../utils/sleep';
+import { LecturerSchemaType, LecturerValidationSchema } from '../../validation-schemas/lecturer';
 
 const AddNewLecturerPage: FC = () => {
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors: formErrors, isValid: formValid },
+  } = useForm<LecturerSchemaType>({
+    resolver: zodResolver(LecturerValidationSchema),
+    mode: 'onTouched',
+  });
+
   const [subjectIds, setSubjectIds] = useState<string[]>([]);
 
   const { subjects, error: getSubjectsError } = useGetSubjects();
@@ -23,8 +32,11 @@ const AddNewLecturerPage: FC = () => {
 
   const navigate = useNavigate();
 
-  const submit = async () => {
-    await addLecturer({ email, firstName, lastName, subjectIds: subjectIds.map((s) => Number.parseInt(s, 10)) });
+  const submit = async (data: LecturerSchemaType) => {
+    await addLecturer({
+      ...data,
+      subjectIds: subjectIds.map((id) => Number.parseInt(id, 10)),
+    });
   };
 
   useEffect(() => {
@@ -79,16 +91,12 @@ const AddNewLecturerPage: FC = () => {
 
         <Group maw={700}>
           <LecturerForm
-            firstName={firstName}
-            lastName={lastName}
-            email={email}
-            setFirstName={setFirstName}
-            setLastName={setLastName}
-            setEmail={setEmail}
-            submit={submit}
-            subjects={subjects as Subject[]}
+            register={register}
+            errors={formErrors}
             setSubjectIds={setSubjectIds}
             subjectIds={subjectIds}
+            submit={handleSubmit(submit)}
+            subjects={subjects as Subject[]}
             loading={addLecturerResult === BasicRequestResult.Loading}
             disableSubmit={[BasicRequestResult.Ok, BasicRequestResult.Loading].includes(addLecturerResult)}
           />
