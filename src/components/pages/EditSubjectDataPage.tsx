@@ -48,7 +48,7 @@ const EditSubjectDataPage: FC = () => {
         </Text>
 
         <Group maw={700}>
-          <SubjectForm name={name} setName={setName} submit={submit} />
+          <SubjectForm name={name} setName={setName} submit={submit} disableSubmit={false} loading={false} />
         </Group>
       </Group>
     </Card>

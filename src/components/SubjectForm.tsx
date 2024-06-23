@@ -8,17 +8,22 @@ type SubjectFormProps = {
 
   setName: (arg: string) => void;
 
+  loading: boolean;
+  disableSubmit: boolean;
+
   submit: () => void;
 };
 
-const SubjectForm: FC<SubjectFormProps> = ({ name, setName, submit }) => (
+const SubjectForm: FC<SubjectFormProps> = ({ name, setName, submit, loading, disableSubmit }) => (
   <Grid>
     <Grid.Col span={6}>
       <TextInput value={name} onChange={update(setName)} label="Name" />
     </Grid.Col>
 
     <Grid.Col span={10}>
-      <Button onClick={jsSubmit(submit)}>Proceed and close</Button>
+      <Button loading={loading} disabled={disableSubmit} onClick={jsSubmit(submit)}>
+        Proceed and close
+      </Button>
     </Grid.Col>
   </Grid>
 );
