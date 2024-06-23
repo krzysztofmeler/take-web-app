@@ -1,8 +1,10 @@
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import { Blockquote, Button, Card, Divider, Flex, Group, Loader, Space, Text } from '@mantine/core';
+import { Link } from 'react-router-dom';
 import { useRequest } from '../../hooks/useRequest.hook';
 import { settings } from '../../settings';
-import { StudentSurveyListResponse } from '../../model/existing-objects/Survey';
+import { StudentSurveyListResponse, Survey } from '../../model/existing-objects/Survey';
 import { StudentWithSurveys } from '../../model/existing-objects/Student';
 
 const SurveysOfStudentPage: FC = () => {
@@ -29,21 +31,46 @@ const SurveysOfStudentPage: FC = () => {
     }
   }, [request.data]);
 
+  if (surveys === null) {
+    return (
+      <Flex mih={200} w="100%" align="center" direction="column" justify="center">
+        <Loader size="lg" />
+      </Flex>
+    );
+  }
+
   return (
-    <>
-      <h1>Student survey list</h1>
-      {request.processing && <p>Loading</p>}
-      {!request.processing && surveys !== null && (
-        <>
-          <p>Student survey:</p>
-          <ul>
-            {surveys.map(({ surveyId, surveyName }) => (
-              <li key={surveyId}>{surveyName}</li>
-            ))}
-          </ul>
-        </>
-      )}
-    </>
+    <Flex direction="column" px={10} py={20} maw={1200} mx="auto">
+      <Text component="h2" size="xl">
+        Surveys
+      </Text>
+
+      <Divider my={10} />
+
+      <Group gap={10}>
+        <Blockquote p={10} w="100%">
+          <Text size="sm">
+            List of surveys of student lets you check only which surveys are completed by certain student. It does not
+            let you check answers provided by student. By clicking "Show averages", you display average results for each
+            question based on all answers from all students.
+          </Text>
+        </Blockquote>
+
+        <Space />
+
+        {(surveys as StudentSurveyListResponse).map((survey) => (
+          <Card w="100%" shadow="sm" withBorder key={survey.surveyId}>
+            <Flex justify="space-between" align="center">
+              <Text>{survey.surveyName}</Text>
+
+              <Button component={Link} to={`/administration/survey-data/${survey.surveyId}`}>
+                Show averages {'>'}
+              </Button>
+            </Flex>
+          </Card>
+        ))}
+      </Group>
+    </Flex>
   );
 };
 
