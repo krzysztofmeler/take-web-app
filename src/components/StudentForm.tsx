@@ -13,6 +13,7 @@ type StudentFormProps = {
   setEmail: (arg: string) => void;
 
   submit: () => void;
+  loading: boolean;
   submitDisabled: boolean;
 };
 
@@ -26,6 +27,7 @@ const StudentForm: FC<StudentFormProps> = ({
 
   submitDisabled,
   submit,
+  loading,
 }) => (
   <Grid maw={700}>
     <Grid.Col span={6}>
@@ -40,7 +42,7 @@ const StudentForm: FC<StudentFormProps> = ({
     </Grid.Col>
 
     <Grid.Col span={10}>
-      <Button disabled={submitDisabled} onClick={jsSubmit(submit)}>
+      <Button disabled={submitDisabled} loading={loading} onClick={jsSubmit(submit)}>
         Proceed and close
       </Button>
     </Grid.Col>

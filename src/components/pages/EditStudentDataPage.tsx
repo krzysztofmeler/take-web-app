@@ -2,10 +2,15 @@ import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { Card, Group, Text } from '@mantine/core';
-import { useRequest } from '../../hooks/useRequest.hook';
-import { settings } from '../../settings';
-import { Student } from '../../model/existing-objects/Student';
 import { StudentForm } from '../StudentForm';
+import { useGetStudent } from '../../hooks/useGetStudent.hook';
+import { useAsyncEffect } from '../../hooks/useAsyncEffect.hook';
+import { SubpageError } from '../SubpageError';
+import { BasicRequestResult } from '../../types/BasicRequestResult';
+import { SubpageLoader } from '../SubpageLoader';
+import { useEditStudent } from '../../hooks/useEditStudent.hook';
+import { showNotification } from '../../utils/Notifications';
+import { sleep } from '../../utils/sleep';
 
 const EditStudentDataPage: FC = () => {
   const [firstName, setFirstName] = useState<string>('');
@@ -14,48 +19,56 @@ const EditStudentDataPage: FC = () => {
 
   const { id } = useParams();
 
-  const { data: studentData } = useRequest(`${settings.backendAPIUrl}students/profile/${id}`, {
-    method: 'GET',
-    mode: 'cors',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  const { get: getStudent, result: getStudentResult } = useGetStudent();
 
-  useEffect(() => {
-    if (studentData) {
-      const studentData2 = studentData as Student;
+  const { proceed: editStudent, result: editStudentResult } = useEditStudent();
 
-      setFirstName(studentData2.firstName);
-      setLastName(studentData2.lastName);
-      setEmail(studentData2.email);
+  useAsyncEffect(async () => {
+    const student = await getStudent(id!);
+
+    if (student) {
+      setFirstName(student.firstName);
+      setLastName(student.lastName);
+      setEmail(student.email);
     }
-  }, [studentData]);
+  }, []);
 
-  const { send: sendRequest, data: response, ...request } = useRequest();
-
-  const submit = () => {
-    sendRequest(`${settings.backendAPIUrl}students/${id}`, {
-      method: 'PUT',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        firstName,
-        lastName,
-        email,
-      }),
-    });
+  const submit = async () => {
+    await editStudent(id!, { firstName, lastName, email });
   };
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (typeof response === 'object' && response !== null && Object.hasOwn(response, 'studentId')) {
+    if (editStudentResult === BasicRequestResult.Error) {
+      showNotification({
+        color: 'red',
+        title: 'An error occurred',
+        message: 'Unknown error occurred, check your data and try again or contact administrator.',
+      });
+    } else if (editStudentResult === BasicRequestResult.Ok) {
+      showNotification({
+        color: 'green',
+        title: 'Success',
+        message: "Student's profile successfully updated",
+      });
+    }
+  }, [editStudentResult]);
+
+  useAsyncEffect(async () => {
+    if (editStudentResult === BasicRequestResult.Ok) {
+      await sleep(500);
       navigate('/administration/students-list');
     }
-  }, [response]);
+  }, [editStudentResult]);
+
+  if (getStudentResult === BasicRequestResult.Error) {
+    return (
+      <SubpageError text="An error occurred while loading student data. Try again later or contact administrator." />
+    );
+  } else if (getStudentResult === BasicRequestResult.Loading || getStudentResult === BasicRequestResult.Idle) {
+    return <SubpageLoader />;
+  }
 
   return (
     <Card withBorder shadow="md" maw={800} my={20} mx="auto">
@@ -72,7 +85,8 @@ const EditStudentDataPage: FC = () => {
           setLastName={setLastName}
           setEmail={setEmail}
           submit={submit}
-          submitDisabled={false} // todo
+          loading={editStudentResult === BasicRequestResult.Loading}
+          submitDisabled={[BasicRequestResult.Loading, BasicRequestResult.Ok].includes(editStudentResult)} // todo
         />
       </Group>
     </Card>

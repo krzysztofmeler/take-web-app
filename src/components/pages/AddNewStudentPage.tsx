@@ -65,6 +65,7 @@ const AddNewStudentPage: FC = () => {
           setLastName={setLastName}
           setEmail={setEmail}
           submit={submit}
+          loading={result === BasicRequestResult.Loading}
           submitDisabled={[BasicRequestResult.Loading, BasicRequestResult.Ok].includes(result)}
         />
       </Group>
