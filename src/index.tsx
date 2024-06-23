@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './styles/main.sass';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { createTheme, MantineProvider } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
 import { AdministrationPage } from './components/pages/AdministrationPage';
 import { MySurveysPage } from './components/pages/MySurveysPage';
 import { PageNotFoundPage } from './components/pages/PageNotFoundPage';
@@ -32,6 +33,7 @@ const root = ReactDOM.createRoot(document.getElementById('react-page-root') as H
 root.render(
   <React.StrictMode>
     <MantineProvider theme={theme}>
+      <Notifications position="top-center" />
       <RouterProvider
         router={createBrowserRouter([
           {

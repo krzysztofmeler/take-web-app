@@ -8,6 +8,7 @@ import { SubpageError } from '../SubpageError';
 import { SubpageLoader } from '../SubpageLoader';
 import { useDeleteLecturer } from '../../hooks/useDeleteLecturer.hook';
 import { BasicRequestResult } from '../../types/BasicRequestResult';
+import { showNotification } from '../../utils/Notifications';
 
 const LecturersListPage: FC = () => {
   const { lecturers, error, updateList } = useGetLecturers();
@@ -23,12 +24,21 @@ const LecturersListPage: FC = () => {
 
   useEffect(() => {
     if (result === BasicRequestResult.Error) {
-      console.error('error');
+      showNotification({
+        color: 'red',
+        title: 'An error occurred',
+        message: 'Lecturer cannot be deleted for unknown reason, try again later or contact administrator.',
+      });
     } else if (result === BasicRequestResult.Ok) {
       if (lecturers) {
         updateList(lecturers.filter((l) => l.email !== deleteEmail));
       }
-      console.debug('ok');
+
+      showNotification({
+        color: 'green',
+        title: 'Lecturer deleted',
+        message: 'Lecturer has been successfully deleted and list has been updated.',
+      });
     }
   }, [result]);
 
