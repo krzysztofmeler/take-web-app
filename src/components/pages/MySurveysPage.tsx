@@ -101,11 +101,6 @@ const MySurveysPage: FC = () => {
     window.localStorage.removeItem('take-web-app:student-login:id');
   };
 
-  const [searchString, setSearchString] = useState('');
-  // const applySearch = () => {
-  //     console.log('applying');
-  // };
-
   const handleLoginError = (error: Error) => {
     console.error(error);
   };
@@ -140,16 +135,6 @@ const MySurveysPage: FC = () => {
         </Flex>
 
         <Divider my={12} />
-
-        {/* <Group my={10}> */}
-        {/*     <TextInput */}
-        {/*       value={searchString} */}
-        {/*       onChange={(e) => setSearchString(e.target.value)} */}
-        {/*     /> */}
-        {/*     <Button onClick={jsSubmit(applySearch)}>Search</Button> */}
-        {/* </Group> */}
-        {/*  */}
-        {/* <Space mih={10} /> */}
 
         {!listReady && (
           <Flex mih={200} w="100%" align="center" justify="center">
