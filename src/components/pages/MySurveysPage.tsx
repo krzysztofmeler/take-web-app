@@ -11,6 +11,7 @@ import { useAsyncEffect } from '../../hooks/useAsyncEffect.hook';
 import { SurveyListElement } from '../SurveyListElement';
 import { SurveyListStudentSection } from '../SurveyListStudentSection';
 import { SurveyLoginCard } from '../SurveyLoginCard';
+import { SubpageError } from '../SubpageError';
 
 const MySurveysPage: FC = () => {
   const [studentId, setStudentId] = useState<number | null>(null);
@@ -141,6 +142,8 @@ const MySurveysPage: FC = () => {
             <Loader size="lg" />
           </Flex>
         )}
+
+        {listReady && surveys.length === 0 && <SubpageError text="No surveys to fill. Try again later." />}
 
         {listReady && (
           <Group gap={10}>

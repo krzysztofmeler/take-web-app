@@ -6,8 +6,8 @@ type SubpageErrorProps = {
 };
 
 const SubpageError: FC<SubpageErrorProps> = ({ text }) => (
-  <Flex align="center" direction="column" justify="center" my={40}>
-    <Group maw={700} w="100%">
+  <Flex align="center" direction="column" justify="center" my={40} w="100%">
+    <Group w="100%">
       <Card w="100%" h="100%" shadow="md" withBorder>
         <Flex justify="center" h="100%" align="center">
           <Text>{text}</Text>

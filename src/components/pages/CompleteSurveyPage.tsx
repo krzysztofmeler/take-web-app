@@ -8,6 +8,7 @@ import { jsSubmit } from '../../utils/js-submit';
 import { Answer } from '../../model/existing-objects/Answer';
 import { settings } from '../../settings';
 import { RatingMax } from '../../commons/RatingRange';
+import { SubpageLoader } from '../SubpageLoader';
 
 const CompleteSurveyPage: FC = () => {
   const { id } = useParams();
@@ -107,12 +108,7 @@ const CompleteSurveyPage: FC = () => {
   }, [sendingAnswers]);
 
   if (!survey) {
-    return (
-      <>
-        <h1>Complete survey</h1>
-        <p>Loading data</p>
-      </>
-    );
+    return <SubpageLoader />;
   }
 
   if (success) {
