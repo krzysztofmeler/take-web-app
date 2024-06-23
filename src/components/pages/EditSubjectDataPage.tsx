@@ -2,26 +2,34 @@ import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Card, Group, Text } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useAsyncEffect } from '../../hooks/useAsyncEffect.hook';
 import { SubjectForm } from '../SubjectForm';
-import { Subject } from '../../model/existing-objects/Subject';
 import { useGetSubjects } from '../../hooks/useGetSubjects.hook';
 import { useEditSubject } from '../../hooks/useEditSubject.hook';
 import { BasicRequestResult } from '../../types/BasicRequestResult';
 import { showNotification } from '../../utils/Notifications';
 import { sleep } from '../../utils/sleep';
 import { SubpageError } from '../SubpageError';
+import { SubjectSchemaType, SubjectValidationSchema } from '../../validation-schemas/subject';
 
 const EditSubjectDataPage: FC = () => {
-  const [name, setName] = useState<string>('');
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors: formErrors, isValid: formValid },
+  } = useForm<SubjectSchemaType>({
+    resolver: zodResolver(SubjectValidationSchema),
+    mode: 'onTouched',
+  });
 
   const { id } = useParams();
 
   const { subjects, error: getSubjectsError } = useGetSubjects();
 
   const { proceed: editSubject, result: editSubjectResult } = useEditSubject();
-
-  const [subject, setSubject] = useState<Subject | null>(null);
 
   const [notFoundError, setNotFoundError] = useState(false);
 
@@ -32,16 +40,15 @@ const EditSubjectDataPage: FC = () => {
       const matchingSubject = subjects.find((s) => s.id.toString() === id);
 
       if (matchingSubject) {
-        setSubject(matchingSubject);
-        setName(matchingSubject.name);
+        setValue('name', matchingSubject.name);
       } else {
         setNotFoundError(true);
       }
     }
   }, [subjects]);
 
-  const submit = async () => {
-    await editSubject(id!, { name });
+  const submit = async (data: SubjectSchemaType) => {
+    await editSubject(id!, data);
   };
 
   useEffect(() => {
@@ -82,10 +89,12 @@ const EditSubjectDataPage: FC = () => {
 
         <Group maw={700}>
           <SubjectForm
-            name={name}
-            setName={setName}
-            submit={submit}
-            disableSubmit={[BasicRequestResult.Loading, BasicRequestResult.Ok].includes(editSubjectResult)}
+            register={register}
+            errors={formErrors}
+            submit={handleSubmit(submit)}
+            disableSubmit={
+              [BasicRequestResult.Loading, BasicRequestResult.Ok].includes(editSubjectResult) || !formValid
+            }
             loading={editSubjectResult === BasicRequestResult.Loading}
           />
         </Group>

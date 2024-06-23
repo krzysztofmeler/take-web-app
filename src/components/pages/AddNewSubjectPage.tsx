@@ -1,26 +1,29 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { Card, Group, Text } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { useRequest } from '../../hooks/useRequest.hook';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { SubjectForm } from '../SubjectForm';
 import { useAddSubject } from '../../hooks/useAddSubject.hook';
 import { BasicRequestResult } from '../../types/BasicRequestResult';
 import { useAsyncEffect } from '../../hooks/useAsyncEffect.hook';
 import { sleep } from '../../utils/sleep';
 import { showNotification } from '../../utils/Notifications';
+import { SubjectSchemaType, SubjectValidationSchema } from '../../validation-schemas/subject';
 
 const AddNewSubjectPage: FC = () => {
-  const [name, setName] = useState<string>('');
-
-  const { send: sendRequest, data: response } = useRequest();
-
   const { proceed: addSubject, result: addSubjectResult } = useAddSubject();
 
-  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors: formErrors, isValid: formValid },
+  } = useForm<SubjectSchemaType>({
+    resolver: zodResolver(SubjectValidationSchema),
+    mode: 'onTouched',
+  });
 
-  const submit = async () => {
-    await addSubject({ name });
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (addSubjectResult === BasicRequestResult.Error) {
@@ -54,11 +57,11 @@ const AddNewSubjectPage: FC = () => {
 
         <Group maw={700}>
           <SubjectForm
-            name={name}
-            setName={setName}
-            submit={submit}
+            register={register}
+            errors={formErrors}
+            submit={handleSubmit(addSubject)}
             loading={addSubjectResult === BasicRequestResult.Loading}
-            disableSubmit={[BasicRequestResult.Loading, BasicRequestResult.Ok].includes(addSubjectResult)}
+            disableSubmit={[BasicRequestResult.Loading, BasicRequestResult.Ok].includes(addSubjectResult) || !formValid}
           />
         </Group>
       </Group>
