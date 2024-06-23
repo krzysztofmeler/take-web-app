@@ -12,6 +12,7 @@ import { SurveyListElement } from '../SurveyListElement';
 import { SurveyListStudentSection } from '../SurveyListStudentSection';
 import { SurveyLoginCard } from '../SurveyLoginCard';
 import { SubpageError } from '../SubpageError';
+import { showNotification } from '../../utils/Notifications';
 
 const MySurveysPage: FC = () => {
   const [studentId, setStudentId] = useState<number | null>(null);
@@ -108,12 +109,22 @@ const MySurveysPage: FC = () => {
   }, [filledSurveysResponse, allSurveysResponse]);
 
   const handleLoginError = (error: Error) => {
-    console.error(error);
+    showNotification({
+      color: 'red',
+      title: 'Unknown error',
+      message: 'Check provided email and try again. If problem still occurs, contact administrator.',
+    });
   };
 
   const handleLoginSuccess = (student: Student) => {
     setStudent(student);
     setStudentId(student.studentId);
+
+    showNotification({
+      color: 'green',
+      title: 'Login successful',
+      message: '',
+    });
   };
 
   if (studentId && student === null) {
