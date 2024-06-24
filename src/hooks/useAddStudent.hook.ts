@@ -14,6 +14,7 @@ const useAddStudent = () => {
 
   const proceed = async (data: AddStudentData) => {
     setResult(BasicRequestResult.Loading);
+    setEmailConflictError(false);
     const response = await request.post('students', data);
 
     if (response.status === 201) {

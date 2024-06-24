@@ -11,6 +11,7 @@ const useEditLecturer = () => {
 
   const proceed = async (id: number | string, data: EditLecturerData) => {
     setResult(BasicRequestResult.Loading);
+    setEmailConflictError(false);
     const response = await request.put(`lecturers/${id}`, data);
 
     if (response.status === 200) {

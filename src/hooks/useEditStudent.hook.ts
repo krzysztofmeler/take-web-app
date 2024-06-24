@@ -11,6 +11,7 @@ const useEditStudent = () => {
 
   const proceed = async (id: number | string, data: EditStudentData) => {
     setResult(BasicRequestResult.Loading);
+    setEmailConflictError(false);
     const response = await request.put(`students/${id}`, data);
 
     if (response.status === 200) {
