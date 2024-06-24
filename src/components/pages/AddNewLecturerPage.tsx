@@ -67,7 +67,7 @@ const AddNewLecturerPage: FC = () => {
   useAsyncEffect(async () => {
     if (addLecturerResult === BasicRequestResult.Ok) {
       await sleep(500);
-      navigate(`${settings.browserBaseURL}/administration/lecturers-list`);
+      navigate('/administration/lecturers-list');
     }
   }, [addLecturerResult]);
 

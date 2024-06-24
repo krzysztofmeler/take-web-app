@@ -54,7 +54,7 @@ const SubjectDataPage: FC = () => {
       });
 
       await sleep(500);
-      navigate(`${settings.browserBaseURL}/administration/subjects-list`);
+      navigate('/administration/subjects-list');
     } else {
       showNotification({
         color: 'red',

@@ -53,7 +53,7 @@ const AddNewStudentPage: FC = () => {
   useAsyncEffect(async () => {
     if (result === BasicRequestResult.Ok) {
       await sleep(500);
-      navigate(`${settings.browserBaseURL}/administration/students-list`);
+      navigate('/administration/students-list');
     }
   }, [result]);
 

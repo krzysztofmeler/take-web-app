@@ -53,7 +53,7 @@ const AddNewSubjectPage: FC = () => {
   useAsyncEffect(async () => {
     if (addSubjectResult === BasicRequestResult.Ok) {
       await sleep(500);
-      navigate(`${settings.browserBaseURL}/administration/subjects-list`);
+      navigate('/administration/subjects-list');
     }
   }, [addSubjectResult]);
 

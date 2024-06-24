@@ -79,7 +79,7 @@ const EditSubjectDataPage: FC = () => {
   useAsyncEffect(async () => {
     if (editSubjectResult === BasicRequestResult.Ok) {
       await sleep(500);
-      navigate(`${settings.browserBaseURL}/administration/subject-data/${id}`);
+      navigate(`/administration/subject-data/${id}`);
     }
   }, [editSubjectResult]);
 

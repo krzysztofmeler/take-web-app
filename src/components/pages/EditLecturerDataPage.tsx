@@ -99,7 +99,7 @@ const EditLecturerDataPage: FC = () => {
   useAsyncEffect(async () => {
     if (editLecturerResult === BasicRequestResult.Ok) {
       await sleep(500);
-      navigate(`${settings.browserBaseURL}/administration/lecturer-profile/${id}`);
+      navigate(`/administration/lecturer-profile/${id}`);
     }
   }, [editLecturerResult]);
 
