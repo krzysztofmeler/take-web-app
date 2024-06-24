@@ -29,7 +29,7 @@ const AddNewLecturerPage: FC = () => {
 
   const { subjects, error: getSubjectsError } = useGetSubjects();
 
-  const { proceed: addLecturer, result: addLecturerResult } = useAddLecturer();
+  const { proceed: addLecturer, result: addLecturerResult, emailConflictError } = useAddLecturer();
 
   const navigate = useNavigate();
 
@@ -42,11 +42,19 @@ const AddNewLecturerPage: FC = () => {
 
   useEffect(() => {
     if (addLecturerResult === BasicRequestResult.Error) {
-      showNotification({
-        color: 'red',
-        title: 'An error occurred',
-        message: 'Unknown error occurred, check provided data and try again or contact administrator.',
-      });
+      if (emailConflictError) {
+        showNotification({
+          color: 'red',
+          title: 'Conflicting e-mail address',
+          message: 'This mailbox address is already utilized by another lecturer.',
+        });
+      } else {
+        showNotification({
+          color: 'red',
+          title: 'An error occurred',
+          message: 'Unknown error occurred, check provided data and try again or contact administrator.',
+        });
+      }
     } else if (addLecturerResult === BasicRequestResult.Ok) {
       showNotification({
         color: 'green',

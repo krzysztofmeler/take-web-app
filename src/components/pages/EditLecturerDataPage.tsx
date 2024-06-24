@@ -38,7 +38,7 @@ const EditLecturerDataPage: FC = () => {
 
   const [lecturer, setLecturer] = useState<Lecturer | null>(null);
 
-  const { proceed: editLecturer, result: editLecturerResult } = useEditLecturer();
+  const { proceed: editLecturer, result: editLecturerResult, emailConflictError } = useEditLecturer();
 
   const navigate = useNavigate();
 
@@ -74,11 +74,19 @@ const EditLecturerDataPage: FC = () => {
 
   useEffect(() => {
     if (editLecturerResult === BasicRequestResult.Error) {
-      showNotification({
-        color: 'red',
-        title: 'An error occurred',
-        message: 'Unknown error occurred, check your data and try again or contact administrator.',
-      });
+      if (emailConflictError) {
+        showNotification({
+          color: 'red',
+          title: 'Conflicting e-mail address',
+          message: 'This mailbox address is already utilized by another lecturer.',
+        });
+      } else {
+        showNotification({
+          color: 'red',
+          title: 'An error occurred',
+          message: 'Unknown error occurred, check your data and try again or contact administrator.',
+        });
+      }
     } else if (editLecturerResult === BasicRequestResult.Ok) {
       showNotification({
         color: 'green',
