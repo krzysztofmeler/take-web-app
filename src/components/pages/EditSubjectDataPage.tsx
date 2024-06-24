@@ -30,7 +30,7 @@ const EditSubjectDataPage: FC = () => {
 
   const { subjects, error: getSubjectsError } = useGetSubjects();
 
-  const { proceed: editSubject, result: editSubjectResult } = useEditSubject();
+  const { proceed: editSubject, result: editSubjectResult, nameConflictError } = useEditSubject();
 
   const [notFoundError, setNotFoundError] = useState(false);
 
@@ -54,11 +54,19 @@ const EditSubjectDataPage: FC = () => {
 
   useEffect(() => {
     if (editSubjectResult === BasicRequestResult.Error) {
-      showNotification({
-        color: 'red',
-        title: 'An error occurred',
-        message: 'Unknown error occurred, check your data and try again or contact administrator.',
-      });
+      if (nameConflictError) {
+        showNotification({
+          color: 'red',
+          title: 'Conflicting name',
+          message: 'There is subject with this name already in the system. Try different name.',
+        });
+      } else {
+        showNotification({
+          color: 'red',
+          title: 'An error occurred',
+          message: 'Unknown error occurred, check your data and try again or contact administrator.',
+        });
+      }
     } else if (editSubjectResult === BasicRequestResult.Ok) {
       showNotification({
         color: 'green',

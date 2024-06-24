@@ -13,7 +13,7 @@ import { SubjectSchemaType, SubjectValidationSchema } from '../../validation-sch
 import { settings } from '../../settings';
 
 const AddNewSubjectPage: FC = () => {
-  const { proceed: addSubject, result: addSubjectResult } = useAddSubject();
+  const { proceed: addSubject, result: addSubjectResult, nameConflictError } = useAddSubject();
 
   const {
     register,
@@ -28,11 +28,19 @@ const AddNewSubjectPage: FC = () => {
 
   useEffect(() => {
     if (addSubjectResult === BasicRequestResult.Error) {
-      showNotification({
-        color: 'red',
-        title: 'An error occurred',
-        message: 'Unknown error occurred, check provided data and try again or contact administrator.',
-      });
+      if (nameConflictError) {
+        showNotification({
+          color: 'red',
+          title: 'Conflicting name',
+          message: 'There is subject with this name already in the system. Try different name.',
+        });
+      } else {
+        showNotification({
+          color: 'red',
+          title: 'An error occurred',
+          message: 'Unknown error occurred, check provided data and try again or contact administrator.',
+        });
+      }
     } else if (addSubjectResult === BasicRequestResult.Ok) {
       showNotification({
         color: 'green',
