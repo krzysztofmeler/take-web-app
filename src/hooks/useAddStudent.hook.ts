@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { request } from '../utils/request';
 import { BasicRequestResult } from '../types/BasicRequestResult';
 
@@ -10,6 +10,7 @@ type AddStudentData = {
 
 const useAddStudent = () => {
   const [result, setResult] = useState<BasicRequestResult>(BasicRequestResult.Idle);
+  const [emailConflictError, setEmailConflictError] = useState(false);
 
   const proceed = async (data: AddStudentData) => {
     setResult(BasicRequestResult.Loading);
@@ -17,13 +18,22 @@ const useAddStudent = () => {
 
     if (response.status === 201) {
       setResult(BasicRequestResult.Ok);
+    } else if (response.status === 409) {
+      setEmailConflictError(true); // error result is set in useEffect hook bellow
     } else {
       setResult(BasicRequestResult.Error);
     }
   };
 
+  useEffect(() => {
+    if (emailConflictError && result === BasicRequestResult.Loading) {
+      setResult(BasicRequestResult.Error);
+    }
+  }, [emailConflictError]);
+
   return {
     proceed,
+    emailConflictError,
     result,
   };
 };

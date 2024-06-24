@@ -7,6 +7,7 @@ type EditStudentData = AddStudentData;
 
 const useEditStudent = () => {
   const [result, setResult] = useState<BasicRequestResult>(BasicRequestResult.Idle);
+  const [emailConflictError, setEmailConflictError] = useState(false);
 
   const proceed = async (id: number | string, data: EditStudentData) => {
     setResult(BasicRequestResult.Loading);
@@ -14,6 +15,8 @@ const useEditStudent = () => {
 
     if (response.status === 200) {
       setResult(BasicRequestResult.Ok);
+    } else if (response.status === 409) {
+      setEmailConflictError(true); // error result is set in useEffect hook bellow
     } else {
       setResult(BasicRequestResult.Error);
     }
@@ -21,6 +24,7 @@ const useEditStudent = () => {
 
   return {
     proceed,
+    emailConflictError,
     result,
   };
 };

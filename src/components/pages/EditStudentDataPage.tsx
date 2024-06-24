@@ -27,7 +27,7 @@ const EditStudentDataPage: FC = () => {
 
   const { get: getStudent, result: getStudentResult } = useGetStudent();
 
-  const { proceed: editStudent, result: editStudentResult } = useEditStudent();
+  const { proceed: editStudent, result: editStudentResult, emailConflictError } = useEditStudent();
 
   useAsyncEffect(async () => {
     const student = await getStudent(id!);
@@ -47,11 +47,19 @@ const EditStudentDataPage: FC = () => {
 
   useEffect(() => {
     if (editStudentResult === BasicRequestResult.Error) {
-      showNotification({
-        color: 'red',
-        title: 'An error occurred',
-        message: 'Unknown error occurred, check your data and try again or contact administrator.',
-      });
+      if (emailConflictError) {
+        showNotification({
+          color: 'red',
+          title: 'Conflicting e-mail address',
+          message: 'This mailbox address is already utilized by another student.',
+        });
+      } else {
+        showNotification({
+          color: 'red',
+          title: 'An error occurred',
+          message: 'Unknown error occurred, check your data and try again or contact administrator.',
+        });
+      }
     } else if (editStudentResult === BasicRequestResult.Ok) {
       showNotification({
         color: 'green',

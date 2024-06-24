@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Group, Text } from '@mantine/core';
+import { Card, em, Group, Text } from '@mantine/core';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { StudentForm } from '../StudentForm';
@@ -22,7 +22,7 @@ const AddNewStudentPage: FC = () => {
     mode: 'onTouched',
   });
 
-  const { result, proceed: addStudent } = useAddStudent();
+  const { result, proceed: addStudent, emailConflictError } = useAddStudent();
 
   const navigate = useNavigate();
 
@@ -34,11 +34,19 @@ const AddNewStudentPage: FC = () => {
         message: 'Student has been added to system and can now login and fill existing surveys.',
       });
     } else if (result === BasicRequestResult.Error) {
-      showNotification({
-        color: 'red',
-        title: 'An error occurred',
-        message: 'Unknown error occurred, check provided data and try again or contact administrator.',
-      });
+      if (emailConflictError) {
+        showNotification({
+          color: 'red',
+          title: 'Conflicting e-mail address',
+          message: 'This mailbox address is already utilized by another student.',
+        });
+      } else {
+        showNotification({
+          color: 'red',
+          title: 'An error occurred',
+          message: 'Unknown error occurred, check provided data and try again or contact administrator.',
+        });
+      }
     }
   }, [result]);
 
